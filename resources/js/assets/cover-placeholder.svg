@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f7efe6"/>
+      <stop offset="100%" stop-color="#efe7dd"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#g)"/>
+  <rect x="40" y="40" width="520" height="720" fill="#fff" stroke="#d4c9bd"/>
+  <text x="300" y="180" text-anchor="middle" font-size="36" fill="#5b5b4f" font-family="serif">Le Maroc Social 2030</text>
+  <text x="300" y="220" text-anchor="middle" font-size="14" fill="#6b6b63" font-family="serif">Couverture provisoire</text>
+</svg>
+
+
