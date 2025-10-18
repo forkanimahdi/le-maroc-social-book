@@ -38,7 +38,7 @@ export default function Home() {
                                 <div className="mb-4">
                                     <span className="text-sm font-medium text-gold tracking-wider uppercase">BOOK GUIDELINE</span>
                                 </div>
-                                <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-tight mb-6">
+                                <h1 className="text-5xl minion-bold sm:text-7xl font-bold tracking-tight leading-tight mb-6">
                                     LE MAROC<br />
                                     <span className="text-gold">SOCIAL 2030</span>
                                 </h1>

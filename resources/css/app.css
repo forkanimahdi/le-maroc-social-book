@@ -181,6 +181,15 @@
         border-radius: 0.5rem;
         padding: 2rem;
     }
+    /* Soft color utilities for elegant styling */
+    .bg-royal-red-soft { background-color: color-mix(in oklab, var(--royal-red) 8%, white); }
+    .bg-royal-green-soft { background-color: color-mix(in oklab, var(--royal-green) 8%, white); }
+    .bg-gold-soft { background-color: color-mix(in oklab, var(--gold) 12%, white); }
+    .text-royal-red-soft { color: color-mix(in oklab, var(--royal-red) 80%, black); }
+    .text-royal-green-soft { color: color-mix(in oklab, var(--royal-green) 80%, black); }
+    .border-royal-red-soft { border-color: color-mix(in oklab, var(--royal-red) 20%, transparent); }
+    .border-royal-green-soft { border-color: color-mix(in oklab, var(--royal-green) 20%, transparent); }
+    .border-gold-soft { border-color: color-mix(in oklab, var(--gold) 25%, transparent); }
     /* Surfaces élégantes sans bordures */
     .card-surface {
         background-color: color-mix(in oklab, white 82%, transparent);
@@ -210,4 +219,27 @@
     }
     .btn-primary:hover { opacity: .92; }
     .btn-primary:active { transform: translateY(1px); }
+}
+
+@font-face {
+    font-family: "minion-regular";
+    src: url("/public/assets/fonts/Minion\ Pro\ Medium\ Cond.otf");
+}
+
+@font-face {
+    font-family: "minion-bold";
+    src: url("/public/assets/fonts/Minion\ Condensed\ Bold.otf");
+}
+
+
+.minion-r{
+    font-family: "minion-regular";
+}
+
+.minion-bold{
+    font-family: "minion-bold";
+}
+
+*{
+    font-family: "minion-regular";
 }

@@ -21,51 +21,87 @@ export default function Book() {
     };
 
     return (
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
-            <h2 className="text-3xl font-semibold tracking-tight">Le Livre</h2>
-            <p className="mt-4 max-w-3xl text-zinc-700 leading-7">
-                Ouvrage de réflexion stratégique et de mobilisation citoyenne, « Le Maroc Social 2030 »
-                propose une vision collective pour renforcer la cohésion, l’équité et la dignité au Maroc.
-                À travers des analyses, des témoignages et des propositions concrètes, le livre met en
-                lumière des trajectoires d’impact et des pistes de transformation sociale.
-            </p>
+        <div className="bg-white">
+            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-24">
+                <div className="text-center mb-20">
+                    <div className="mb-6">
+                        <span className="text-sm font-medium text-royal-red-soft tracking-wider uppercase">LE LIVRE</span>
+                    </div>
+                    <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-royal-red-soft mb-8">
+                        Le Maroc Social 2030
+                    </h2>
+                    <p className="text-xl leading-relaxed text-zinc-600 max-w-4xl mx-auto">
+                        Ouvrage de réflexion stratégique et de mobilisation citoyenne qui propose une vision collective 
+                        pour renforcer la cohésion, l'équité et la dignité au Maroc.
+                    </p>
+                </div>
 
-            <div className="mt-8">
-                <Tabs
-                    tabs={[
-                        { label: 'Présentation', content: (
-                            <div className="card-surface p-6 text-zinc-700">
-                                <p>
-                                    Un éclairage éditorial sur les enjeux sociaux et les trajectoires d’impact,
-                                    au croisement de l’analyse et de l’action citoyenne.
-                                </p>
-                            </div>
-                        )},
-                        { label: 'Extraits', content: (
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                <button className="card-surface p-6 text-left" onClick={() => setOpen({ type: 'red' })}>
-                                    « La justice sociale n’est pas un slogan : c’est un chantier quotidien… »
-                                </button>
-                                <button className="card-surface p-6 text-left" onClick={() => setOpen({ type: 'green' })}>
-                                    « Investir dans la jeunesse, c’est investir dans la prospérité commune. »
-                                </button>
-                            </div>
-                        )},
-                        { label: 'Messages clés', content: (
-                            <ul className="card-surface p-6 list-disc pl-5 text-zinc-700">
-                                <li>Justice sociale et dignité.</li>
-                                <li>Jeunesse, éducation et inclusion.</li>
-                                <li>Économie solidaire et protection sociale.</li>
-                            </ul>
-                        )},
-                    ]}
-                />
-            </div>
+                <div className="grid lg:grid-cols-3 gap-12">
+                    {/* Left: Tabs content */}
+                    <div className="lg:col-span-2">
+                        <Tabs
+                            tabs={[
+                                { label: 'Présentation', content: (
+                                    <div className="bg-royal-red-soft p-8 rounded-lg border border-royal-red-soft">
+                                        <h3 className="text-2xl font-semibold text-royal-red-soft mb-6">Vision éditoriale</h3>
+                                        <p className="text-lg leading-relaxed text-zinc-700">
+                                            Un éclairage éditorial sur les enjeux sociaux et les trajectoires d'impact,
+                                            au croisement de l'analyse et de l'action citoyenne.
+                                        </p>
+                                    </div>
+                                )},
+                                { label: 'Extraits', content: (
+                                    <div className="grid gap-6">
+                                        <button className="bg-royal-red-soft p-8 text-left hover:bg-royal-red-soft/80 transition-all duration-300 rounded-lg border border-royal-red-soft" onClick={() => setOpen({ type: 'red' })}>
+                                            <div className="text-royal-red-soft text-sm font-medium mb-3 uppercase tracking-wide">Citation</div>
+                                            <blockquote className="text-lg italic text-zinc-700 leading-relaxed">
+                                                « La justice sociale n'est pas un slogan : c'est un chantier quotidien où chaque citoyen compte. »
+                                            </blockquote>
+                                        </button>
+                                        <button className="bg-royal-green-soft p-8 text-left hover:bg-royal-green-soft/80 transition-all duration-300 rounded-lg border border-royal-green-soft" onClick={() => setOpen({ type: 'green' })}>
+                                            <div className="text-royal-green-soft text-sm font-medium mb-3 uppercase tracking-wide">Citation</div>
+                                            <blockquote className="text-lg italic text-zinc-700 leading-relaxed">
+                                                « Investir dans la jeunesse, c'est investir dans la prospérité commune. »
+                                            </blockquote>
+                                        </button>
+                                    </div>
+                                )},
+                                { label: 'Messages clés', content: (
+                                    <div className="bg-gold-soft p-8 rounded-lg border border-gold-soft">
+                                        <h3 className="text-2xl font-semibold text-royal-red-soft mb-8">Piliers fondamentaux</h3>
+                                        <ul className="space-y-6 text-zinc-700">
+                                            <li className="flex items-start gap-4">
+                                                <div className="w-3 h-3 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                                                <span className="text-lg leading-relaxed">Justice sociale et dignité</span>
+                                            </li>
+                                            <li className="flex items-start gap-4">
+                                                <div className="w-3 h-3 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                                                <span className="text-lg leading-relaxed">Jeunesse, éducation et inclusion</span>
+                                            </li>
+                                            <li className="flex items-start gap-4">
+                                                <div className="w-3 h-3 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                                                <span className="text-lg leading-relaxed">Économie solidaire et protection sociale</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )},
+                            ]}
+                        />
+                    </div>
 
-            <div className="mt-10">
-                <button onClick={() => setOpen(true)} className="btn-primary">
-                    Télécharger l’Executive Summary
-                </button>
+                    {/* Right: CTA section */}
+                    <div className="lg:sticky lg:top-24">
+                        <div className="bg-gradient-to-br from-royal-red-soft to-gold-soft p-8 text-center rounded-lg border border-royal-red-soft">
+                            <h3 className="text-2xl font-semibold text-royal-red-soft mb-4">Executive Summary</h3>
+                            <p className="text-zinc-700 mb-8 leading-relaxed">
+                                Recevez le résumé exécutif par e-mail pour découvrir les points clés du livre.
+                            </p>
+                            <button onClick={() => setOpen(true)} className="btn-primary bg-royal-red text-cream hover:opacity-95 w-full">
+                                Télécharger le résumé
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Quote modal */}
@@ -75,40 +111,47 @@ export default function Book() {
 
             {/* Email modal */}
             {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
-                    <div className="w-full max-w-lg card-surface p-6">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-xl font-medium">Recevoir le résumé par e‑mail</h3>
-                            <button onClick={() => { setOpen(false); setSent(false); }} className="text-zinc-700 hover:opacity-80">✕</button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="w-full max-w-2xl card-surface p-8">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 className="text-2xl font-semibold text-royal-red">Executive Summary</h3>
+                                <p className="text-zinc-600 mt-1">Recevez le résumé par e‑mail</p>
+                            </div>
+                            <button onClick={() => { setOpen(false); setSent(false); }} className="text-zinc-700 hover:opacity-80 text-2xl">✕</button>
                         </div>
                         {!sent ? (
-                            <form onSubmit={onSubmit} className="mt-6 grid gap-4">
+                            <form onSubmit={onSubmit} className="grid gap-6">
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm">Prénom</label>
-                                        <input required value={state.prenom} onChange={(e) => setState({ ...state, prenom: e.target.value })} className="mt-1 w-full input-soft" placeholder="Votre prénom" />
+                                        <label className="block text-sm font-medium text-royal-red mb-2">Prénom</label>
+                                        <input required value={state.prenom} onChange={(e) => setState({ ...state, prenom: e.target.value })} className="w-full input-soft" placeholder="Votre prénom" />
                                     </div>
                                     <div>
-                                        <label className="block text-sm">Nom</label>
-                                        <input required value={state.nom} onChange={(e) => setState({ ...state, nom: e.target.value })} className="mt-1 w-full input-soft" placeholder="Votre nom" />
+                                        <label className="block text-sm font-medium text-royal-red mb-2">Nom</label>
+                                        <input required value={state.nom} onChange={(e) => setState({ ...state, nom: e.target.value })} className="w-full input-soft" placeholder="Votre nom" />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm">E‑mail</label>
-                                    <input required type="email" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="mt-1 w-full input-soft" placeholder="nom@exemple.com" />
+                                    <label className="block text-sm font-medium text-royal-red mb-2">E‑mail</label>
+                                    <input required type="email" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="w-full input-soft" placeholder="nom@exemple.com" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm">Pays</label>
-                                    <input value={state.pays} onChange={(e) => setState({ ...state, pays: e.target.value })} className="mt-1 w-full input-soft" placeholder="Maroc" />
+                                    <label className="block text-sm font-medium text-royal-red mb-2">Pays</label>
+                                    <input value={state.pays} onChange={(e) => setState({ ...state, pays: e.target.value })} className="w-full input-soft" placeholder="Maroc" />
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <button type="submit" className="btn-primary">Envoyer</button>
-                                    <button type="button" onClick={() => { setOpen(false); setSent(false); }} className="px-4 py-2 rounded-lg bg-white/70">Annuler</button>
+                                <div className="flex items-center gap-4 pt-4">
+                                    <button type="submit" className="btn-primary bg-royal-red text-cream hover:opacity-95 flex-1">Envoyer le résumé</button>
+                                    <button type="button" onClick={() => { setOpen(false); setSent(false); }} className="btn-primary bg-cream text-royal-red hover:opacity-95">Annuler</button>
                                 </div>
                             </form>
                         ) : (
-                            <div className="mt-6">
-                                <p className="text-green-700">Merci ! Le résumé vous a été envoyé par e‑mail (simulation).</p>
+                            <div className="text-center py-8">
+                                <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-2xl">✓</span>
+                                </div>
+                                <h4 className="text-xl font-semibold text-royal-red mb-2">Merci !</h4>
+                                <p className="text-zinc-700">Le résumé vous a été envoyé par e‑mail (simulation).</p>
                             </div>
                         )}
                     </div>
