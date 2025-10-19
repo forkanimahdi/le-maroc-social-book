@@ -111,47 +111,47 @@ export default function Book() {
 
             {/* Email modal */}
             {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-                    <div className="w-full max-w-2xl card-surface p-8">
-                        <div className="flex items-center justify-between mb-6">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-2xl p-8">
+                        <div className="flex items-center justify-between mb-8">
                             <div>
-                                <h3 className="text-2xl font-semibold text-royal-red">Executive Summary</h3>
-                                <p className="text-zinc-600 mt-1">Recevez le résumé par e‑mail</p>
+                                <h3 className="text-3xl font-bold text-royal-red-soft">Executive Summary</h3>
+                                <p className="text-zinc-600 mt-2">Recevez le résumé par e‑mail</p>
                             </div>
-                            <button onClick={() => { setOpen(false); setSent(false); }} className="text-zinc-700 hover:opacity-80 text-2xl">✕</button>
+                            <button onClick={() => { setOpen(false); setSent(false); }} className="text-zinc-400 hover:text-zinc-600 text-3xl transition-colors">✕</button>
                         </div>
                         {!sent ? (
                             <form onSubmit={onSubmit} className="grid gap-6">
-                                <div className="grid sm:grid-cols-2 gap-4">
+                                <div className="grid sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-royal-red mb-2">Prénom</label>
-                                        <input required value={state.prenom} onChange={(e) => setState({ ...state, prenom: e.target.value })} className="w-full input-soft" placeholder="Votre prénom" />
+                                        <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Prénom</label>
+                                        <input required value={state.prenom} onChange={(e) => setState({ ...state, prenom: e.target.value })} className="w-full input-soft border border-royal-red-soft focus:border-royal-red" placeholder="Votre prénom" />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-royal-red mb-2">Nom</label>
-                                        <input required value={state.nom} onChange={(e) => setState({ ...state, nom: e.target.value })} className="w-full input-soft" placeholder="Votre nom" />
+                                        <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Nom</label>
+                                        <input required value={state.nom} onChange={(e) => setState({ ...state, nom: e.target.value })} className="w-full input-soft border border-royal-red-soft focus:border-royal-red" placeholder="Votre nom" />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-royal-red mb-2">E‑mail</label>
-                                    <input required type="email" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="w-full input-soft" placeholder="nom@exemple.com" />
+                                    <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">E‑mail</label>
+                                    <input required type="email" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="w-full input-soft border border-royal-red-soft focus:border-royal-red" placeholder="nom@exemple.com" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-royal-red mb-2">Pays</label>
-                                    <input value={state.pays} onChange={(e) => setState({ ...state, pays: e.target.value })} className="w-full input-soft" placeholder="Maroc" />
+                                    <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Pays</label>
+                                    <input value={state.pays} onChange={(e) => setState({ ...state, pays: e.target.value })} className="w-full input-soft border border-royal-red-soft focus:border-royal-red" placeholder="Maroc" />
                                 </div>
-                                <div className="flex items-center gap-4 pt-4">
-                                    <button type="submit" className="btn-primary bg-royal-red text-cream hover:opacity-95 flex-1">Envoyer le résumé</button>
-                                    <button type="button" onClick={() => { setOpen(false); setSent(false); }} className="btn-primary bg-cream text-royal-red hover:opacity-95">Annuler</button>
+                                <div className="flex items-center gap-4 pt-6">
+                                    <button type="submit" className="btn-primary bg-royal-red text-cream hover:opacity-95 flex-1 py-3 text-lg font-semibold">Envoyer le résumé</button>
+                                    <button type="button" onClick={() => { setOpen(false); setSent(false); }} className="btn-primary bg-cream text-royal-red hover:opacity-95 py-3 px-6">Annuler</button>
                                 </div>
                             </form>
                         ) : (
-                            <div className="text-center py-8">
-                                <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-2xl">✓</span>
+                            <div className="text-center py-12">
+                                <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <span className="text-3xl text-royal-red">✓</span>
                                 </div>
-                                <h4 className="text-xl font-semibold text-royal-red mb-2">Merci !</h4>
-                                <p className="text-zinc-700">Le résumé vous a été envoyé par e‑mail (simulation).</p>
+                                <h4 className="text-2xl font-bold text-royal-red-soft mb-3">Merci !</h4>
+                                <p className="text-zinc-700 text-lg">Le résumé vous a été envoyé par e‑mail (simulation).</p>
                             </div>
                         )}
                     </div>
