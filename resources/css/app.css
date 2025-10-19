@@ -73,7 +73,7 @@
     --royal-red: #860205;
     --royal-green: #1b4e0b;
     /* Utiliser la couleur alpha comme arrière-plan global */
-    --background: var(--alpha);
+    --background: #FDFDFC;
     --foreground: oklch(0.20 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
@@ -148,7 +148,7 @@
         @apply border-border;
     }
 
-    body { @apply bg-background text-foreground; }
+    /* body { @apply bg-background text-foreground; } */
 }
 
 /* Utilitaires personnalisés pour utiliser alpha/beta/gamma directement dans les classes Tailwind-like */

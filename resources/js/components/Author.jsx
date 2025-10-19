@@ -3,12 +3,10 @@ import React, { useState, useEffect } from 'react';
 export default function Author() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const images = [
-        { id: 1, title: "Conférence publique" },
-        { id: 2, title: "Travail de recherche" },
-        { id: 3, title: "Mentorat" },
-        { id: 4, title: "Publications" },
-        { id: 5, title: "Engagement social" },
-        { id: 6, title: "Formation" }
+        { id: 1, title: "Conférence publique" , src: "https://media.licdn.com/dms/image/v2/D4D03AQGmB4EruR9G2A/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1708448603749?e=2147483647&v=beta&t=OGB5YPCzEii6GxkJYxkDEKNJqFQGEf-pNhtNKtbE1ks" },
+        { id: 2, title: "Travail de recherche" , src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmxjllOIqB4qA8F3SkZvM_KhQJ9crYyJqEBg&s" },
+        { id: 3, title: "Mentorat" , src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8AP8cqTMfBBY3FNWE0L4i54twHY0MDSlQxw&s" },
+    
     ];
 
     useEffect(() => {
@@ -101,15 +99,8 @@ export default function Author() {
                                 {images.map((image, index) => (
                                     <div key={image.id} className="w-full flex-shrink-0">
                                         <div className="aspect-[4/5] bg-white/10 backdrop-blur-sm rounded-lg border border-gold/30 flex items-center justify-center relative overflow-hidden">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-transparent"></div>
-                                            <div className="text-center z-10">
-                                                <div className="text-gold text-sm font-medium mb-2">
-                                                    {image.title}
-                                                </div>
-                                                <div className="text-white/60 text-xs">
-                                                    Image {image.id}
-                                                </div>
-                                            </div>
+                                               <img src={image.src} alt={image.title} className="w-full h-full object-cover" />
+                                        
                                         </div>
                                     </div>
                                 ))}
