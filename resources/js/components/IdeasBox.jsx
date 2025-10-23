@@ -1,38 +1,25 @@
 import React, { useMemo, useState } from 'react';
+import { useForm } from '@inertiajs/react';
 
-// Stockage local simple pour la modération
-const STORAGE_KEY = 'ms2030_ideas';
+export default function IdeasBox({ ideas = [] }) {
+    const { data, setData, post, processing, reset } = useForm({
+        text: '',
+        agree: false,
+    });
 
-function loadIdeas() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-    } catch {
-        return [];
-    }
-}
-
-function saveIdeas(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-}
-
-export default function IdeasBox() {
-    const [text, setText] = useState('');
-    const [agree, setAgree] = useState(false);
-    const [ideas, setIdeas] = useState(loadIdeas());
     const [submitted, setSubmitted] = useState(false);
 
     const approvedIdeas = useMemo(() => ideas.filter((i) => i.status === 'approved'), [ideas]);
 
     const submitIdea = (e) => {
         e.preventDefault();
-        const newIdea = { id: crypto.randomUUID(), text, agree, status: 'pending', createdAt: Date.now() };
-        const next = [newIdea, ...ideas];
-        setIdeas(next);
-        saveIdeas(next);
-        setSubmitted(true);
-        setText('');
-        setAgree(false);
+        post('/api/ideas', {
+            onSuccess: () => {
+                setSubmitted(true);
+                reset();
+                setTimeout(() => setSubmitted(false), 3000);
+            }
+        });
     };
 
     // Modération locale simple: approbation via prompt admin simulé
@@ -41,9 +28,8 @@ export default function IdeasBox() {
         if (!toApprove) return;
         const ok = confirm('Approuver la prochaine idée en attente ?');
         if (!ok) return;
-        const next = ideas.map((i) => i.id === toApprove.id ? { ...i, status: 'approved' } : i);
-        setIdeas(next);
-        saveIdeas(next);
+        // In real app, this would make an API call to approve the idea
+        console.log('Approving idea:', toApprove.id);
     };
 
     return (
@@ -71,31 +57,31 @@ export default function IdeasBox() {
                             <form onSubmit={submitIdea} className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Votre idée</label>
-                                    <textarea
-                                        value={text}
-                                        onChange={(e) => setText(e.target.value)}
-                                        required
-                                        rows={5}
-                                        className="w-full p-4 rounded-lg border border-royal-green-soft focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300 resize-none"
-                                        placeholder="Décrivez votre idée pour améliorer la société marocaine..."
-                                    />
+                                        <textarea
+                                            value={data.text}
+                                            onChange={(e) => setData('text', e.target.value)}
+                                            required
+                                            rows={5}
+                                            className="w-full p-4 rounded-lg border border-royal-green-soft focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300 resize-none"
+                                            placeholder="Décrivez votre idée pour améliorer la société marocaine..."
+                                        />
                                 </div>
 
                                 <label className="flex items-center gap-3 text-zinc-700 cursor-pointer group">
                                     <div className="relative">
                                         <input 
                                             type="checkbox" 
-                                            checked={agree} 
-                                            onChange={(e) => setAgree(e.target.checked)} 
+                                            checked={data.agree} 
+                                            onChange={(e) => setData('agree', e.target.checked)} 
                                             required 
                                             className="sr-only"
                                         />
                                         <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-300 ${
-                                            agree 
+                                            data.agree 
                                                 ? 'bg-royal-green border-royal-green' 
                                                 : 'border-royal-green/50 group-hover:border-royal-green'
                                         }`}>
-                                            {agree && (
+                                            {data.agree && (
                                                 <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                                 </svg>
@@ -105,12 +91,13 @@ export default function IdeasBox() {
                                     <span className="text-sm font-medium">J'accepte que mon idée soit publiée publiquement</span>
                                 </label>
 
-                                <button 
-                                    type="submit" 
-                                    className="w-full py-3 px-6 rounded-lg font-semibold bg-royal-green text-white hover:bg-royal-green/90 transition-colors duration-300"
-                                >
-                                    Envoyer mon idée
-                                </button>
+                                    <button 
+                                        type="submit" 
+                                        disabled={processing}
+                                        className="w-full py-3 px-6 rounded-lg font-semibold bg-royal-green text-white hover:bg-royal-green/90 transition-colors duration-300 disabled:opacity-50"
+                                    >
+                                        {processing ? 'Envoi en cours...' : 'Envoyer mon idée'}
+                                    </button>
 
                                 {submitted && (
                                     <div className="text-center p-4 bg-royal-green-soft rounded-lg border border-royal-green-soft">

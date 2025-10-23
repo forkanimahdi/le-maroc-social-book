@@ -1,50 +1,58 @@
 import React, { useState } from 'react';
 
-const EPISODES = [
-    { 
-        id: 1, 
-        titre: 'Épisode 1 — Jeunesse et avenir', 
-        intervenants: 'Oumaima Mhijir, Dr. Ahmed Benali', 
-        theme: 'Éducation et Jeunesse',
-        description: 'Exploration des défis et opportunités pour la jeunesse marocaine dans un monde en transformation.',
-        duration: '45 min',
-        date: '15 Janvier 2024',
-        platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
-    },
-    { 
-        id: 2, 
-        titre: 'Épisode 2 — Santé pour tous', 
-        intervenants: 'Dr. Fatima Zahra, Pr. Mohamed Alami', 
-        theme: 'Santé et Protection sociale',
-        description: 'Discussion sur les enjeux de santé publique et les solutions pour une couverture universelle.',
-        duration: '52 min',
-        date: '22 Janvier 2024',
-        platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
-    },
-    { 
-        id: 3, 
-        titre: 'Épisode 3 — Économie solidaire', 
-        intervenants: 'Oumaima Mhijir, Hassan El Mansouri', 
-        theme: 'Économie solidaire et Emploi',
-        description: 'Les nouvelles formes d\'économie collaborative et leur impact sur l\'emploi au Maroc.',
-        duration: '38 min',
-        date: '29 Janvier 2024',
-        platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
-    },
-    { 
-        id: 4, 
-        titre: 'Épisode 4 — Genre et inclusion', 
-        intervenants: 'Aicha El Alaoui, Dr. Youssef Tazi', 
-        theme: 'Genre, Inclusion et Citoyenneté',
-        description: 'Promouvoir l\'égalité des genres et l\'inclusion sociale dans la société marocaine.',
-        duration: '41 min',
-        date: '5 Février 2024',
-        platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
+export default function Podcast({ episodes = [] }) {
+    const [selectedEpisode, setSelectedEpisode] = useState(episodes[0] || null);
+    
+    // Default episodes if none provided
+    const defaultEpisodes = [
+        { 
+            id: 1, 
+            titre: 'Épisode 1 — Jeunesse et avenir', 
+            intervenants: 'Oumaima Mhijir, Dr. Ahmed Benali', 
+            theme: 'Éducation et Jeunesse',
+            description: 'Exploration des défis et opportunités pour la jeunesse marocaine dans un monde en transformation.',
+            duration: '45 min',
+            date: '15 Janvier 2024',
+            platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
+        },
+        { 
+            id: 2, 
+            titre: 'Épisode 2 — Santé pour tous', 
+            intervenants: 'Dr. Fatima Zahra, Pr. Mohamed Alami', 
+            theme: 'Santé et Protection sociale',
+            description: 'Discussion sur les enjeux de santé publique et les solutions pour une couverture universelle.',
+            duration: '52 min',
+            date: '22 Janvier 2024',
+            platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
+        },
+        { 
+            id: 3, 
+            titre: 'Épisode 3 — Économie solidaire', 
+            intervenants: 'Oumaima Mhijir, Hassan El Mansouri', 
+            theme: 'Économie solidaire et Emploi',
+            description: 'Les nouvelles formes d\'économie collaborative et leur impact sur l\'emploi au Maroc.',
+            duration: '38 min',
+            date: '29 Janvier 2024',
+            platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
+        },
+        { 
+            id: 4, 
+            titre: 'Épisode 4 — Genre et inclusion', 
+            intervenants: 'Aicha El Alaoui, Dr. Youssef Tazi', 
+            theme: 'Genre, Inclusion et Citoyenneté',
+            description: 'Promouvoir l\'égalité des genres et l\'inclusion sociale dans la société marocaine.',
+            duration: '41 min',
+            date: '5 Février 2024',
+            platforms: ['Spotify', 'YouTube', 'Apple Podcasts']
+        }
+    ];
+    
+    const podcastEpisodes = episodes.length > 0 ? episodes : defaultEpisodes;
+    
+    // Set first episode as selected if none selected
+    if (!selectedEpisode && podcastEpisodes.length > 0) {
+        setSelectedEpisode(podcastEpisodes[0]);
     }
-];
-
-export default function Podcast() {
-    const [selectedEpisode, setSelectedEpisode] = useState(EPISODES[0]);
 
     return (
         <div className="bg-white">
@@ -137,8 +145,8 @@ export default function Podcast() {
                         <div className="bg-gradient-to-br from-royal-red-soft to-white p-8 rounded-lg border border-royal-red-soft">
                             <h3 className="text-2xl font-semibold text-royal-red-soft mb-6">Tous les épisodes</h3>
                             
-                            <div className="space-y-4">
-                                {EPISODES.map((episode) => (
+                                <div className="space-y-4">
+                                    {podcastEpisodes.map((episode) => (
                                     <div 
                                         key={episode.id} 
                                         className={`p-6 rounded-lg border cursor-pointer transition-all duration-300 ${

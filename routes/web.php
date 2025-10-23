@@ -7,9 +7,7 @@ use App\Http\Controllers\GroupSignupController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\Admin\DashboardController;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Navigation ancrée sur la page d'accueil (sections sur une seule page)
 

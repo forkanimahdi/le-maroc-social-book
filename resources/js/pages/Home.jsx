@@ -11,7 +11,7 @@ import Newsletter from '../components/Newsletter.jsx';
 // Image de couverture: remplacez par la couverture finale dans /assets quand disponible
 import cover from '../assets/cover.jpeg';
 
-export default function Home() {
+export default function Home({ ideas = [], episodes = [], content = null }) {
     // Ajoute un léger fondu à l'arrivée de la page
     useEffect(() => {
         document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
@@ -70,14 +70,14 @@ export default function Home() {
                 </div>
             </header>
 
-            <main className="flex-1">
-                <section id="livre" className="scroll-mt-24"><Book /></section>
-                <section id="autrice" className="scroll-mt-24"><Author /></section>
-                <section id="boite-idees" className="scroll-mt-24"><IdeasBox /></section>
-                <section id="groupes" className="scroll-mt-24"><Groups /></section>
-                <section id="podcast" className="scroll-mt-24"><Podcast /></section>
-                <section id="newsletter" className="scroll-mt-24"><Newsletter /></section>
-            </main>
+                <main className="flex-1">
+                    <section id="livre" className="scroll-mt-24"><Book /></section>
+                    <section id="autrice" className="scroll-mt-24"><Author content={content} /></section>
+                    <section id="boite-idees" className="scroll-mt-24"><IdeasBox ideas={ideas} /></section>
+                    <section id="groupes" className="scroll-mt-24"><Groups /></section>
+                    <section id="podcast" className="scroll-mt-24"><Podcast episodes={episodes} /></section>
+                    <section id="newsletter" className="scroll-mt-24"><Newsletter /></section>
+                </main>
 
             <Footer />
         </div>

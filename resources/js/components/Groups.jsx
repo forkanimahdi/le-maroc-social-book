@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useForm } from '@inertiajs/react';
 
 // Configuration des groupes de travail
 const GROUPS_CONFIG = {
@@ -33,16 +34,29 @@ const GROUP_LINKS = {
 };
 
 export default function Groups() {
-    const [form, setForm] = useState({ group: 'education', nom: '', email: '', domaine: '', motivation: '' });
+    const { data, setData, post, processing, reset } = useForm({
+        group: 'education',
+        nom: '',
+        email: '',
+        domaine: '',
+        motivation: '',
+    });
+
     const [done, setDone] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
-        setDone(true);
+        post('/api/groups', {
+            onSuccess: () => {
+                setDone(true);
+                reset();
+                setTimeout(() => setDone(false), 5000);
+            }
+        });
     };
 
-    const link = GROUP_LINKS[form.group];
-    const selectedGroup = GROUPS_CONFIG[form.group];
+    const link = GROUP_LINKS[data.group];
+    const selectedGroup = GROUPS_CONFIG[data.group];
 
     return (
         <div className="bg-royal-green">
@@ -88,11 +102,11 @@ export default function Groups() {
                             <form onSubmit={submit} className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-gold mb-3 uppercase tracking-wide">Choix du groupe</label>
-                                    <select 
-                                        value={form.group} 
-                                        onChange={(e) => setForm({ ...form, group: e.target.value })} 
-                                        className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300"
-                                    >
+                                        <select 
+                                            value={data.group} 
+                                            onChange={(e) => setData('group', e.target.value)} 
+                                            className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300"
+                                        >
                                         <option value="education">Éducation et Jeunesse</option>
                                         <option value="sante">Santé et Protection sociale</option>
                                         <option value="economie">Économie solidaire et Emploi</option>
@@ -103,21 +117,21 @@ export default function Groups() {
                                 <div className="grid sm:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-semibold text-gold mb-3 uppercase tracking-wide">Nom complet</label>
-                                        <input 
-                                            required 
-                                            value={form.nom} 
-                                            onChange={(e) => setForm({ ...form, nom: e.target.value })} 
-                                            className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300" 
-                                            placeholder="Votre nom complet" 
-                                        />
+                                            <input 
+                                                required 
+                                                value={data.nom} 
+                                                onChange={(e) => setData('nom', e.target.value)} 
+                                                className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300" 
+                                                placeholder="Votre nom complet" 
+                                            />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-semibold text-gold mb-3 uppercase tracking-wide">E-mail</label>
                                         <input 
                                             required 
                                             type="email" 
-                                            value={form.email} 
-                                            onChange={(e) => setForm({ ...form, email: e.target.value })} 
+                                            value={data.email} 
+                                            onChange={(e) => setData('email', e.target.value)} 
                                             className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300" 
                                             placeholder="nom@exemple.com" 
                                         />
@@ -127,8 +141,8 @@ export default function Groups() {
                                 <div>
                                     <label className="block text-sm font-semibold text-gold mb-3 uppercase tracking-wide">Domaine d'intérêt</label>
                                     <input 
-                                        value={form.domaine} 
-                                        onChange={(e) => setForm({ ...form, domaine: e.target.value })} 
+                                        value={data.domaine} 
+                                        onChange={(e) => setData('domaine', e.target.value)} 
                                         className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300" 
                                         placeholder="Ex. inclusion numérique, formation professionnelle..." 
                                     />
@@ -138,8 +152,8 @@ export default function Groups() {
                                     <label className="block text-sm font-semibold text-gold mb-3 uppercase tracking-wide">Motivation</label>
                                     <textarea 
                                         rows={4} 
-                                        value={form.motivation} 
-                                        onChange={(e) => setForm({ ...form, motivation: e.target.value })} 
+                                        value={data.motivation} 
+                                        onChange={(e) => setData('motivation', e.target.value)} 
                                         className="w-full p-4 rounded-lg border border-gold/30 bg-white/80 text-zinc-800 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-300 resize-none" 
                                         placeholder="Pourquoi souhaitez-vous rejoindre ce groupe ? Quelles sont vos attentes ?" 
                                     />
@@ -147,9 +161,10 @@ export default function Groups() {
 
                                 <button 
                                     type="submit" 
-                                    className="w-full py-4 px-8 rounded-lg font-semibold text-lg bg-gold text-royal-green hover:bg-gold/90 transition-colors duration-300"
+                                    disabled={processing}
+                                    className="w-full py-4 px-8 rounded-lg font-semibold text-lg bg-gold text-royal-green hover:bg-gold/90 transition-colors duration-300 disabled:opacity-50"
                                 >
-                                    S'inscrire au groupe
+                                    {processing ? 'Inscription en cours...' : 'S\'inscrire au groupe'}
                                 </button>
 
                                 {done && (

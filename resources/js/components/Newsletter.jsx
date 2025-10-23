@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useForm } from '@inertiajs/react';
 
 const STORAGE_KEY = 'ms2030_newsletter';
 
@@ -30,15 +31,22 @@ function exportCsv() {
 }
 
 export default function Newsletter() {
-    const [state, setState] = useState({ nom: '', email: '' });
+    const { data, setData, post, processing, reset } = useForm({
+        nom: '',
+        email: '',
+    });
+
     const [ok, setOk] = useState(false);
 
     const submit = async (e) => {
         e.preventDefault();
-        saveSubscriber(state);
-        await simulateExternalSend(state);
-        setOk(true);
-        setState({ nom: '', email: '' });
+        post('/api/subscribers', {
+            onSuccess: () => {
+                setOk(true);
+                reset();
+                setTimeout(() => setOk(false), 3000);
+            }
+        });
     };
 
     return (
@@ -66,13 +74,13 @@ export default function Newsletter() {
                             <form onSubmit={submit} className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Nom complet</label>
-                                    <input 
-                                        required 
-                                        value={state.nom} 
-                                        onChange={(e) => setState({ ...state, nom: e.target.value })} 
-                                        className="w-full p-4 rounded-lg border border-royal-green-soft focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300" 
-                                        placeholder="Votre nom complet" 
-                                    />
+                                        <input 
+                                            required 
+                                            value={data.nom} 
+                                            onChange={(e) => setData('nom', e.target.value)} 
+                                            className="w-full p-4 rounded-lg border border-royal-green-soft focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300" 
+                                            placeholder="Votre nom complet" 
+                                        />
                                 </div>
 
                                 <div>
@@ -80,8 +88,8 @@ export default function Newsletter() {
                                     <input 
                                         required 
                                         type="email" 
-                                        value={state.email} 
-                                        onChange={(e) => setState({ ...state, email: e.target.value })} 
+                                        value={data.email} 
+                                        onChange={(e) => setData('email', e.target.value)} 
                                         className="w-full p-4 rounded-lg border border-royal-green-soft focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300" 
                                         placeholder="nom@exemple.com" 
                                     />
@@ -89,9 +97,10 @@ export default function Newsletter() {
 
                                 <button 
                                     type="submit" 
-                                    className="w-full py-4 px-8 rounded-lg font-semibold text-lg bg-royal-green text-white hover:bg-royal-green/90 transition-colors duration-300"
+                                    disabled={processing}
+                                    className="w-full py-4 px-8 rounded-lg font-semibold text-lg bg-royal-green text-white hover:bg-royal-green/90 transition-colors duration-300 disabled:opacity-50"
                                 >
-                                    S'abonner maintenant
+                                    {processing ? 'Inscription en cours...' : 'S\'abonner maintenant'}
                                 </button>
 
                                 {ok && (
