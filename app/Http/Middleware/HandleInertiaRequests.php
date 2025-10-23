@@ -48,4 +48,24 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
+
+    /**
+     * Handle Inertia errors
+     */
+    public function handle(Request $request, \Closure $next)
+    {
+        $response = parent::handle($request, $next);
+        
+        // If there's an error and it's not already an Inertia response, 
+        // redirect to the previous page with error message
+        if ($response->getStatusCode() >= 400 && $response->getStatusCode() < 500) {
+            if ($request->header('X-Inertia')) {
+                return $response;
+            }
+            
+            return redirect()->back()->with('error', 'Une erreur est survenue.');
+        }
+        
+        return $response;
+    }
 }

@@ -125,7 +125,7 @@ export default function Author({ content = null }) {
                                 {images.map((image, index) => (
                                     <div key={image.id} className="w-full flex-shrink-0">
                                         <div className="aspect-[4/5] bg-white/10 backdrop-blur-sm rounded-lg border border-gold/30 flex items-center justify-center relative overflow-hidden">
-                                               <img src={image.src} alt={image.title} className="w-full h-full object-cover" />
+                                               <img src={image.src.includes("/storage/storage/") ? image.src.slice(8) : image.src} alt={image.title} className="w-full h-full object-cover" />
                                         
                                         </div>
                                     </div>
@@ -147,12 +147,7 @@ export default function Author({ content = null }) {
                                 ))}
                             </div>
 
-                            {/* Image Counter */}
-                            <div className="text-center mt-4">
-                                <span className="text-gold/70 text-sm">
-                                    {currentSlide + 1} / {images.length}
-                                </span>
-                            </div>
+                         
                         </div>
                     </div>
                 </div>

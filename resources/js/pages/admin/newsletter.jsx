@@ -11,20 +11,6 @@ const breadcrumbs = [
     { title: 'Newsletter', href: '/admin/newsletter' },
 ];
 
-// Mock data for demonstration
-const mockSubscribers = [
-    { id: 1, name: 'Ahmed Benali', email: 'ahmed@example.com', subscribed_at: '2024-01-15', status: 'active' },
-    { id: 2, name: 'Fatima Zahra', email: 'fatima@example.com', subscribed_at: '2024-01-16', status: 'active' },
-    { id: 3, name: 'Youssef Tazi', email: 'youssef@example.com', subscribed_at: '2024-01-17', status: 'active' },
-    { id: 4, name: 'Aicha El Alaoui', email: 'aicha@example.com', subscribed_at: '2024-01-18', status: 'unsubscribed' },
-    { id: 5, name: 'Hassan El Mansouri', email: 'hassan@example.com', subscribed_at: '2024-01-19', status: 'active' },
-];
-
-const mockNewsletters = [
-    { id: 1, subject: 'Actualités du Maroc Social 2030 - Janvier 2024', sent_at: '2024-01-20', recipients: 156, open_rate: 68, click_rate: 12 },
-    { id: 2, subject: 'Nouvelles idées approuvées', sent_at: '2024-01-15', recipients: 156, open_rate: 72, click_rate: 18 },
-    { id: 3, subject: 'Invitation aux groupes de travail', sent_at: '2024-01-10', recipients: 156, open_rate: 65, click_rate: 25 },
-];
 
 export default function Newsletter({ subscribers = [], newsletters = [] }) {
     const [activeTab, setActiveTab] = useState('subscribers');

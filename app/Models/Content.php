@@ -24,4 +24,21 @@ class Content extends Model
     protected $casts = [
         'images' => 'array',
     ];
+
+    public function getImagesAttribute($value)
+    {
+        if (is_string($value)) {
+            return json_decode($value, true) ?? [];
+        }
+        return $value ?? [];
+    }
+
+    public function setImagesAttribute($value)
+    {
+        if (is_array($value)) {
+            $this->attributes['images'] = json_encode($value);
+        } else {
+            $this->attributes['images'] = $value;
+        }
+    }
 }
