@@ -22,6 +22,12 @@ class IdeaController extends Controller
         $idea->update(['status' => 'approved']);
         return back();
     }
+
+    public function reject(Idea $idea)
+    {
+        $idea->update(['status' => 'rejected']);
+        return back();
+    }
 }
 
 

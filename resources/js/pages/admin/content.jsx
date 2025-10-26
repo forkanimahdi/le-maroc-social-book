@@ -192,7 +192,7 @@ const {post , put , reset, processing , } = useForm();
                         {[
                             { id: 'bio', label: 'Biographie' },
                             { id: 'images', label: 'Images' },
-                            { id: 'social', label: 'Réseaux Sociaux' },
+                            // { id: 'social', label: 'Réseaux Sociaux' },
                         ].map(tab => (
                             <button
                                 key={tab.id}

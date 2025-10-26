@@ -22,15 +22,6 @@ export default function IdeasBox({ ideas = [] }) {
         });
     };
 
-    // Modération locale simple: approbation via prompt admin simulé
-    const simulateModeration = () => {
-        const toApprove = ideas.find((i) => i.status === 'pending');
-        if (!toApprove) return;
-        const ok = confirm('Approuver la prochaine idée en attente ?');
-        if (!ok) return;
-        // In real app, this would make an API call to approve the idea
-        console.log('Approving idea:', toApprove.id);
-    };
 
     return (
         <div className="bg-white">
@@ -112,15 +103,6 @@ export default function IdeasBox({ ideas = [] }) {
                             </form>
                         </div>
 
-                        {/* Moderation Button */}
-                        <div className="mt-6 text-center">
-                            <button 
-                                onClick={simulateModeration} 
-                                className="text-sm px-4 py-2 rounded-lg bg-royal-green-soft text-royal-green hover:bg-royal-green-soft/80 transition-colors"
-                            >
-                                Modération (simulation)
-                            </button>
-                        </div>
                     </div>
 
                     {/* Published Ideas Space */}

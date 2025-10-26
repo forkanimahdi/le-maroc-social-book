@@ -22,6 +22,15 @@ class DashboardController extends Controller
             ],
         ]);
     }
+
+    public function ideas()
+    {
+        $ideas = Idea::orderBy('created_at', 'desc')->get();
+        
+        return Inertia::render('admin/ideas', [
+            'ideas' => $ideas,
+        ]);
+    }
 }
 
 

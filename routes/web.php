@@ -24,7 +24,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Admin
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/ideas', [DashboardController::class, 'ideas'])->name('admin.ideas');
     Route::post('/admin/ideas/{idea}/approve', [IdeaController::class, 'moderate'])->name('admin.ideas.approve');
+    Route::post('/admin/ideas/{idea}/reject', [IdeaController::class, 'reject'])->name('admin.ideas.reject');
     
     // Newsletter management
     Route::get('/admin/newsletter', [NewsletterController::class, 'index'])->name('admin.newsletter');
