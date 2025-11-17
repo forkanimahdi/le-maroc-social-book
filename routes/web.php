@@ -55,6 +55,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::post('/api/ideas', [IdeaController::class, 'store'])->name('ideas.store');
 Route::post('/api/groups', [GroupSignupController::class, 'store'])->name('groups.store');
 Route::post('/api/subscribers', [SubscriberController::class, 'store'])->name('subscribers.store');
+Route::post('/api/book/executive-summary', [\App\Http\Controllers\BookController::class, 'sendExecutiveSummary'])->name('book.executive-summary');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

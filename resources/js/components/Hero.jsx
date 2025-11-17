@@ -26,12 +26,12 @@ export default function Hero() {
                                 Quatre Chantiers de Dignité pour insuffler un Maroc Social en 2030
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <a href="#livre" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Découvrir le livre</a>
-                                <a href="#livre" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Télécharger le résumé</a>
+                                <a href="#livre" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Découvrir le livre</a>
+                                <a href="#livre" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Télécharger le résumé</a>
                             </div>
                             <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                                <a href="#groupes" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Groupes de travail</a>
-                                <a href="#podcast" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Podcast</a>
+                                <a href="#groupes" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Groupes de travail</a>
+                                <a href="#podcast" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Podcast</a>
                             </div>
                         </div>
                         
