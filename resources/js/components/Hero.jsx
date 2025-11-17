@@ -23,15 +23,15 @@ export default function Hero() {
                                 <span className="text-gold">SOCIAL 2030</span>
                             </h1>
                             <p className="text-xl leading-relaxed text-white/90 mb-8 max-w-lg">
-                                « Un futur commun pour le Maroc se construit avec engagement, justice sociale et esprit d'ouverture. »
+                                Quatre Chantiers de Dignité pour insuffler un Maroc Social en 2030
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <a href="#livre" className="btn-primary bg-cream text-royal-red hover:opacity-95 text-center">Découvrir le livre</a>
-                                <a href="#livre" className="btn-primary bg-gold text-royal-red hover:opacity-95 text-center">Télécharger le résumé</a>
+                                <a href="#livre" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Découvrir le livre</a>
+                                <a href="#livre" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Télécharger le résumé</a>
                             </div>
                             <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                                <a href="#groupes" className="btn-primary bg-peach text-royal-red hover:opacity-95 text-center">Groupes de travail</a>
-                                <a href="#podcast" className="btn-primary bg-olive text-cream hover:opacity-95 text-center">Podcast</a>
+                                <a href="#groupes" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Groupes de travail</a>
+                                <a href="#podcast" className=" bg-royal-green px-2 py-2 rounded-lg   hover:opacity-95 text-center">Podcast</a>
                             </div>
                         </div>
                         
@@ -41,7 +41,7 @@ export default function Hero() {
                                 <div className="text-sm font-medium text-gold tracking-wider uppercase mb-2">AUTHOR</div>
                                 <div className="text-2xl font-semibold text-cream">OUMAIMA MHIJIR</div>
                                 <div className="mt-4 text-white/80 text-sm max-w-xs ml-auto">
-                                    Autrice, chercheuse et entrepreneure sociale engagée pour la justice et l'égalité des chances au Maroc.
+                                    Auteure, experte en entrepreneuriat social international, maman, étudiante en psychologie et en innovation sociale
                                 </div>
                             </div>
                         </div>
