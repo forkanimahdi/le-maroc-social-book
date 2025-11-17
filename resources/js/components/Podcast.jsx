@@ -55,17 +55,17 @@ export default function Podcast({ episodes = [] }) {
     }
 
     return (
-        <div className="bg-white">
+        <div className="bg-royal-green">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-24">
                 {/* Header */}
                 <div className="text-center mb-16">
                     <div className="mb-6">
-                        <span className="text-sm font-medium text-royal-red-soft tracking-wider uppercase">PODCAST</span>
+                        <span className="text-sm font-medium text-gold tracking-wider uppercase">PODCAST</span>
                     </div>
-                    <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-royal-red-soft mb-8">
+                    <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-gold mb-8">
                         Conversations Sociales
                     </h2>
-                    <p className="text-xl leading-relaxed text-zinc-600 max-w-4xl mx-auto">
+                    <p className="text-xl leading-relaxed text-white max-w-4xl mx-auto">
                         Découvrez les discussions approfondies avec des experts et acteurs du changement social au Maroc.
                     </p>
                 </div>
@@ -73,14 +73,14 @@ export default function Podcast({ episodes = [] }) {
                 <div className="grid lg:grid-cols-2 gap-16 items-start">
                     {/* Player Section */}
                     <div>
-                        <div className="bg-gradient-to-br from-royal-red-soft to-white p-8 rounded-lg border border-royal-red-soft">
-                            <h3 className="text-2xl font-semibold text-royal-red-soft mb-6">Lecteur Audio</h3>
+                        <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg border border-gold/30">
+                            <h3 className="text-2xl font-semibold text-gold mb-6">Lecteur Audio</h3>
                             
                             {/* Audio Player */}
-                            <div className="bg-white rounded-lg p-6 shadow-lg border border-royal-red-soft mb-6">
+                            <div className="bg-white rounded-lg p-6 shadow-lg border border-gold/30 mb-6">
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-16 h-16 bg-royal-red-soft rounded-lg flex items-center justify-center">
-                                        <svg className="w-8 h-8 text-royal-red" fill="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-16 h-16 bg-gold rounded-lg flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-royal-green" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                                         </svg>
                                     </div>
@@ -93,7 +93,7 @@ export default function Podcast({ episodes = [] }) {
                                 {/* Progress Bar */}
                                 <div className="mb-4">
                                     <div className="w-full bg-zinc-200 rounded-full h-2">
-                                        <div className="bg-royal-red h-2 rounded-full" style={{width: '35%'}}></div>
+                                        <div className="bg-gold h-2 rounded-full" style={{width: '35%'}}></div>
                                     </div>
                                     <div className="flex justify-between text-xs text-zinc-500 mt-1">
                                         <span>12:30</span>
@@ -108,7 +108,7 @@ export default function Podcast({ episodes = [] }) {
                                             <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                                         </svg>
                                     </button>
-                                    <button className="p-3 bg-royal-red text-white rounded-full hover:bg-royal-red/90 transition-colors">
+                                    <button className="p-3 bg-gold text-royal-green rounded-full hover:bg-gold/90 transition-colors">
                                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M8 5v14l11-7z"/>
                                         </svg>
@@ -122,18 +122,18 @@ export default function Podcast({ episodes = [] }) {
                             </div>
 
                             {/* Episode Description */}
-                            <div className="bg-white/50 rounded-lg p-4 border border-royal-red-soft">
-                                <h5 className="font-semibold text-royal-red-soft mb-2">À propos de cet épisode</h5>
-                                <p className="text-zinc-700 text-sm leading-relaxed">{selectedEpisode.description}</p>
+                            <div className="bg-white/50 rounded-lg p-4 border border-gold/30">
+                                <h5 className="font-semibold text-gold mb-2">À propos de cet épisode</h5>
+                                <p className="text-white text-sm leading-relaxed">{selectedEpisode.description}</p>
                             </div>
                         </div>
 
                         {/* Subscription */}
                         <div className="mt-6 text-center">
-                            <div className="bg-gradient-to-r from-royal-red-soft to-gold-soft p-6 rounded-lg border border-royal-red-soft">
-                                <h4 className="text-lg font-semibold text-royal-red-soft mb-3">Restez informé</h4>
-                                <p className="text-zinc-700 mb-4">Recevez une notification à chaque nouvel épisode</p>
-                                <button className="bg-royal-red text-white px-8 py-3 rounded-lg font-semibold hover:bg-royal-red/90 transition-colors">
+                            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-gold/30">
+                                <h4 className="text-lg font-semibold text-gold mb-3">Restez informé</h4>
+                                <p className="text-white mb-4">Recevez une notification à chaque nouvel épisode</p>
+                                <button className="bg-gold text-royal-green px-8 py-3 rounded-lg font-semibold hover:bg-gold/90 transition-colors">
                                     S'abonner au podcast
                                 </button>
                             </div>
@@ -142,8 +142,8 @@ export default function Podcast({ episodes = [] }) {
 
                     {/* Episodes List */}
                     <div>
-                        <div className="bg-gradient-to-br from-royal-red-soft to-white p-8 rounded-lg border border-royal-red-soft">
-                            <h3 className="text-2xl font-semibold text-royal-red-soft mb-6">Tous les épisodes</h3>
+                        <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg border border-gold/30">
+                            <h3 className="text-2xl font-semibold text-gold mb-6">Tous les épisodes</h3>
                             
                                 <div className="space-y-4">
                                     {podcastEpisodes.map((episode) => (
@@ -151,42 +151,42 @@ export default function Podcast({ episodes = [] }) {
                                         key={episode.id} 
                                         className={`p-6 rounded-lg border cursor-pointer transition-all duration-300 ${
                                             selectedEpisode.id === episode.id 
-                                                ? 'bg-royal-red-soft border-royal-red shadow-md' 
-                                                : 'bg-white border-royal-red-soft hover:bg-royal-red-soft/50'
+                                                ? 'bg-gold/30 border-gold shadow-md' 
+                                                : 'bg-white/10 border-gold/30 hover:bg-white/15'
                                         }`}
                                         onClick={() => setSelectedEpisode(episode)}
                                     >
                                         <div className="flex items-start gap-4">
                                             <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
                                                 selectedEpisode.id === episode.id 
-                                                    ? 'bg-royal-red text-white' 
-                                                    : 'bg-royal-red-soft text-royal-red'
+                                                    ? 'bg-gold text-royal-green' 
+                                                    : 'bg-white/20 text-gold'
                                             }`}>
                                                 <span className="text-sm font-bold">{episode.id}</span>
                                             </div>
                                             <div className="flex-1">
                                                 <h4 className={`font-semibold mb-2 ${
-                                                    selectedEpisode.id === episode.id ? 'text-royal-red' : 'text-zinc-800'
+                                                    selectedEpisode.id === episode.id ? 'text-gold' : 'text-white'
                                                 }`}>
                                                     {episode.titre}
                                                 </h4>
                                                 <p className={`text-sm mb-2 ${
-                                                    selectedEpisode.id === episode.id ? 'text-zinc-700' : 'text-zinc-600'
+                                                    selectedEpisode.id === episode.id ? 'text-white/90' : 'text-white/80'
                                                 }`}>
                                                     {episode.intervenants}
                                                 </p>
                                                 <div className="flex items-center gap-4 text-xs">
                                                     <span className={`px-2 py-1 rounded ${
                                                         selectedEpisode.id === episode.id 
-                                                            ? 'bg-royal-red text-white' 
-                                                            : 'bg-royal-red-soft text-royal-red'
+                                                            ? 'bg-gold text-royal-green' 
+                                                            : 'bg-white/20 text-gold'
                                                     }`}>
                                                         {episode.theme}
                                                     </span>
-                                                    <span className={selectedEpisode.id === episode.id ? 'text-zinc-600' : 'text-zinc-500'}>
+                                                    <span className={selectedEpisode.id === episode.id ? 'text-white/90' : 'text-white/70'}>
                                                         {episode.duration}
                                                     </span>
-                                                    <span className={selectedEpisode.id === episode.id ? 'text-zinc-600' : 'text-zinc-500'}>
+                                                    <span className={selectedEpisode.id === episode.id ? 'text-white/90' : 'text-white/70'}>
                                                         {episode.date}
                                                     </span>
                                                 </div>
@@ -197,8 +197,8 @@ export default function Podcast({ episodes = [] }) {
                             </div>
 
                             {/* Platforms */}
-                            <div className="mt-8 pt-6 border-t border-royal-red-soft">
-                                <h5 className="text-lg font-semibold text-royal-red-soft mb-4">Disponible sur</h5>
+                            <div className="mt-8 pt-6 border-t border-gold/30">
+                                <h5 className="text-lg font-semibold text-gold mb-4">Disponible sur</h5>
                                 <div className="flex gap-4">
                                     <a href="#" className="flex items-center gap-2 px-4 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors">
                                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

@@ -29,9 +29,9 @@ export default function IdeasBox({ ideas = [] }) {
                 {/* Header */}
                 <div className="text-center mb-16">
                     <div className="mb-6">
-                        <span className="text-sm font-medium text-royal-green-soft tracking-wider uppercase">BOÎTE À IDÉES</span>
+                        <span className="text-sm font-medium text-royal-red-soft tracking-wider uppercase">BOÎTE À IDÉES</span>
                     </div>
-                    <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-royal-green-soft mb-8">
+                    <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-royal-red-soft mb-8">
                         Partagez Votre Vision
                     </h2>
                     <p className="text-xl leading-relaxed text-zinc-600 max-w-4xl mx-auto">
@@ -42,18 +42,18 @@ export default function IdeasBox({ ideas = [] }) {
                 <div className="grid lg:grid-cols-2 gap-16 items-start">
                     {/* Submission Form */}
                     <div>
-                        <div className="bg-gradient-to-br from-royal-green-soft to-white p-8 rounded-lg border border-royal-green-soft">
-                            <h3 className="text-2xl font-semibold text-royal-green-soft mb-6">Proposer une idée</h3>
+                        <div className="bg-gradient-to-br from-royal-red-soft to-white p-8 rounded-lg border border-royal-red-soft">
+                            <h3 className="text-2xl font-semibold text-royal-red-soft mb-6">Proposer une idée</h3>
                             
                             <form onSubmit={submitIdea} className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Votre idée</label>
+                                    <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Votre idée</label>
                                         <textarea
                                             value={data.text}
                                             onChange={(e) => setData('text', e.target.value)}
                                             required
                                             rows={5}
-                                            className="w-full p-4 rounded-lg border border-royal-green-soft focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300 resize-none"
+                                            className="w-full p-4 rounded-lg border border-royal-red-soft focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all duration-300 resize-none"
                                             placeholder="Décrivez votre idée pour améliorer la société marocaine..."
                                         />
                                 </div>
@@ -69,8 +69,8 @@ export default function IdeasBox({ ideas = [] }) {
                                         />
                                         <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-300 ${
                                             data.agree 
-                                                ? 'bg-royal-green border-royal-green' 
-                                                : 'border-royal-green/50 group-hover:border-royal-green'
+                                                ? 'bg-royal-red border-royal-red' 
+                                                : 'border-royal-red/50 group-hover:border-royal-red'
                                         }`}>
                                             {data.agree && (
                                                 <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -85,14 +85,14 @@ export default function IdeasBox({ ideas = [] }) {
                                     <button 
                                         type="submit" 
                                         disabled={processing}
-                                        className="w-full py-3 px-6 rounded-lg font-semibold bg-royal-green text-white hover:bg-royal-green/90 transition-colors duration-300 disabled:opacity-50"
+                                        className="w-full py-3 px-6 rounded-lg font-semibold bg-royal-red text-white hover:bg-royal-red/90 transition-colors duration-300 disabled:opacity-50"
                                     >
                                         {processing ? 'Envoi en cours...' : 'Envoyer mon idée'}
                                     </button>
 
                                 {submitted && (
-                                    <div className="text-center p-4 bg-royal-green-soft rounded-lg border border-royal-green-soft">
-                                        <div className="flex items-center justify-center gap-2 text-royal-green">
+                                    <div className="text-center p-4 bg-royal-red-soft rounded-lg border border-royal-red-soft">
+                                        <div className="flex items-center justify-center gap-2 text-royal-red">
                                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                             </svg>
@@ -107,10 +107,10 @@ export default function IdeasBox({ ideas = [] }) {
 
                     {/* Published Ideas Space */}
                     <div>
-                        <div className="bg-gradient-to-br from-royal-green-soft to-white p-8 rounded-lg border border-royal-green-soft">
+                        <div className="bg-gradient-to-br from-royal-red-soft to-white p-8 rounded-lg border border-royal-red-soft">
                             <div className="flex items-center justify-between mb-8">
-                                <h3 className="text-2xl font-semibold text-royal-green-soft">Espace Public</h3>
-                                <div className="flex items-center gap-2 text-sm text-royal-green">
+                                <h3 className="text-2xl font-semibold text-royal-red-soft">Espace Public</h3>
+                                <div className="flex items-center gap-2 text-sm text-royal-red">
                                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                     </svg>
@@ -120,8 +120,8 @@ export default function IdeasBox({ ideas = [] }) {
 
                             {approvedIdeas.length === 0 ? (
                                 <div className="text-center py-12">
-                                    <div className="w-16 h-16 bg-royal-green-soft rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <svg className="w-8 h-8 text-royal-green" fill="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-16 h-16 bg-royal-red-soft rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8 text-royal-red" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                                         </svg>
                                     </div>
@@ -133,10 +133,10 @@ export default function IdeasBox({ ideas = [] }) {
                                     {approvedIdeas.map((idea, index) => (
                                         <div 
                                             key={idea.id} 
-                                            className="p-6 bg-white rounded-lg border border-royal-green-soft hover:shadow-md transition-all duration-300"
+                                            className="p-6 bg-white rounded-lg border border-royal-red-soft hover:shadow-md transition-all duration-300"
                                         >
                                             <div className="flex items-start gap-4">
-                                                <div className="w-8 h-8 bg-royal-green rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                                <div className="w-8 h-8 bg-royal-red rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                                     <span className="text-white text-sm font-bold">{index + 1}</span>
                                                 </div>
                                                 <div className="flex-1">
