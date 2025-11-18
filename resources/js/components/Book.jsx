@@ -178,8 +178,8 @@ export default function Book() {
                             )},
                             { label: 'Messages clés', content: (
                                 <div className="p-8 rounded-lg shadow-md" style={{ backgroundColor: 'rgba(204, 185, 116, 0.15)' }}>
-                                    <h3 className="text-2xl font-semibold mb-8" style={{ color: 'var(--royal-red)' }}>Piliers fondamentaux</h3>
-                                    <ul className="space-y-6 text-zinc-700">
+                                    <h3 className="text-2xl font-semibold mb-8" style={{ color: 'black' }}>Piliers fondamentaux</h3>
+                                    <ul className="space-y-6" style={{ color: 'black' }}>
                                         <li className="flex items-start gap-4">
                                             <div className="w-3 h-3 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: 'var(--gold)' }}></div>
                                             <span className="text-lg leading-relaxed">Jeunesse et emploi : transformer les politiques publiques autour des néo-NEET - Next Entrepreneurs, Educators & Transformers.</span>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Episode;
+use App\Models\EventParticipant;
 use App\Models\GroupSignup;
 use App\Models\Idea;
 use App\Models\Subscriber;
@@ -16,9 +16,15 @@ class DashboardController extends Controller
         return Inertia::render('admin/Dashboard', [
             'stats' => [
                 'ideas' => Idea::count(),
-                'signups' => GroupSignup::count(),
+                'ideas_pending' => Idea::where('status', 'pending')->count(),
+                'think_tank_total' => GroupSignup::count(),
+                'think_tank_pending' => GroupSignup::where('status', 'pending')->count(),
+                'think_tank_approved' => GroupSignup::where('status', 'approved')->count(),
+                'event_participants_total' => EventParticipant::count(),
+                'event_participants_pending' => EventParticipant::where('status', 'pending')->count(),
+                'event_participants_approved' => EventParticipant::where('status', 'approved')->count(),
                 'subscribers' => Subscriber::count(),
-                'episodes' => Episode::count(),
+                'subscribers_active' => Subscriber::where('status', 'active')->count(),
             ],
         ]);
     }

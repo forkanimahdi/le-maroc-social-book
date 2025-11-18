@@ -71,3 +71,8 @@ Route::post('/event-participants', [\App\Http\Controllers\EventParticipantContro
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+
+// Fallback route for 404 - must be last
+Route::fallback(function () {
+    return \Inertia\Inertia::render('Error404');
+});

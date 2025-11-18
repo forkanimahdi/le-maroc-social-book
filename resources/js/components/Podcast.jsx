@@ -18,15 +18,37 @@ export default function Podcast({ episodes = [] }) {
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {
-            const updateTime = () => setCurrentTime(audio.currentTime);
-            const updateDuration = () => setDuration(audio.duration);
+            const updateTime = () => {
+                if (!isNaN(audio.currentTime)) {
+                    setCurrentTime(audio.currentTime);
+                }
+            };
+            const updateDuration = () => {
+                if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+                    setDuration(audio.duration);
+                }
+            };
+            const handleCanPlay = () => {
+                if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+                    setDuration(audio.duration);
+                }
+            };
             
             audio.addEventListener('timeupdate', updateTime);
             audio.addEventListener('loadedmetadata', updateDuration);
+            audio.addEventListener('canplay', handleCanPlay);
+            audio.addEventListener('durationchange', updateDuration);
+            
+            // Try to load duration immediately
+            if (audio.readyState >= 1 && !isNaN(audio.duration) && isFinite(audio.duration)) {
+                setDuration(audio.duration);
+            }
             
             return () => {
                 audio.removeEventListener('timeupdate', updateTime);
                 audio.removeEventListener('loadedmetadata', updateDuration);
+                audio.removeEventListener('canplay', handleCanPlay);
+                audio.removeEventListener('durationchange', updateDuration);
             };
         }
     }, []);
@@ -44,7 +66,7 @@ export default function Podcast({ episodes = [] }) {
     };
 
     const formatTime = (seconds) => {
-        if (!seconds || isNaN(seconds)) return '0:00';
+        if (!seconds || isNaN(seconds) || !isFinite(seconds)) return '0:00';
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -59,7 +81,7 @@ export default function Podcast({ episodes = [] }) {
         }
     };
 
-    const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+    const progress = duration > 0 && isFinite(duration) ? Math.min((currentTime / duration) * 100, 100) : 0;
 
     return (
         <div className="bg-royal-green">
@@ -211,7 +233,11 @@ export default function Podcast({ episodes = [] }) {
                                 <audio
                                     ref={audioRef}
                                     src={audioUrl}
-                                    onEnded={() => setIsPlaying(false)}
+                                    onEnded={() => {
+                                        setIsPlaying(false);
+                                        setCurrentTime(duration); // Ensure progress is 100% when done
+                                    }}
+                                    preload="metadata"
                                 />
                             </div>
 
