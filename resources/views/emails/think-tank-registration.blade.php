@@ -121,14 +121,23 @@
             <div class="content">
                 <p>Merci de votre intérêt pour rejoindre le <strong>Think Tank Le Maroc Social 2030</strong>.</p>
                 
-                <p>Nous avons bien reçu votre inscription au <strong>{{ $signup->group }}</strong>. Votre candidature est en cours d'examen par notre équipe.</p>
+                @php
+                    $groupLabels = [
+                        'jeunesse' => 'Jeunesse, Éducation et Emploi',
+                        'femmes' => 'Femmes, Travail Invisible et Sécurité Sociale',
+                        'vieillissement' => 'Vieillissement, Santé et Transitions Démographiques',
+                        'pacte' => 'Pacte National, Territoires et Engagement Citoyen',
+                    ];
+                    $groupName = $groupLabels[$signup->group] ?? ucfirst($signup->group);
+                @endphp
+                <p>Nous avons bien reçu votre inscription au <strong>{{ $groupName }}</strong>. Votre candidature est en cours d'examen par notre équipe.</p>
                 
                 <div class="info-box">
                     <p><strong>Détails de votre inscription :</strong></p>
-                    <p>Groupe : {{ $signup->group }}</p>
+                    <p>Groupe : {{ $groupName }}</p>
                     <p>Email : {{ $signup->email }}</p>
-                    @if($signup->domain_expertise && count($signup->domain_expertise) > 0)
-                        <p>Domaines d'expertise : {{ implode(', ', $signup->domain_expertise) }}</p>
+                    @if($signup->domain_expertise)
+                        <p>Domaine d'expertise : {{ $signup->domain_expertise }}</p>
                     @endif
                 </div>
             </div>

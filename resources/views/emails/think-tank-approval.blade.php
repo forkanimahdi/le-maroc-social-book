@@ -129,10 +129,19 @@
                 <p>Nous sommes ravis de vous informer que votre candidature pour rejoindre le <strong>Think Tank Le Maroc Social 2030</strong> a été <strong>approuvée</strong>.</p>
             </div>
             
+            @php
+                $groupLabels = [
+                    'jeunesse' => 'Jeunesse, Éducation et Emploi',
+                    'femmes' => 'Femmes, Travail Invisible et Sécurité Sociale',
+                    'vieillissement' => 'Vieillissement, Santé et Transitions Démographiques',
+                    'pacte' => 'Pacte National, Territoires et Engagement Citoyen',
+                ];
+                $groupName = $groupLabels[$signup->group] ?? ucfirst($signup->group);
+            @endphp
             <div class="content">
                 <p>Votre engagement et votre expertise sont précieux pour notre mission commune de transformation sociale au Maroc.</p>
                 
-                <p><strong>Vous êtes maintenant membre officiel du groupe :</strong> {{ $signup->group }}</p>
+                <p><strong>Vous êtes maintenant membre officiel du groupe :</strong> {{ $groupName }}</p>
             </div>
             
             <div class="whatsapp-box">
