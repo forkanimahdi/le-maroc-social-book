@@ -3,6 +3,8 @@ import { useForm } from '@inertiajs/react';
 
 export default function IdeasBox({ ideas = [] }) {
     const { data, setData, post, processing, reset } = useForm({
+        full_name: '',
+        role: '',
         text: '',
         agree: false,
     });
@@ -46,6 +48,30 @@ export default function IdeasBox({ ideas = [] }) {
                             <h3 className="text-2xl font-semibold text-royal-red-soft mb-6">Proposer une idée</h3>
                             
                             <form onSubmit={submitIdea} className="space-y-6">
+                                <div className="grid sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Nom complet</label>
+                                        <input
+                                            type="text"
+                                            value={data.full_name}
+                                            onChange={(e) => setData('full_name', e.target.value)}
+                                            required
+                                            className="w-full p-4 rounded-lg border border-royal-red-soft focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all duration-300"
+                                            placeholder="Votre nom complet"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Rôle / Profession</label>
+                                        <input
+                                            type="text"
+                                            value={data.role}
+                                            onChange={(e) => setData('role', e.target.value)}
+                                            required
+                                            className="w-full p-4 rounded-lg border border-royal-red-soft focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all duration-300"
+                                            placeholder="Ex. Entrepreneur, Étudiant, Chercheur..."
+                                        />
+                                    </div>
+                                </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Votre idée</label>
                                         <textarea
@@ -135,18 +161,24 @@ export default function IdeasBox({ ideas = [] }) {
                                             key={idea.id} 
                                             className="p-6 bg-white rounded-lg border border-royal-red-soft hover:shadow-md transition-all duration-300"
                                         >
-                                            <div className="flex items-start gap-4">
-                                                <div className="w-8 h-8 bg-royal-red rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                                    <span className="text-white text-sm font-bold">{index + 1}</span>
+                                            <div className="space-y-3">
+                                                {/* Name and Role - LinkedIn style */}
+                                                <div>
+                                                    <h4 className="text-lg font-semibold text-zinc-900 mb-1">{idea.full_name || 'Anonyme'}</h4>
+                                                    <p className="text-sm text-zinc-600">{idea.role || 'Contributeur'}</p>
                                                 </div>
-                                                <div className="flex-1">
-                                                    <p className="text-zinc-800 leading-relaxed mb-3">{idea.text}</p>
-                                                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                                                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                                                        </svg>
-                                                        <span>Publiée le {new Date(idea.createdAt).toLocaleDateString('fr-FR')}</span>
-                                                    </div>
+                                                
+                                                {/* Idea Content */}
+                                                <div className="pt-3 border-t border-zinc-200">
+                                                    <p className="text-zinc-800 leading-relaxed">{idea.text}</p>
+                                                </div>
+                                                
+                                                {/* Date */}
+                                                <div className="flex items-center gap-2 text-xs text-zinc-500 pt-2">
+                                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                                                    </svg>
+                                                    <span>Publiée le {new Date(idea.created_at || idea.createdAt).toLocaleDateString('fr-FR')}</span>
                                                 </div>
                                             </div>
                                         </div>

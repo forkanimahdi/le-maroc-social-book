@@ -105,9 +105,8 @@ export default function Book() {
                             </div>
                             
                             {/* Description */}
-                            <p className="text-zinc-700 mb-6 leading-relaxed flex-grow text-left">
-                                Découvrez l'ouvrage complet et contribuez à la transformation sociale du Maroc. Bénéfices destinés au Think Tank.
-                            </p>
+                            <p className="text-zinc-700 mb-6 leading-relaxed flex-grow text-left animate-">
+                            Ce livre est à but non lucratif ; les revenus générés serviront à financer le Think Tank.                            </p>
                             
                             {/* CTA Button */}
                             <button 

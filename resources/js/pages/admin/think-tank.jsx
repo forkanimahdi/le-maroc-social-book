@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, XCircle, Clock, Search, Filter, Users } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/admin' },
@@ -26,16 +26,22 @@ export default function AdminThinkTank() {
     const [statusFilter, setStatusFilter] = useState(filters?.status || '');
     const [groupFilter, setGroupFilter] = useState(filters?.group || '');
 
-    const handleSearch = () => {
-        router.get('/admin/think-tank', {
-            search,
-            status: statusFilter,
-            group: groupFilter,
-        }, {
-            preserveState: true,
-            preserveScroll: true,
-        });
-    };
+    // Real-time search with debounce
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            router.get('/admin/think-tank', {
+                search,
+                status: statusFilter,
+                group: groupFilter,
+            }, {
+                preserveState: true,
+                preserveScroll: true,
+            });
+        }, 300); // 300ms debounce
+
+        return () => clearTimeout(timeoutId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [search, statusFilter, groupFilter]);
 
     const handleFilterChange = (type, value) => {
         const filterValue = value === 'all' ? '' : value;
@@ -79,11 +85,6 @@ export default function AdminThinkTank() {
                 icon: XCircle,
                 style: { backgroundColor: 'rgba(134, 2, 5, 0.2)', color: 'var(--royal-red)', borderColor: 'var(--royal-red)' } 
             },
-            declined: { 
-                label: 'Décliné', 
-                icon: XCircle,
-                style: { backgroundColor: 'rgba(134, 2, 5, 0.15)', color: 'var(--royal-red)', borderColor: 'var(--royal-red)' } 
-            }
         };
 
         const config = statusConfig[status] || statusConfig.pending;
@@ -123,19 +124,6 @@ export default function AdminThinkTank() {
         }
     };
 
-    const handleDecline = (id) => {
-        if (confirm('Êtes-vous sûr de vouloir décliner cette inscription ?')) {
-            router.post(`/admin/think-tank/${id}/decline`, {}, {
-                onSuccess: () => {
-                    // Page will refresh automatically
-                },
-                onError: (errors) => {
-                    console.error('Error declining signup:', errors);
-                    alert('Erreur lors du déclin.');
-                }
-            });
-        }
-    };
 
     const formatDate = (dateString) => {
         if (!dateString) return '-';
@@ -222,7 +210,6 @@ export default function AdminThinkTank() {
                                             placeholder="Rechercher par nom, email..."
                                             value={search}
                                             onChange={(e) => setSearch(e.target.value)}
-                                            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                                             className="pl-10"
                                         />
                                     </div>
@@ -236,7 +223,6 @@ export default function AdminThinkTank() {
                                         <SelectItem value="pending">En attente</SelectItem>
                                         <SelectItem value="approved">Approuvé</SelectItem>
                                         <SelectItem value="rejected">Rejeté</SelectItem>
-                                        <SelectItem value="declined">Décliné</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <Select value={groupFilter || undefined} onValueChange={(value) => handleFilterChange('group', value || '')}>
@@ -251,16 +237,6 @@ export default function AdminThinkTank() {
                                         <SelectItem value="pacte">{GROUP_LABELS.pacte}</SelectItem>
                                     </SelectContent>
                                 </Select>
-                            </div>
-                            <div className="mt-4">
-                                    <Button 
-                                        onClick={handleSearch} 
-                                        className="w-full md:w-auto"
-                                        style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
-                                    >
-                                        <Search className="w-4 h-4 mr-2" />
-                                        Rechercher
-                                    </Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -325,14 +301,6 @@ export default function AdminThinkTank() {
                                                                     >
                                                                         <XCircle className="w-4 h-4 mr-1" />
                                                                         Rejeter
-                                                                    </Button>
-                                                                    <Button
-                                                                        size="sm"
-                                                                        variant="outline"
-                                                                        onClick={() => handleDecline(signup.id)}
-                                                                        style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
-                                                                    >
-                                                                        Décliner
                                                                     </Button>
                                                                 </>
                                                             )}

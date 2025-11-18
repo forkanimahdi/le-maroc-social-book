@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::table('group_signups', function (Blueprint $table) {
             $table->string('domain_expertise', 500)->nullable()->after('domaine');
-            $table->enum('status', ['pending', 'approved', 'rejected', 'declined'])->default('pending')->after('email');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->after('email');
             $table->string('whatsapp_community_link')->nullable()->after('status');
             $table->string('whatsapp_group_link')->nullable()->after('whatsapp_community_link');
             $table->timestamp('approved_at')->nullable()->after('whatsapp_group_link');

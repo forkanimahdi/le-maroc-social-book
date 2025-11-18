@@ -54,11 +54,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/think-tank', [\App\Http\Controllers\Admin\ThinkTankController::class, 'index'])->name('admin.think-tank');
     Route::post('/admin/think-tank/{id}/approve', [\App\Http\Controllers\Admin\ThinkTankController::class, 'approve'])->name('admin.think-tank.approve');
     Route::post('/admin/think-tank/{id}/reject', [\App\Http\Controllers\Admin\ThinkTankController::class, 'reject'])->name('admin.think-tank.reject');
-    Route::post('/admin/think-tank/{id}/decline', [\App\Http\Controllers\Admin\ThinkTankController::class, 'decline'])->name('admin.think-tank.decline');
 });
 
 // API form posts
 Route::post('/api/ideas', [IdeaController::class, 'store'])->name('ideas.store');
+Route::put('/api/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
 Route::post('/api/groups', [GroupSignupController::class, 'store'])->name('groups.store');
 Route::post('/api/subscribers', [SubscriberController::class, 'store'])->name('subscribers.store');
 Route::post('/api/book/executive-summary', [\App\Http\Controllers\BookController::class, 'sendExecutiveSummary'])->name('book.executive-summary');

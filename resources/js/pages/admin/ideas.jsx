@@ -3,7 +3,10 @@ import { Head, usePage, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, XCircle, Clock, Eye } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { CheckCircle, XCircle, Clock, Eye, Edit2, Save, X } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/admin' },
@@ -12,26 +15,25 @@ const breadcrumbs = [
 
 export default function AdminIdeas() {
     const { ideas } = usePage().props;
+    const [editingId, setEditingId] = useState(null);
+    const [editData, setEditData] = useState({ full_name: '', role: '', text: '' });
 
     const getStatusBadge = (status) => {
         const statusConfig = {
             pending: { 
                 label: 'En attente', 
-                variant: 'secondary', 
                 icon: Clock,
-                color: 'text-yellow-600 bg-yellow-100' 
+                style: { backgroundColor: 'rgba(204, 185, 116, 0.2)', color: 'var(--gold)', borderColor: 'var(--gold)' } 
             },
             approved: { 
                 label: 'Approuvée', 
-                variant: 'default', 
                 icon: CheckCircle,
-                color: 'text-green-600 bg-green-100' 
+                style: { backgroundColor: 'rgba(27, 78, 11, 0.2)', color: 'var(--royal-green)', borderColor: 'var(--royal-green)' } 
             },
             rejected: { 
                 label: 'Rejetée', 
-                variant: 'destructive', 
                 icon: XCircle,
-                color: 'text-red-600 bg-red-100' 
+                style: { backgroundColor: 'rgba(134, 2, 5, 0.2)', color: 'var(--royal-red)', borderColor: 'var(--royal-red)' } 
             }
         };
 
@@ -39,7 +41,7 @@ export default function AdminIdeas() {
         const Icon = config.icon;
 
         return (
-            <Badge className={`${config.color} border-0`}>
+            <Badge className="border" style={config.style}>
                 <Icon className="w-3 h-3 mr-1" />
                 {config.label}
             </Badge>
@@ -70,6 +72,48 @@ export default function AdminIdeas() {
                 }
             });
         }
+    };
+
+    const handleEdit = (idea) => {
+        setEditingId(idea.id);
+        setEditData({
+            full_name: idea.full_name || '',
+            role: idea.role || '',
+            text: idea.text || '',
+        });
+    };
+
+    const handleSave = async (ideaId) => {
+        try {
+            const response = await fetch(`/api/ideas/${ideaId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(editData),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                setEditingId(null);
+                router.reload({ only: ['ideas'] });
+            } else {
+                alert(result.message || 'Erreur lors de la mise à jour.');
+            }
+        } catch (error) {
+            console.error('Error updating idea:', error);
+            alert('Une erreur est survenue lors de la mise à jour.');
+        }
+    };
+
+    const handleCancel = () => {
+        setEditingId(null);
+        setEditData({ full_name: '', role: '', text: '' });
     };
 
     const formatDate = (dateString) => {
@@ -105,15 +149,15 @@ export default function AdminIdeas() {
                             </div>
                             <div className="flex gap-4">
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-yellow-600">{pendingIdeas.length}</div>
+                                    <div className="text-2xl font-bold" style={{ color: 'var(--gold)' }}>{pendingIdeas.length}</div>
                                     <div className="text-sm text-zinc-600">En attente</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-green-600">{approvedIdeas.length}</div>
+                                    <div className="text-2xl font-bold" style={{ color: 'var(--royal-green)' }}>{approvedIdeas.length}</div>
                                     <div className="text-sm text-zinc-600">Approuvées</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-red-600">{rejectedIdeas.length}</div>
+                                    <div className="text-2xl font-bold" style={{ color: 'var(--royal-red)' }}>{rejectedIdeas.length}</div>
                                     <div className="text-sm text-zinc-600">Rejetées</div>
                                 </div>
                             </div>
@@ -146,40 +190,99 @@ export default function AdminIdeas() {
                                                         {formatDate(idea.created_at)}
                                                     </span>
                                                 </div>
-                                                <CardTitle className="text-lg text-zinc-800">
-                                                    Idée #{idea.id}
-                                                </CardTitle>
+                                                {editingId === idea.id ? (
+                                                    <div className="space-y-3">
+                                                        <Input
+                                                            value={editData.full_name}
+                                                            onChange={(e) => setEditData({ ...editData, full_name: e.target.value })}
+                                                            placeholder="Nom complet"
+                                                            className="w-full"
+                                                        />
+                                                        <Input
+                                                            value={editData.role}
+                                                            onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+                                                            placeholder="Rôle / Profession"
+                                                            className="w-full"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <CardTitle className="text-lg text-zinc-800">
+                                                        {idea.full_name || 'Anonyme'} {idea.role && `- ${idea.role}`}
+                                                    </CardTitle>
+                                                )}
                                             </div>
-                                            {idea.status === 'pending' && (
-                                                <div className="flex gap-2">
-                                                    <Button
-                                                        onClick={() => handleApprove(idea.id)}
-                                                        size="sm"
-                                                        className="bg-green-600 hover:bg-green-700 text-white"
-                                                    >
-                                                        <CheckCircle className="w-4 h-4 mr-1" />
-                                                        Approuver
-                                                    </Button>
-                                                    <Button
-                                                        onClick={() => handleReject(idea.id)}
-                                                        size="sm"
-                                                        variant="outline"
-                                                        className="border-red-300 text-red-600 hover:bg-red-50"
-                                                    >
-                                                        <XCircle className="w-4 h-4 mr-1" />
-                                                        Rejeter
-                                                    </Button>
-                                                </div>
-                                            )}
+                                            <div className="flex gap-2">
+                                                {editingId === idea.id ? (
+                                                    <>
+                                                        <Button
+                                                            onClick={() => handleSave(idea.id)}
+                                                            size="sm"
+                                                            style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                                        >
+                                                            <Save className="w-4 h-4 mr-1" />
+                                                            Enregistrer
+                                                        </Button>
+                                                        <Button
+                                                            onClick={handleCancel}
+                                                            size="sm"
+                                                            variant="outline"
+                                                        >
+                                                            <X className="w-4 h-4 mr-1" />
+                                                            Annuler
+                                                        </Button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Button
+                                                            onClick={() => handleEdit(idea)}
+                                                            size="sm"
+                                                            variant="outline"
+                                                            style={{ borderColor: 'var(--royal-green)', color: 'var(--royal-green)' }}
+                                                        >
+                                                            <Edit2 className="w-4 h-4 mr-1" />
+                                                            Modifier
+                                                        </Button>
+                                                        {idea.status === 'pending' && (
+                                                            <>
+                                                                <Button
+                                                                    onClick={() => handleApprove(idea.id)}
+                                                                    size="sm"
+                                                                    style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                                                >
+                                                                    <CheckCircle className="w-4 h-4 mr-1" />
+                                                                    Approuver
+                                                                </Button>
+                                                                <Button
+                                                                    onClick={() => handleReject(idea.id)}
+                                                                    size="sm"
+                                                                    style={{ backgroundColor: 'var(--royal-red)', color: 'white' }}
+                                                                >
+                                                                    <XCircle className="w-4 h-4 mr-1" />
+                                                                    Rejeter
+                                                                </Button>
+                                                            </>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </div>
                                         </div>
                                     </CardHeader>
                                     <CardContent>
                                         <div className="space-y-4">
                                             <div>
                                                 <h4 className="font-semibold text-zinc-700 mb-2">Contenu de l'idée :</h4>
-                                                <p className="text-zinc-600 leading-relaxed whitespace-pre-wrap">
-                                                    {idea.text}
-                                                </p>
+                                                {editingId === idea.id ? (
+                                                    <Textarea
+                                                        value={editData.text}
+                                                        onChange={(e) => setEditData({ ...editData, text: e.target.value })}
+                                                        rows={5}
+                                                        className="w-full"
+                                                    />
+                                                ) : (
+                                                    <p className="text-zinc-600 leading-relaxed whitespace-pre-wrap">
+                                                        {idea.text}
+                                                    </p>
+                                                )}
                                             </div>
                                             
                                             <div className="flex items-center gap-2">
