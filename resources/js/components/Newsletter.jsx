@@ -98,7 +98,7 @@ export default function Newsletter() {
                             <span className="text-sm font-medium text-royal-green-soft tracking-wider uppercase">NEWSLETTER</span>
                         </div>
                         <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-royal-green-soft mb-8">
-                            Restez Connecté
+                            Restez Connectés
                         </h2>
                         <p className="text-xl leading-relaxed text-zinc-600 max-w-4xl mx-auto">
                             Recevez les dernières actualités, analyses et opportunités d'engagement pour le Maroc Social 2030.
@@ -145,15 +145,7 @@ export default function Newsletter() {
                                 </form>
                             </div>
 
-                        {/* Export Button */}
-                        <div className="mt-6 text-center">
-                            <button 
-                                onClick={exportCsv} 
-                                className="text-sm px-4 py-2 rounded-lg bg-royal-green-soft text-royal-green hover:bg-royal-green-soft/80 transition-colors"
-                            >
-                                Exporter les abonnés (.csv)
-                            </button>
-                        </div>
+           
                     </div>
 
                     {/* Newsletter Benefits */}

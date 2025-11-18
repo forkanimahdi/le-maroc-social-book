@@ -36,12 +36,12 @@ export default function Footer() {
                     <div>
                         <h4 className="text-lg font-semibold text-gold mb-4">Navigation</h4>
                         <ul className="space-y-3">
-                            <li><a href="#livre" className="text-white/90 hover:text-gold transition-colors">Le Livre</a></li>
-                            <li><a href="#autrice" className="text-white/90 hover:text-gold transition-colors">L'Autrice</a></li>
-                            <li><a href="#boite-idees" className="text-white/90 hover:text-gold transition-colors">Boîte à Idées</a></li>
-                            <li><a href="#groupes" className="text-white/90 hover:text-gold transition-colors">Groupes de Travail</a></li>
-                            <li><a href="#podcast" className="text-white/90 hover:text-gold transition-colors">Podcast</a></li>
-                            <li><a href="#newsletter" className="text-white/90 hover:text-gold transition-colors">Newsletter</a></li>
+                            <li><a href="#livre" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#livre'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Le Livre</a></li>
+                            <li><a href="#autrice" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#autrice'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">L'Auteure</a></li>
+                            <li><a href="#groupes" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#groupes'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Le Think Tank</a></li>
+                            <li><a href="#podcast" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#podcast'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Le Podcast</a></li>
+                            <li><a href="#boite-idees" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#boite-idees'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Vos Recommandations</a></li>
+                            <li><a href="#newsletter" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#newsletter'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">La Newsletter</a></li>
                         </ul>
                     </div>
 
@@ -57,17 +57,6 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="pt-8 border-t border-gold/30">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-white/80 text-sm">
-                            © {new Date().getFullYear()} Le Maroc Social 2030 — Tous droits réservés.
-                        </p>
-                        <p className="text-white/80 text-sm">
-                            Fait avec ❤️ pour le Maroc
-                        </p>
-                    </div>
-                </div>
             </div>
         </footer>
     );

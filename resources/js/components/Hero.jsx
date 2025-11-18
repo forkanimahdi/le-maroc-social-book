@@ -1,6 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
+import { useForm } from '@inertiajs/react';
 
 export default function Hero() {
+    const [showEventModal, setShowEventModal] = useState(false);
+    const { data, setData, post, processing, reset } = useForm({
+        full_name: '',
+        role: '',
+        email: '',
+        phone: '',
+    });
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleEventRegistration = async (e) => {
+        e.preventDefault();
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        
+        try {
+            const response = await fetch('/api/event-participants', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                setSubmitted(true);
+                reset();
+                setTimeout(() => {
+                    setShowEventModal(false);
+                    setSubmitted(false);
+                }, 3000);
+            } else {
+                const errorMessage = result.message || (result.errors ? JSON.stringify(result.errors) : 'Une erreur est survenue lors de l\'inscription.');
+                alert(errorMessage);
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert('Une erreur est survenue lors de l\'inscription.');
+        }
+    };
+
     return (
         <header id="accueil" className="relative isolate overflow-hidden">
             <div
@@ -43,11 +91,110 @@ export default function Hero() {
                                 <div className="mt-4 text-white/80 text-sm max-w-xs ml-auto">
                                     Auteure, experte en entrepreneuriat social international, maman, étudiante en psychologie et en innovation sociale
                                 </div>
+                                <button
+                                    onClick={() => setShowEventModal(true)}
+                                    className="mt-6 px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
+                                    style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                >
+                                    Réserver une place - Événement de lancement
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Event Registration Modal */}
+            <Dialog open={showEventModal} onOpenChange={setShowEventModal}>
+                <DialogContent className="max-w-md bg-white">
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold" style={{ color: 'var(--royal-green)' }}>
+                            Réserver une place
+                        </DialogTitle>
+                        <DialogDescription className="text-zinc-600">
+                            Inscrivez-vous pour participer à l'événement de lancement du livre
+                        </DialogDescription>
+                    </DialogHeader>
+                    {submitted ? (
+                        <div className="p-6 text-center">
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--royal-green)' }}>Merci !</h3>
+                            <p className="text-zinc-600">
+                                Votre demande d'inscription a été enregistrée. Vous recevrez un e-mail de confirmation.
+                            </p>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleEventRegistration} className="space-y-4 py-4">
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 mb-2">Nom complet *</label>
+                                <input
+                                    type="text"
+                                    value={data.full_name}
+                                    onChange={(e) => setData('full_name', e.target.value)}
+                                    required
+                                    className="w-full p-3 rounded-lg border border-zinc-300 focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all"
+                                    placeholder="Votre nom complet"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 mb-2">Rôle / Profession *</label>
+                                <input
+                                    type="text"
+                                    value={data.role}
+                                    onChange={(e) => setData('role', e.target.value)}
+                                    required
+                                    className="w-full p-3 rounded-lg border border-zinc-300 focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all"
+                                    placeholder="Ex. Entrepreneur, Étudiant, Chercheur..."
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 mb-2">Email *</label>
+                                <input
+                                    type="email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    required
+                                    className="w-full p-3 rounded-lg border border-zinc-300 focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all"
+                                    placeholder="nom@exemple.com"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 mb-2">Numéro de téléphone *</label>
+                                <input
+                                    type="tel"
+                                    value={data.phone}
+                                    onChange={(e) => setData('phone', e.target.value)}
+                                    required
+                                    className="w-full p-3 rounded-lg border border-zinc-300 focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all"
+                                    placeholder="+212 6XX XXX XXX"
+                                />
+                            </div>
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="flex-1 py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50"
+                                    style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                >
+                                    {processing ? 'Envoi en cours...' : 'S\'inscrire'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowEventModal(false)}
+                                    className="px-6 py-3 rounded-lg font-semibold border-2 transition-all"
+                                    style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                >
+                                    Annuler
+                                </button>
+                            </div>
+                        </form>
+                    )}
+                </DialogContent>
+            </Dialog>
         </header>
     );
 }

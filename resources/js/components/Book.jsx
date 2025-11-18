@@ -239,7 +239,7 @@ export default function Book() {
                         <form onSubmit={onSubmit} className="space-y-4 sm:space-y-6">
                             <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                                 <div>
-                                    <label className="block text-sm font-semibold text-[#860205]/80 mb-2 sm:mb-3 uppercase tracking-wide">Prénom</label>
+                                    <label className="block text-sm font-semibold  mb-2 sm:mb-3 uppercase tracking-wide">Prénom</label>
                                     <input 
                                         required 
                                         value={data.prenom} 
@@ -249,7 +249,7 @@ export default function Book() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-[#860205]/80 mb-2 sm:mb-3 uppercase tracking-wide">Nom</label>
+                                    <label className="block text-sm font-semibold  mb-2 sm:mb-3 uppercase tracking-wide">Nom</label>
                                     <input 
                                         required 
                                         value={data.nom} 
@@ -261,7 +261,7 @@ export default function Book() {
                             </div>
                             
                             <div>
-                                <label className="block text-sm font-semibold text-[#860205]/80 mb-2 sm:mb-3 uppercase tracking-wide">E‑mail</label>
+                                <label className="block text-sm font-semibold  mb-2 sm:mb-3 uppercase tracking-wide">E‑mail</label>
                                 <input 
                                     required 
                                     type="email" 
@@ -273,7 +273,7 @@ export default function Book() {
                             </div>
                             
                             <div>
-                                <label className="block text-sm font-semibold text-[#860205]/80 mb-2 sm:mb-3 uppercase tracking-wide">Pays</label>
+                                <label className="block text-sm font-semibold  mb-2 sm:mb-3 uppercase tracking-wide">Pays</label>
                                 <input 
                                     value={data.pays} 
                                     onChange={(e) => setData('pays', e.target.value)} 
@@ -283,7 +283,7 @@ export default function Book() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-semibold text-[#860205]/80 mb-2 sm:mb-3 uppercase tracking-wide">Version du livre</label>
+                                <label className="block text-sm font-semibold  mb-2 sm:mb-3 uppercase tracking-wide">Version du livre</label>
                                 <select 
                                     value={data.version} 
                                     onChange={(e) => setData('version', e.target.value)} 
@@ -334,7 +334,7 @@ export default function Book() {
                                 <button 
                                     type="submit" 
                                     disabled={processing || !data.acceptTerms}
-                                    className="flex-1 py-3 sm:py-4 px-6 rounded-lg font-semibold text-base sm:text-lg bg-royal-green text-white hover:bg-royal-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 py-3 sm:py-4 px-6 rounded-lg font-semibold text-base sm:text-lg bg-royal-red text-white hover:bg-royal-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {processing ? 'Envoi en cours...' : 'Télécharger le résumé'}
                                 </button>
