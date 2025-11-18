@@ -61,13 +61,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/event-participants/{id}/reject', [\App\Http\Controllers\Admin\EventParticipantController::class, 'reject'])->name('admin.event-participants.reject');
 });
 
-// API form posts
-Route::post('/api/ideas', [IdeaController::class, 'store'])->name('ideas.store');
-Route::put('/api/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
-Route::post('/api/groups', [GroupSignupController::class, 'store'])->name('groups.store');
-Route::post('/api/subscribers', [SubscriberController::class, 'store'])->name('subscribers.store');
-Route::post('/api/book/executive-summary', [\App\Http\Controllers\BookController::class, 'sendExecutiveSummary'])->name('book.executive-summary');
-Route::post('/api/event-participants', [\App\Http\Controllers\EventParticipantController::class, 'store'])->name('event-participants.store');
+// Form posts
+Route::post('/ideas', [IdeaController::class, 'store'])->name('ideas.store');
+Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
+Route::post('/groups', [GroupSignupController::class, 'store'])->name('groups.store');
+Route::post('/subscribers', [SubscriberController::class, 'store'])->name('subscribers.store');
+Route::post('/book/executive-summary', [\App\Http\Controllers\BookController::class, 'sendExecutiveSummary'])->name('book.executive-summary');
+Route::post('/event-participants', [\App\Http\Controllers\EventParticipantController::class, 'store'])->name('event-participants.store');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

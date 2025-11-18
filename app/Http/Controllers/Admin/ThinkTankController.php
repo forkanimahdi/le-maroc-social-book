@@ -14,44 +14,16 @@ class ThinkTankController extends Controller
 {
     public function index(Request $request)
     {
-        $query = GroupSignup::query();
-
-        // Search
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nom', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('group', 'like', "%{$search}%");
-            });
-        }
-
-        // Filter by status
-        if ($request->has('status') && $request->status) {
-            $query->where('status', $request->status);
-        }
-
-        // Filter by group
-        if ($request->has('group') && $request->group) {
-            $query->where('group', $request->group);
-        }
-
-        // Pagination
-        $perPage = $request->get('per_page', 15);
-        $signups = $query->orderBy('created_at', 'desc')->paginate($perPage);
+        // Get all signups - filtering will be done on frontend
+        $signups = GroupSignup::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('admin/think-tank', [
             'signups' => $signups,
-            'filters' => [
-                'search' => $request->search,
-                'status' => $request->status,
-                'group' => $request->group,
-            ],
             'stats' => [
-                'total' => GroupSignup::count(),
-                'pending' => GroupSignup::where('status', 'pending')->count(),
-                'approved' => GroupSignup::where('status', 'approved')->count(),
-                'rejected' => GroupSignup::whereIn('status', ['rejected', 'declined'])->count(),
+                'total' => $signups->count(),
+                'pending' => $signups->where('status', 'pending')->count(),
+                'approved' => $signups->where('status', 'approved')->count(),
+                'rejected' => $signups->whereIn('status', ['rejected', 'declined'])->count(),
             ],
         ]);
     }
@@ -61,10 +33,7 @@ class ThinkTankController extends Controller
         $signup = GroupSignup::findOrFail($id);
 
         if ($signup->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cette inscription a déjà été traitée.',
-            ], 400);
+            return back()->with('error', 'Cette inscription a déjà été traitée.');
         }
 
         // Get WhatsApp group link based on the signup's group
@@ -85,10 +54,7 @@ class ThinkTankController extends Controller
             Log::error('Failed to send approval email: ' . $e->getMessage());
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Inscription approuvée avec succès.',
-        ]);
+        return back()->with('success', 'Inscription approuvée avec succès.');
     }
 
     public function reject(Request $request, $id)
@@ -96,10 +62,7 @@ class ThinkTankController extends Controller
         $signup = GroupSignup::findOrFail($id);
 
         if ($signup->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cette inscription a déjà été traitée.',
-            ], 400);
+            return back()->with('error', 'Cette inscription a déjà été traitée.');
         }
 
         $signup->update([
@@ -107,10 +70,7 @@ class ThinkTankController extends Controller
             'rejected_at' => now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Inscription rejetée.',
-        ]);
+        return back()->with('success', 'Inscription rejetée.');
     }
 
 

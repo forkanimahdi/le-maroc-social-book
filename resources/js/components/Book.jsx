@@ -25,13 +25,12 @@ export default function Book() {
             return;
         }
         
-        post('/api/book/executive-summary', {
+        post('/book/executive-summary', {
             onSuccess: () => {
                 setSent(true);
             },
             onError: (errors) => {
                 console.error('Erreur lors de l\'envoi:', errors);
-                alert('Une erreur est survenue. Veuillez réessayer.');
             }
         });
     };

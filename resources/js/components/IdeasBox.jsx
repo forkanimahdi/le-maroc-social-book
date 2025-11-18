@@ -15,11 +15,14 @@ export default function IdeasBox({ ideas = [] }) {
 
     const submitIdea = (e) => {
         e.preventDefault();
-        post('/api/ideas', {
+        post('/ideas', {
             onSuccess: () => {
                 setSubmitted(true);
                 reset();
                 setTimeout(() => setSubmitted(false), 3000);
+            },
+            onError: (errors) => {
+                console.error('Error submitting idea:', errors);
             }
         });
     };

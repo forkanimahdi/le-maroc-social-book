@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Mail, FileText, Mic, Users, Settings, Lightbulb, UserCheck, Calendar } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Mail, FileText, Users, Settings, Lightbulb, UserCheck, Calendar } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -13,26 +13,6 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
-    },
-    {
-        title: 'Idées',
-        href: '/admin/ideas',
-        icon: Lightbulb,
-    },
-    {
-        title: 'Podcasts',
-        href: '/admin/podcasts',
-        icon: Mic,
-    },
-    {
-        title: 'Biographie',
-        href: '/admin/content',
-        icon: FileText,
-    },
-    {
-        title: 'Newsletter',
-        href: '/admin/newsletter',
-        icon: Mail,
     },
     {
         title: 'Think Tank',
@@ -44,6 +24,21 @@ const mainNavItems: NavItem[] = [
         href: '/admin/event-participants',
         icon: Calendar,
     },
+    {
+        title: 'Idées',
+        href: '/admin/ideas',
+        icon: Lightbulb,
+    },
+    {
+        title: 'Biographie',
+        href: '/admin/content',
+        icon: FileText,
+    },
+    {
+        title: 'Newsletter',
+        href: '/admin/newsletter',
+        icon: Mail,
+    }
 
 ];
 

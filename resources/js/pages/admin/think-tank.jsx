@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, XCircle, Clock, Search, Filter, Users } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/admin' },
@@ -21,52 +21,38 @@ const GROUP_LABELS = {
 };
 
 export default function AdminThinkTank() {
-    const { signups, filters, stats } = usePage().props;
-    const [search, setSearch] = useState(filters?.search || '');
-    const [statusFilter, setStatusFilter] = useState(filters?.status || '');
-    const [groupFilter, setGroupFilter] = useState(filters?.group || '');
+    const { signups, stats } = usePage().props;
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
+    const [groupFilter, setGroupFilter] = useState('');
 
-    // Real-time search with debounce
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            router.get('/admin/think-tank', {
-                search,
-                status: statusFilter,
-                group: groupFilter,
-            }, {
-                preserveState: true,
-                preserveScroll: true,
-            });
-        }, 300); // 300ms debounce
+    // Frontend-only filtering
+    const filteredSignups = useMemo(() => {
+        let filtered = [...signups];
 
-        return () => clearTimeout(timeoutId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search, statusFilter, groupFilter]);
-
-    const handleFilterChange = (type, value) => {
-        const filterValue = value === 'all' ? '' : value;
-        if (type === 'status') {
-            setStatusFilter(filterValue);
-            router.get('/admin/think-tank', {
-                search,
-                status: filterValue,
-                group: groupFilter,
-            }, {
-                preserveState: true,
-                preserveScroll: true,
-            });
-        } else if (type === 'group') {
-            setGroupFilter(filterValue);
-            router.get('/admin/think-tank', {
-                search,
-                status: statusFilter,
-                group: filterValue,
-            }, {
-                preserveState: true,
-                preserveScroll: true,
-            });
+        // Search filter
+        if (search) {
+            const searchLower = search.toLowerCase();
+            filtered = filtered.filter(signup => 
+                signup.nom?.toLowerCase().includes(searchLower) ||
+                signup.email?.toLowerCase().includes(searchLower) ||
+                signup.group?.toLowerCase().includes(searchLower) ||
+                signup.domain_expertise?.toLowerCase().includes(searchLower)
+            );
         }
-    };
+
+        // Status filter
+        if (statusFilter) {
+            filtered = filtered.filter(signup => signup.status === statusFilter);
+        }
+
+        // Group filter
+        if (groupFilter) {
+            filtered = filtered.filter(signup => signup.group === groupFilter);
+        }
+
+        return filtered;
+    }, [signups, search, statusFilter, groupFilter]);
 
     const getStatusBadge = (status) => {
         const statusConfig = {
@@ -105,7 +91,6 @@ export default function AdminThinkTank() {
             },
             onError: (errors) => {
                 console.error('Error approving signup:', errors);
-                alert('Erreur lors de l\'approbation.');
             }
         });
     };
@@ -118,12 +103,10 @@ export default function AdminThinkTank() {
                 },
                 onError: (errors) => {
                     console.error('Error rejecting signup:', errors);
-                    alert('Erreur lors du rejet.');
                 }
             });
         }
     };
-
 
     const formatDate = (dateString) => {
         if (!dateString) return '-';
@@ -143,16 +126,16 @@ export default function AdminThinkTank() {
             <div className="min-h-screen bg-cream p-6">
                 <div className="max-w-7xl mx-auto space-y-6">
                     {/* Header with Stats */}
-                    <div className="bg-white rounded-lg border border-royal-green-soft p-6">
+                    <div className="bg-white rounded-lg border border-royal-red-soft p-6">
                         <div className="flex items-center justify-between mb-6">
                             <div>
-                                <h1 className="text-3xl font-bold" style={{ color: 'var(--royal-green)' }}>
-                                    Think Tank - Inscriptions
+                                <h1 className="text-3xl font-bold" style={{ color: 'var(--royal-red)' }}>
+                                    Inscriptions Think Tank
                                 </h1>
-                                <p className="text-zinc-600 mt-2">Gérez les inscriptions au Think Tank</p>
+                                <p className="text-zinc-600 mt-2">Gérez les inscriptions aux groupes de travail</p>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Users className="w-6 h-6" style={{ color: 'var(--royal-green)' }} />
+                                <Users className="w-6 h-6" style={{ color: 'var(--royal-red)' }} />
                             </div>
                         </div>
 
@@ -161,7 +144,7 @@ export default function AdminThinkTank() {
                             <Card>
                                 <CardContent className="p-4">
                                     <div className="text-sm text-zinc-600 mb-1">Total</div>
-                                    <div className="text-2xl font-bold" style={{ color: 'var(--royal-green)' }}>
+                                    <div className="text-2xl font-bold" style={{ color: 'var(--royal-red)' }}>
                                         {stats?.total || 0}
                                     </div>
                                 </CardContent>
@@ -202,7 +185,7 @@ export default function AdminThinkTank() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="md:col-span-2">
                                     <div className="relative">
                                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
@@ -214,7 +197,7 @@ export default function AdminThinkTank() {
                                         />
                                     </div>
                                 </div>
-                                <Select value={statusFilter || undefined} onValueChange={(value) => handleFilterChange('status', value || '')}>
+                                <Select value={statusFilter || undefined} onValueChange={(value) => setStatusFilter(value === 'all' ? '' : value || '')}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Tous les statuts" />
                                     </SelectTrigger>
@@ -225,7 +208,7 @@ export default function AdminThinkTank() {
                                         <SelectItem value="rejected">Rejeté</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <Select value={groupFilter || undefined} onValueChange={(value) => handleFilterChange('group', value || '')}>
+                                <Select value={groupFilter || undefined} onValueChange={(value) => setGroupFilter(value === 'all' ? '' : value || '')}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Tous les groupes" />
                                     </SelectTrigger>
@@ -241,13 +224,18 @@ export default function AdminThinkTank() {
                         </CardContent>
                     </Card>
 
-                    {/* Registrations Table */}
+                    {/* Signups Table */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Inscriptions ({signups?.total || 0})</CardTitle>
+                            <CardTitle>Inscriptions ({filteredSignups.length})</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {signups?.data && signups.data.length > 0 ? (
+                            {filteredSignups.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <Users className="w-16 h-16 mx-auto mb-4 text-zinc-300" />
+                                    <p className="text-zinc-600">Aucune inscription trouvée.</p>
+                                </div>
+                            ) : (
                                 <div className="overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
@@ -255,27 +243,19 @@ export default function AdminThinkTank() {
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Nom</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Email</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Groupe</th>
-                                                <th className="text-left p-3 text-sm font-semibold text-zinc-700">Domaines</th>
+                                                <th className="text-left p-3 text-sm font-semibold text-zinc-700">Domaine d'expertise</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Statut</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Date</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {signups.data.map((signup) => (
+                                            {filteredSignups.map((signup) => (
                                                 <tr key={signup.id} className="border-b hover:bg-zinc-50">
                                                     <td className="p-3 text-sm">{signup.nom}</td>
                                                     <td className="p-3 text-sm">{signup.email}</td>
-                                                    <td className="p-3 text-sm">
-                                                        <span className="text-xs">{GROUP_LABELS[signup.group] || signup.group}</span>
-                                                    </td>
-                                                    <td className="p-3 text-sm">
-                                                        {signup.domain_expertise ? (
-                                                            <span className="text-xs text-zinc-600">{signup.domain_expertise}</span>
-                                                        ) : (
-                                                            <span className="text-zinc-400">-</span>
-                                                        )}
-                                                    </td>
+                                                    <td className="p-3 text-sm">{GROUP_LABELS[signup.group] || signup.group}</td>
+                                                    <td className="p-3 text-sm">{signup.domain_expertise || '-'}</td>
                                                     <td className="p-3">
                                                         {getStatusBadge(signup.status)}
                                                     </td>
@@ -320,32 +300,6 @@ export default function AdminThinkTank() {
                                             ))}
                                         </tbody>
                                     </table>
-
-                                    {/* Pagination */}
-                                    {signups.links && signups.links.length > 3 && (
-                                        <div className="mt-6 flex items-center justify-center gap-2">
-                                            {signups.links.map((link, index) => (
-                                                <button
-                                                    key={index}
-                                                    onClick={() => link.url && router.get(link.url)}
-                                                    disabled={!link.url}
-                                                    className={`px-3 py-2 rounded-lg text-sm ${
-                                                        link.active
-                                                            ? 'bg-royal-green text-white'
-                                                            : link.url
-                                                            ? 'bg-white border border-royal-green-soft text-royal-green hover:bg-royal-green-soft'
-                                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                    }`}
-                                                    dangerouslySetInnerHTML={{ __html: link.label }}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="text-center py-12">
-                                    <Users className="w-16 h-16 mx-auto mb-4 text-zinc-300" />
-                                    <p className="text-zinc-600">Aucune inscription trouvée.</p>
                                 </div>
                             )}
                         </CardContent>
@@ -355,4 +309,3 @@ export default function AdminThinkTank() {
         </AppLayout>
     );
 }
-

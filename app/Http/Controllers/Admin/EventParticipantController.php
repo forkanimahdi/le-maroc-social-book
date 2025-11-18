@@ -15,39 +15,16 @@ class EventParticipantController extends Controller
 {
     public function index(Request $request)
     {
-        $query = EventParticipant::query();
-
-        // Search
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('full_name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('role', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
-            });
-        }
-
-        // Filter by status
-        if ($request->has('status') && $request->status) {
-            $query->where('status', $request->status);
-        }
-
-        // Pagination
-        $perPage = $request->get('per_page', 15);
-        $participants = $query->orderBy('created_at', 'desc')->paginate($perPage);
+        // Get all participants - filtering will be done on frontend
+        $participants = EventParticipant::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('admin/event-participants', [
             'participants' => $participants,
-            'filters' => [
-                'search' => $request->search,
-                'status' => $request->status,
-            ],
             'stats' => [
-                'total' => EventParticipant::count(),
-                'pending' => EventParticipant::where('status', 'pending')->count(),
-                'approved' => EventParticipant::where('status', 'approved')->count(),
-                'rejected' => EventParticipant::where('status', 'rejected')->count(),
+                'total' => $participants->count(),
+                'pending' => $participants->where('status', 'pending')->count(),
+                'approved' => $participants->where('status', 'approved')->count(),
+                'rejected' => $participants->where('status', 'rejected')->count(),
             ],
         ]);
     }
@@ -57,10 +34,7 @@ class EventParticipantController extends Controller
         $participant = EventParticipant::findOrFail($id);
 
         if ($participant->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cette demande a déjà été traitée.',
-            ], 400);
+            return back()->with('error', 'Cette demande a déjà été traitée.');
         }
 
         // Update participant
@@ -76,10 +50,7 @@ class EventParticipantController extends Controller
             Log::error('Failed to send approval email: ' . $e->getMessage());
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Participant approuvé avec succès.',
-        ]);
+        return back()->with('success', 'Participant approuvé avec succès.');
     }
 
     public function reject(Request $request, $id)
@@ -87,10 +58,7 @@ class EventParticipantController extends Controller
         $participant = EventParticipant::findOrFail($id);
 
         if ($participant->status !== 'pending') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cette demande a déjà été traitée.',
-            ], 400);
+            return back()->with('error', 'Cette demande a déjà été traitée.');
         }
 
         // Update participant
@@ -106,10 +74,7 @@ class EventParticipantController extends Controller
             Log::error('Failed to send rejection email: ' . $e->getMessage());
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Participant rejeté.',
-        ]);
+        return back()->with('success', 'Participant rejeté.');
     }
 }
 

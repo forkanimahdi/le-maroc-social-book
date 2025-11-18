@@ -29,10 +29,7 @@ class IdeaController extends Controller
         
         $idea->update(array_filter($validated));
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Idée mise à jour avec succès.',
-        ]);
+        return back()->with('success', 'Idée mise à jour avec succès.');
     }
 
     public function moderate(Idea $idea)

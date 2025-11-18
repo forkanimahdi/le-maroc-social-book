@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, XCircle, Clock, Search, Filter, Users } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/admin' },
@@ -14,37 +14,32 @@ const breadcrumbs = [
 ];
 
 export default function AdminEventParticipants() {
-    const { participants, filters, stats } = usePage().props;
-    const [search, setSearch] = useState(filters?.search || '');
-    const [statusFilter, setStatusFilter] = useState(filters?.status || '');
+    const { participants, stats } = usePage().props;
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
 
-    // Real-time search with debounce
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            router.get('/admin/event-participants', {
-                search,
-                status: statusFilter,
-            }, {
-                preserveState: true,
-                preserveScroll: true,
-            });
-        }, 300);
+    // Frontend-only filtering
+    const filteredParticipants = useMemo(() => {
+        let filtered = [...participants];
 
-        return () => clearTimeout(timeoutId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search, statusFilter]);
+        // Search filter
+        if (search) {
+            const searchLower = search.toLowerCase();
+            filtered = filtered.filter(participant => 
+                participant.full_name?.toLowerCase().includes(searchLower) ||
+                participant.email?.toLowerCase().includes(searchLower) ||
+                participant.role?.toLowerCase().includes(searchLower) ||
+                participant.phone?.toLowerCase().includes(searchLower)
+            );
+        }
 
-    const handleFilterChange = (value) => {
-        const filterValue = value === 'all' ? '' : value;
-        setStatusFilter(filterValue);
-        router.get('/admin/event-participants', {
-            search,
-            status: filterValue,
-        }, {
-            preserveState: true,
-            preserveScroll: true,
-        });
-    };
+        // Status filter
+        if (statusFilter) {
+            filtered = filtered.filter(participant => participant.status === statusFilter);
+        }
+
+        return filtered;
+    }, [participants, search, statusFilter]);
 
     const getStatusBadge = (status) => {
         const statusConfig = {
@@ -83,7 +78,6 @@ export default function AdminEventParticipants() {
             },
             onError: (errors) => {
                 console.error('Error approving participant:', errors);
-                alert('Erreur lors de l\'approbation.');
             }
         });
     };
@@ -96,7 +90,6 @@ export default function AdminEventParticipants() {
                 },
                 onError: (errors) => {
                     console.error('Error rejecting participant:', errors);
-                    alert('Erreur lors du rejet.');
                 }
             });
         }
@@ -179,8 +172,8 @@ export default function AdminEventParticipants() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="md:col-span-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="md:col-span-1">
                                     <div className="relative">
                                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                                         <Input
@@ -191,7 +184,7 @@ export default function AdminEventParticipants() {
                                         />
                                     </div>
                                 </div>
-                                <Select value={statusFilter || undefined} onValueChange={handleFilterChange}>
+                                <Select value={statusFilter || undefined} onValueChange={(value) => setStatusFilter(value === 'all' ? '' : value || '')}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Tous les statuts" />
                                     </SelectTrigger>
@@ -209,10 +202,15 @@ export default function AdminEventParticipants() {
                     {/* Participants Table */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Participants ({participants?.total || 0})</CardTitle>
+                            <CardTitle>Participants ({filteredParticipants.length})</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {participants?.data && participants.data.length > 0 ? (
+                            {filteredParticipants.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <Users className="w-16 h-16 mx-auto mb-4 text-zinc-300" />
+                                    <p className="text-zinc-600">Aucun participant trouvé.</p>
+                                </div>
+                            ) : (
                                 <div className="overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
@@ -227,7 +225,7 @@ export default function AdminEventParticipants() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {participants.data.map((participant) => (
+                                            {filteredParticipants.map((participant) => (
                                                 <tr key={participant.id} className="border-b hover:bg-zinc-50">
                                                     <td className="p-3 text-sm">{participant.full_name}</td>
                                                     <td className="p-3 text-sm">{participant.role}</td>
@@ -277,32 +275,6 @@ export default function AdminEventParticipants() {
                                             ))}
                                         </tbody>
                                     </table>
-
-                                    {/* Pagination */}
-                                    {participants.links && participants.links.length > 3 && (
-                                        <div className="mt-6 flex items-center justify-center gap-2">
-                                            {participants.links.map((link, index) => (
-                                                <button
-                                                    key={index}
-                                                    onClick={() => link.url && router.get(link.url)}
-                                                    disabled={!link.url}
-                                                    className={`px-3 py-2 rounded-lg text-sm ${
-                                                        link.active
-                                                            ? 'bg-royal-red text-white'
-                                                            : link.url
-                                                            ? 'bg-white border border-royal-red-soft text-royal-red hover:bg-royal-red-soft'
-                                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                    }`}
-                                                    dangerouslySetInnerHTML={{ __html: link.label }}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="text-center py-12">
-                                    <Users className="w-16 h-16 mx-auto mb-4 text-zinc-300" />
-                                    <p className="text-zinc-600">Aucun participant trouvé.</p>
                                 </div>
                             )}
                         </CardContent>
@@ -312,4 +284,3 @@ export default function AdminEventParticipants() {
         </AppLayout>
     );
 }
-

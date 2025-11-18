@@ -38,18 +38,8 @@ class GroupSignupController extends Controller
             Log::error('Failed to send registration email: ' . $e->getMessage());
         }
 
-        // Check if this is an API request (JSON)
-        if ($request->wantsJson() || $request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Inscription enregistrée avec succès.',
-                'whatsapp_community_link' => $whatsappLinks['community'],
-            ]);
-        }
-
         return back()->with([
-            'success' => true,
-            'message' => 'Inscription enregistrée avec succès.',
+            'success' => 'Inscription enregistrée avec succès.',
             'whatsapp_community_link' => $whatsappLinks['community'],
         ]);
     }

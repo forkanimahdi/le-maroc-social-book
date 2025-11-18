@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, usePage, router, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +16,11 @@ const breadcrumbs = [
 export default function AdminIdeas() {
     const { ideas } = usePage().props;
     const [editingId, setEditingId] = useState(null);
-    const [editData, setEditData] = useState({ full_name: '', role: '', text: '' });
+    const { data: editData, setData: setEditData, put, processing: updating } = useForm({
+        full_name: '',
+        role: '',
+        text: '',
+    });
 
     const getStatusBadge = (status) => {
         const statusConfig = {
@@ -76,44 +80,30 @@ export default function AdminIdeas() {
 
     const handleEdit = (idea) => {
         setEditingId(idea.id);
-        setEditData({
-            full_name: idea.full_name || '',
-            role: idea.role || '',
-            text: idea.text || '',
-        });
+        setEditData('full_name', idea.full_name || '');
+        setEditData('role', idea.role || '');
+        setEditData('text', idea.text || '');
     };
 
-    const handleSave = async (ideaId) => {
-        try {
-            const response = await fetch(`/api/ideas/${ideaId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify(editData),
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
+    const handleSave = (ideaId) => {
+        put(`/ideas/${ideaId}`, {
+            onSuccess: () => {
                 setEditingId(null);
-                router.reload({ only: ['ideas'] });
-            } else {
-                alert(result.message || 'Erreur lors de la mise à jour.');
+                setEditData('full_name', '');
+                setEditData('role', '');
+                setEditData('text', '');
+            },
+            onError: (errors) => {
+                console.error('Error updating idea:', errors);
             }
-        } catch (error) {
-            console.error('Error updating idea:', error);
-            alert('Une erreur est survenue lors de la mise à jour.');
-        }
+        });
     };
 
     const handleCancel = () => {
         setEditingId(null);
-        setEditData({ full_name: '', role: '', text: '' });
+        setEditData('full_name', '');
+        setEditData('role', '');
+        setEditData('text', '');
     };
 
     const formatDate = (dateString) => {
@@ -194,13 +184,13 @@ export default function AdminIdeas() {
                                                     <div className="space-y-3">
                                                         <Input
                                                             value={editData.full_name}
-                                                            onChange={(e) => setEditData({ ...editData, full_name: e.target.value })}
+                                                            onChange={(e) => setEditData('full_name', e.target.value)}
                                                             placeholder="Nom complet"
                                                             className="w-full"
                                                         />
                                                         <Input
                                                             value={editData.role}
-                                                            onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+                                                            onChange={(e) => setEditData('role', e.target.value)}
                                                             placeholder="Rôle / Profession"
                                                             className="w-full"
                                                         />
@@ -274,7 +264,7 @@ export default function AdminIdeas() {
                                                 {editingId === idea.id ? (
                                                     <Textarea
                                                         value={editData.text}
-                                                        onChange={(e) => setEditData({ ...editData, text: e.target.value })}
+                                                        onChange={(e) => setEditData('text', e.target.value)}
                                                         rows={5}
                                                         className="w-full"
                                                     />

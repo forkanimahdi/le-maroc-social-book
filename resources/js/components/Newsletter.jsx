@@ -40,11 +40,14 @@ export default function Newsletter() {
 
     const submit = async (e) => {
         e.preventDefault();
-        post('/api/subscribers', {
+        post('/subscribers', {
             onSuccess: () => {
                 setOk(true);
                 reset();
                 setTimeout(() => setOk(false), 5000);
+            },
+            onError: (errors) => {
+                console.error('Error subscribing:', errors);
             }
         });
     };

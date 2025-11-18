@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-import { request } from '@/routes/password';
+// import { request } from '@/routes/password';
 import { Form, Head, Link } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 
@@ -15,6 +15,7 @@ export default function Login({ status, canResetPassword }) {
     return (
         <AuthLayout title="Connexion" description="Accédez à votre espace administrateur pour gérer le contenu du site.">
             <Head title="Connexion" />
+                    {/* <h1>hjgj</h1> */}
 
             <div className="w-full">
                 <Form {...AuthenticatedSessionController.store.form()} resetOnSuccess={['password']} className="space-y-6">
@@ -39,12 +40,12 @@ export default function Login({ status, canResetPassword }) {
 
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <Label htmlFor="password" className="text-sm font-semibold text-royal-red-soft uppercase tracking-wide">Mot de passe</Label>
+                                        {/* <Label htmlFor="password" className="text-sm font-semibold text-royal-red-soft uppercase tracking-wide">Mot de passe</Label>
                                         {canResetPassword && (
                                             <Link href={request()} className="text-sm text-royal-red hover:text-royal-red/80 transition-colors" tabIndex={5}>
                                                 Mot de passe oublié ?
                                             </Link>
-                                        )}
+                                        )} */}
                                     </div>
                                     <Input
                                         id="password"
@@ -90,18 +91,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                 )}
 
-                <div className="mt-8 text-center">
-                    <div className="bg-gradient-to-r from-royal-red-soft to-gold-soft p-6 rounded-lg border border-royal-red-soft">
-                        <h4 className="text-lg font-semibold text-royal-red-soft mb-3">Accès Administrateur</h4>
-                        <p className="text-zinc-700 text-sm mb-4">
-                            Connectez-vous pour gérer les idées, groupes de travail et newsletter.
-                        </p>
-                        <div className="text-xs text-zinc-500 space-y-1">
-                            <p><strong>E-mail:</strong> admin@maroc-social.test</p>
-                            <p><strong>Mot de passe:</strong> password</p>
-                        </div>
-                    </div>
-                </div>
+            
             </div>
         </AuthLayout>
     );

@@ -8,6 +8,7 @@ import Groups from '../components/Groups.jsx';
 import Podcast from '../components/Podcast.jsx';
 import IdeasBox from '../components/IdeasBox.jsx';
 import Newsletter from '../components/Newsletter.jsx';
+import FlashMessage from '../components/ui/FlashMessage.jsx';
 
 export default function Home({ ideas = [], episodes = [], content = null }) {
     // Ajoute un léger fondu à l'arrivée de la page
@@ -17,6 +18,7 @@ export default function Home({ ideas = [], episodes = [], content = null }) {
 
     return (
         <div className="min-h-screen flex flex-col bg-[#fdcfa2] text-zinc-800">
+            <FlashMessage />
             <Navbar />
             <Hero />
 

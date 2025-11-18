@@ -12,41 +12,21 @@ export default function Hero() {
     });
     const [submitted, setSubmitted] = useState(false);
 
-    const handleEventRegistration = async (e) => {
+    const handleEventRegistration = (e) => {
         e.preventDefault();
-        
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        
-        try {
-            const response = await fetch('/api/event-participants', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken || '',
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
+        post('/event-participants', {
+            onSuccess: () => {
                 setSubmitted(true);
                 reset();
                 setTimeout(() => {
                     setShowEventModal(false);
                     setSubmitted(false);
                 }, 3000);
-            } else {
-                const errorMessage = result.message || (result.errors ? JSON.stringify(result.errors) : 'Une erreur est survenue lors de l\'inscription.');
-                alert(errorMessage);
+            },
+            onError: (errors) => {
+                console.error('Registration error:', errors);
             }
-        } catch (error) {
-            console.error('Registration error:', error);
-            alert('Une erreur est survenue lors de l\'inscription.');
-        }
+        });
     };
 
     return (
@@ -60,7 +40,7 @@ export default function Hero() {
                 }}
             >
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-36 pb-28 h-screen flex items-center">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end w-full">
                         {/* Left content */}
                         <div className="text-white">
                             <div className="mb-4">
@@ -70,25 +50,25 @@ export default function Hero() {
                                 LE MAROC<br />
                                 <span className="text-gold">SOCIAL 2030</span>
                             </h1>
-                            <p className="text-xl leading-relaxed text-white/90 mb-8 max-w-lg">
+                            <p className="text-xl leading-relaxed text-white/90 mb-8 max-w-4/5">
                                 Quatre Chantiers de Dignité pour insuffler un Maroc Social en 2030
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <a href="#livre" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Découvrir le livre</a>
-                                <a href="#livre" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Télécharger le résumé</a>
+                                <a href="#livre" className=" bg-royal-red px-2 py-3 rounded-lg   hover:opacity-95 text-center">Découvrir le livre</a>
+                                <a href="#livre" className=" bg-royal-red px-2 py-3 rounded-lg   hover:opacity-95 text-center">Télécharger le résumé</a>
+                                <a href="#groupes" className=" bg-royal-red px-2 py-3 rounded-lg   hover:opacity-95 text-center">Groupes de travail</a>
+                                {/* <a href="#podcast" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Podcast</a> */}
                             </div>
                             <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                                <a href="#groupes" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Groupes de travail</a>
-                                <a href="#podcast" className=" bg-royal-red px-2 py-2 rounded-lg   hover:opacity-95 text-center">Podcast</a>
                             </div>
                         </div>
                         
                         {/* Right content - Author info */}
-                        <div className="text-right text-white">
+                        <div className="text-right text-white pb-6">
                             <div className="inline-block">
                                 <div className="text-sm font-medium text-gold tracking-wider uppercase mb-2">AUTHOR</div>
                                 <div className="text-2xl font-semibold text-cream">OUMAIMA MHIJIR</div>
-                                <div className="mt-4 text-white/80 text-sm max-w-xs ml-auto">
+                                <div className="mt-4 text-white/80 text-base max-w-xs ml-auto">
                                     Auteure, experte en entrepreneuriat social international, maman, étudiante en psychologie et en innovation sociale
                                 </div>
                                 <button
@@ -96,7 +76,7 @@ export default function Hero() {
                                     className="mt-6 px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
                                     style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                                 >
-                                    Réserver une place - Événement de lancement
+                                    Événement de lancement
                                 </button>
                             </div>
                         </div>

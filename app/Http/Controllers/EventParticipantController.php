@@ -31,18 +31,7 @@ class EventParticipantController extends Controller
             Log::error('Failed to send event registration email: ' . $e->getMessage());
         }
 
-        // Check if this is an API request (JSON)
-        if ($request->wantsJson() || $request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Votre demande d\'inscription a été enregistrée avec succès.',
-            ]);
-        }
-
-        return back()->with([
-            'success' => true,
-            'message' => 'Votre demande d\'inscription a été enregistrée avec succès.',
-        ]);
+        return back()->with('success', 'Votre demande d\'inscription a été enregistrée avec succès.');
     }
 }
 

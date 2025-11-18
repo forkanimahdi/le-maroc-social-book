@@ -64,38 +64,18 @@ export default function Groups() {
     const [showWhatsAppDialog, setShowWhatsAppDialog] = useState(false);
     const [whatsappCommunityLink, setWhatsappCommunityLink] = useState('');
 
-    const submit = async (e) => {
+    const submit = (e) => {
         e.preventDefault();
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-        try {
-            const response = await fetch('/api/groups', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken || '',
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-                setWhatsappCommunityLink(result.whatsapp_community_link || '');
+        post('/groups', {
+            onSuccess: (page) => {
+                setWhatsappCommunityLink(page.props.whatsapp_community_link || '');
                 setShowWhatsAppDialog(true);
                 reset();
-            } else {
-                const errorMessage = result.message || (result.errors ? JSON.stringify(result.errors) : 'Une erreur est survenue lors de l\'inscription.');
-                alert(errorMessage);
+            },
+            onError: (errors) => {
+                console.error('Registration error:', errors);
             }
-        } catch (error) {
-            console.error('Registration error:', error);
-            alert('Une erreur est survenue lors de l\'inscription.');
-        }
+        });
     };
 
     const selectedGroup = GROUPS_CONFIG[data.group];

@@ -21,10 +21,7 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return back()->withErrors($validator->errors());
         }
 
         try {
@@ -38,15 +35,9 @@ class BookController extends Controller
                 )
             );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Le résumé exécutif a été envoyé avec succès à votre adresse e-mail.'
-            ]);
+            return back()->with('success', 'Le résumé exécutif a été envoyé avec succès à votre adresse e-mail.');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue lors de l\'envoi de l\'e-mail. Veuillez réessayer plus tard.'
-            ], 500);
+            return back()->with('error', 'Une erreur est survenue lors de l\'envoi de l\'e-mail. Veuillez réessayer plus tard.');
         }
     }
 }
