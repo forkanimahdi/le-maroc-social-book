@@ -9,11 +9,20 @@ return new class extends Migration {
     {
         Schema::create('group_signups', function (Blueprint $table) {
             $table->id();
-            $table->string('group');
+
             $table->string('nom');
+            $table->string('group');
             $table->string('email');
+            $table->string('domain_expertise', 500)->nullable();
             $table->string('domaine')->nullable();
             $table->text('motivation')->nullable();
+
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('whatsapp_community_link')->nullable();
+            $table->string('whatsapp_group_link')->nullable();
+            $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+
             $table->timestamps();
         });
     }
@@ -23,5 +32,3 @@ return new class extends Migration {
         Schema::dropIfExists('group_signups');
     }
 };
-
-
