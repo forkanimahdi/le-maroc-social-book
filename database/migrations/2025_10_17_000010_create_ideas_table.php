@@ -9,6 +9,9 @@ return new class extends Migration {
     {
         Schema::create('ideas', function (Blueprint $table) {
             $table->id();
+            $table->string('full_name');
+            $table->string('role');
+            $table->string('email');
             $table->text('text');
             $table->boolean('agree')->default(false);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');

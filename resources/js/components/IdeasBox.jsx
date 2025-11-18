@@ -5,6 +5,7 @@ export default function IdeasBox({ ideas = [] }) {
     const { data, setData, post, processing, reset } = useForm({
         full_name: '',
         role: '',
+        email: '',
         text: '',
         agree: false,
     });
@@ -74,6 +75,17 @@ export default function IdeasBox({ ideas = [] }) {
                                             placeholder="Ex. Entrepreneur, Étudiant, Chercheur..."
                                         />
                                     </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Email</label>
+                                    <input
+                                        type="email"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        required
+                                        className="w-full p-4 rounded-lg border border-royal-red-soft focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all duration-300"
+                                        placeholder="votre@email.com"
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-royal-red-soft mb-3 uppercase tracking-wide">Votre idée</label>

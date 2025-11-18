@@ -19,6 +19,7 @@ export default function AdminIdeas() {
     const { data: editData, setData: setEditData, put, processing: updating } = useForm({
         full_name: '',
         role: '',
+        email: '',
         text: '',
     });
 
@@ -82,6 +83,7 @@ export default function AdminIdeas() {
         setEditingId(idea.id);
         setEditData('full_name', idea.full_name || '');
         setEditData('role', idea.role || '');
+        setEditData('email', idea.email || '');
         setEditData('text', idea.text || '');
     };
 
@@ -91,6 +93,7 @@ export default function AdminIdeas() {
                 setEditingId(null);
                 setEditData('full_name', '');
                 setEditData('role', '');
+                setEditData('email', '');
                 setEditData('text', '');
             },
             onError: (errors) => {
@@ -103,6 +106,7 @@ export default function AdminIdeas() {
         setEditingId(null);
         setEditData('full_name', '');
         setEditData('role', '');
+        setEditData('email', '');
         setEditData('text', '');
     };
 
@@ -192,6 +196,13 @@ export default function AdminIdeas() {
                                                             value={editData.role}
                                                             onChange={(e) => setEditData('role', e.target.value)}
                                                             placeholder="Rôle / Profession"
+                                                            className="w-full"
+                                                        />
+                                                        <Input
+                                                            type="email"
+                                                            value={editData.email}
+                                                            onChange={(e) => setEditData('email', e.target.value)}
+                                                            placeholder="Email"
                                                             className="w-full"
                                                         />
                                                     </div>

@@ -9,7 +9,7 @@ class Idea extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['full_name', 'role', 'text', 'agree', 'status'];
+    protected $fillable = ['full_name', 'role', 'email', 'text', 'agree', 'status'];
 }
 
 

@@ -30,12 +30,14 @@ class GroupSignupController extends Controller
             'whatsapp_community_link' => $whatsappLinks['community'],
         ]);
 
-        // Send registration confirmation email
+        // Send registration confirmation email (synchronously, not queued)
         try {
             Mail::to($signup->email)->send(new ThinkTankRegistrationMail($signup, $whatsappLinks['community']));
+            Log::info('Registration email sent to: ' . $signup->email);
         } catch (\Exception $e) {
             // Log error but don't fail the request
-            Log::error('Failed to send registration email: ' . $e->getMessage());
+            Log::error('Failed to send registration email to ' . $signup->email . ': ' . $e->getMessage());
+            Log::error('Exception trace: ' . $e->getTraceAsString());
         }
 
         return back()->with([

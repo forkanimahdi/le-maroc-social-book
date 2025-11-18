@@ -47,11 +47,13 @@ class ThinkTankController extends Controller
             'approved_at' => now(),
         ]);
 
-        // Send approval email
+        // Send approval email (synchronously, not queued)
         try {
             Mail::to($signup->email)->send(new ThinkTankApprovalMail($signup, $whatsappGroupLink));
+            Log::info('Approval email sent to: ' . $signup->email);
         } catch (\Exception $e) {
-            Log::error('Failed to send approval email: ' . $e->getMessage());
+            Log::error('Failed to send approval email to ' . $signup->email . ': ' . $e->getMessage());
+            Log::error('Exception trace: ' . $e->getTraceAsString());
         }
 
         return back()->with('success', 'Inscription approuvée avec succès.');

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idea;
+use App\Mail\IdeaApprovalMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class IdeaController extends Controller
 {
@@ -12,6 +15,7 @@ class IdeaController extends Controller
         $validated = $request->validate([
             'full_name' => ['required', 'string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
             'text' => ['required', 'string'],
             'agree' => ['required', 'boolean'],
         ]);
@@ -24,6 +28,7 @@ class IdeaController extends Controller
         $validated = $request->validate([
             'full_name' => ['nullable', 'string', 'max:255'],
             'role' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255'],
             'text' => ['nullable', 'string'],
         ]);
         
@@ -35,13 +40,25 @@ class IdeaController extends Controller
     public function moderate(Idea $idea)
     {
         $idea->update(['status' => 'approved']);
-        return back();
+        
+        // Send approval email if email is provided
+        if ($idea->email) {
+            try {
+                Mail::to($idea->email)->send(new IdeaApprovalMail($idea));
+                Log::info('Idea approval email sent to: ' . $idea->email);
+            } catch (\Exception $e) {
+                Log::error('Failed to send idea approval email to ' . $idea->email . ': ' . $e->getMessage());
+                Log::error('Exception trace: ' . $e->getTraceAsString());
+            }
+        }
+        
+        return back()->with('success', 'Idée approuvée avec succès.');
     }
 
     public function reject(Idea $idea)
     {
         $idea->update(['status' => 'rejected']);
-        return back();
+        return back()->with('success', 'Idée rejetée.');
     }
 }
 
