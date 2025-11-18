@@ -49,6 +49,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/ideas/{id}/moderate', [UserController::class, 'moderateIdea'])->name('admin.ideas.moderate');
     Route::post('/admin/groups/{id}/confirm', [UserController::class, 'confirmGroupSignup'])->name('admin.groups.confirm');
     Route::get('/admin/users/export', [UserController::class, 'exportUsers'])->name('admin.users.export');
+    
+    // Think Tank management
+    Route::get('/admin/think-tank', [\App\Http\Controllers\Admin\ThinkTankController::class, 'index'])->name('admin.think-tank');
+    Route::post('/admin/think-tank/{id}/approve', [\App\Http\Controllers\Admin\ThinkTankController::class, 'approve'])->name('admin.think-tank.approve');
+    Route::post('/admin/think-tank/{id}/reject', [\App\Http\Controllers\Admin\ThinkTankController::class, 'reject'])->name('admin.think-tank.reject');
+    Route::post('/admin/think-tank/{id}/decline', [\App\Http\Controllers\Admin\ThinkTankController::class, 'decline'])->name('admin.think-tank.decline');
 });
 
 // API form posts

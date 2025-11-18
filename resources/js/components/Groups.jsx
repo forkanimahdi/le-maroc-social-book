@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 
 // Configuration des groupes de travail
 const GROUPS_CONFIG = {
@@ -49,13 +50,6 @@ const GROUPS_CONFIG = {
     }
 };
 
-// Liens WhatsApp simulés
-const GROUP_LINKS = {
-    jeunesse: 'https://wa.me/1234567890',
-    femmes: 'https://wa.me/1234567891',
-    vieillissement: 'https://wa.me/1234567892',
-    pacte: 'https://wa.me/1234567893'
-};
 
 export default function Groups() {
     const { data, setData, post, processing, reset } = useForm({
@@ -63,23 +57,47 @@ export default function Groups() {
         nom: '',
         email: '',
         domaine: '',
+        domain_expertise: '',
         motivation: '',
     });
 
-    const [done, setDone] = useState(false);
+    const [showWhatsAppDialog, setShowWhatsAppDialog] = useState(false);
+    const [whatsappCommunityLink, setWhatsappCommunityLink] = useState('');
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        post('/api/groups', {
-            onSuccess: () => {
-                setDone(true);
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        
+        try {
+            const response = await fetch('/api/groups', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                setWhatsappCommunityLink(result.whatsapp_community_link || '');
+                setShowWhatsAppDialog(true);
                 reset();
-                setTimeout(() => setDone(false), 5000);
+            } else {
+                const errorMessage = result.message || (result.errors ? JSON.stringify(result.errors) : 'Une erreur est survenue lors de l\'inscription.');
+                alert(errorMessage);
             }
-        });
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert('Une erreur est survenue lors de l\'inscription.');
+        }
     };
 
-    const link = GROUP_LINKS[data.group];
     const selectedGroup = GROUPS_CONFIG[data.group];
 
     return (
@@ -162,12 +180,12 @@ export default function Groups() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Domaine d'intérêt</label>
+                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Domain expertise</label>
                                     <input 
-                                        value={data.domaine} 
-                                        onChange={(e) => setData('domaine', e.target.value)} 
+                                        value={data.domain_expertise} 
+                                        onChange={(e) => setData('domain_expertise', e.target.value)} 
                                         className="w-full p-4 rounded-lg border border-royal-green-soft bg-white text-zinc-800 focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300" 
-                                        placeholder="Ex. inclusion numérique, formation professionnelle..." 
+                                        placeholder="Ex. Politiques publiques, Recherche et analyse, Entrepreneuriat social..." 
                                     />
                                 </div>
 
@@ -185,21 +203,12 @@ export default function Groups() {
                                 <button 
                                     type="submit" 
                                     disabled={processing}
-                                    className="w-full py-4 px-8 rounded-lg font-semibold text-lg bg-royal-green text-white hover:bg-royal-green/90 transition-colors duration-300 disabled:opacity-50"
+                                    className="w-full py-4 px-8 rounded-lg font-semibold text-lg transition-colors duration-300 disabled:opacity-50"
+                                    style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                                 >
                                     {processing ? 'Inscription en cours...' : 'S\'inscrire au groupe'}
                                 </button>
 
-                                {done && (
-                                    <div className="text-center p-4 bg-royal-green-soft rounded-lg border border-royal-green-soft">
-                                        <div className="flex items-center justify-center gap-2 text-royal-green">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                            </svg>
-                                            <span className="font-semibold">Merci pour votre inscription !</span>
-                                        </div>
-                                    </div>
-                                )}
                             </form>
                         </div>
                     </div>
@@ -220,7 +229,7 @@ export default function Groups() {
                                     <div className="space-y-3">
                                         {selectedGroup.objectives.map((objective, index) => (
                                             <div key={index} className="flex items-center gap-3">
-                                                <div className="w-6 h-6 bg-royal-green rounded-full flex items-center justify-center flex-shrink-0">
+                                                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--royal-green)' }}>
                                                     <span className="text-white text-xs font-bold">{index + 1}</span>
                                                 </div>
                                                 <span className="text-zinc-700">{objective}</span>
@@ -229,29 +238,54 @@ export default function Groups() {
                                     </div>
                                 </div>
 
-                                {done && (
-                                    <div className="pt-6 border-t border-royal-green-soft">
-                                        <div className="text-center">
-                                            <h5 className="text-lg font-semibold text-royal-green-soft mb-4">Rejoindre la communauté</h5>
-                                            <a 
-                                                href={link} 
-                                                target="_blank" 
-                                                rel="noreferrer"
-                                                className="inline-flex items-center gap-3 bg-royal-green text-white px-8 py-4 rounded-lg font-semibold hover:bg-royal-green/90 transition-colors duration-300"
-                                            >
-                                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                                                </svg>
-                                                Rejoindre WhatsApp
-                                            </a>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* WhatsApp Community Dialog */}
+            <Dialog open={showWhatsAppDialog} onOpenChange={setShowWhatsAppDialog}>
+                <DialogContent className="max-w-md bg-white">
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold" style={{ color: 'var(--royal-green)' }}>
+                            Merci pour votre inscription !
+                        </DialogTitle>
+                        <DialogDescription className="text-zinc-600">
+                            Votre candidature a été enregistrée avec succès.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <div className="p-4 rounded-lg" style={{ backgroundColor: 'rgba(27, 78, 11, 0.08)' }}>
+                            <p className="text-zinc-700 mb-4">
+                                En attendant l'examen de votre candidature, nous vous invitons à rejoindre notre <strong>communauté WhatsApp publique</strong> pour échanger avec d'autres membres et suivre les actualités du projet.
+                            </p>
+                            <a 
+                                href={whatsappCommunityLink || 'https://chat.whatsapp.com/example'} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 rounded-lg font-semibold text-base hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-lg"
+                                style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                            >
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                                </svg>
+                                Rejoindre la communauté WhatsApp
+                            </a>
+                        </div>
+                        <p className="text-sm text-zinc-600 text-center">
+                            Vous recevrez un e-mail de confirmation avec tous les détails. Une fois votre candidature approuvée, vous recevrez le lien vers le groupe WhatsApp officiel.
+                        </p>
+                        <button 
+                            onClick={() => setShowWhatsAppDialog(false)}
+                            className="w-full py-2 px-4 rounded-lg font-semibold border-2 text-sm"
+                            style={{ borderColor: 'var(--royal-green)', color: 'var(--royal-green)' }}
+                        >
+                            Fermer
+                        </button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
