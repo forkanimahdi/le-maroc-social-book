@@ -13,15 +13,15 @@ class ThinkTankRegistrationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $signup;
-    public $whatsappCommunityLink;
+    public $whatsappChannelLink;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($signup, $whatsappCommunityLink)
+    public function __construct($signup, $whatsappChannelLink)
     {
         $this->signup = $signup;
-        $this->whatsappCommunityLink = $whatsappCommunityLink;
+        $this->whatsappChannelLink = $whatsappChannelLink;
     }
 
     /**
@@ -43,7 +43,7 @@ class ThinkTankRegistrationMail extends Mailable
             view: 'emails.think-tank-registration',
             with: [
                 'signup' => $this->signup,
-                'whatsappCommunityLink' => $this->whatsappCommunityLink,
+                'whatsappChannelLink' => $this->whatsappChannelLink,
             ],
         );
     }

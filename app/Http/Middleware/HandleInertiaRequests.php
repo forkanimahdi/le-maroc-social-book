@@ -45,6 +45,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'links' => [
+                'whatsappChannel' => config('app.whatsapp_channel'),
+                'businessWhatsapp' => config('app.business_whatsapp'),
+            ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

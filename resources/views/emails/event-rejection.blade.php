@@ -116,6 +116,8 @@
                 
                 <p>Nous espérons avoir l'occasion de vous accueillir lors d'un prochain événement.</p>
             </div>
+
+            @include('emails.partials.whatsapp-channel')
         </div>
         
         <div class="footer">
@@ -124,7 +126,7 @@
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
                 <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:contact@maroc-social-2030.ma">Nous contacter</a>
+                <a href="mailto:author@ms2030.org">Nous contacter</a>
             </p>
         </div>
     </div>

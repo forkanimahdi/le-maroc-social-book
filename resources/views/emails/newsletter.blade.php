@@ -87,6 +87,8 @@
             <div>
                 {!! $newsletter->content !!}
             </div>
+
+            @include('emails.partials.whatsapp-channel')
         </div>
         
         <div class="email-footer">

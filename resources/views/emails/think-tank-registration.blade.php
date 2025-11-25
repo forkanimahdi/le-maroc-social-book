@@ -129,6 +129,7 @@
                         'pacte' => 'Pacte National, Territoires et Engagement Citoyen',
                     ];
                     $groupName = $groupLabels[$signup->group] ?? ucfirst($signup->group);
+                    $channelLink = $whatsappChannelLink ?? config('app.whatsapp_channel');
                 @endphp
                 <p>Nous avons bien reçu votre inscription au <strong>{{ $groupName }}</strong>. Votre candidature est en cours d'examen par notre équipe.</p>
                 
@@ -141,16 +142,6 @@
                     @endif
                 </div>
             </div>
-            
-            <div class="whatsapp-box">
-                <h3>📱 Rejoignez notre communauté WhatsApp</h3>
-                <p>En attendant l'examen de votre candidature, vous pouvez rejoindre notre communauté publique WhatsApp pour échanger avec d'autres membres et suivre les actualités du projet.</p>
-                <p><strong>Vous pouvez rejoindre immédiatement si vous ne l'avez pas encore fait.</strong></p>
-                <div style="text-align: center; margin: 20px 0;">
-                    <a href="{{ $whatsappCommunityLink }}" class="cta-button" target="_blank">Rejoindre la communauté WhatsApp</a>
-                </div>
-            </div>
-            
             <div class="content">
                 <p><strong>Prochaines étapes :</strong></p>
                 <ul style="color: #555; line-height: 2;">
@@ -158,7 +149,12 @@
                     <li>Vous recevrez un e-mail de confirmation une fois votre candidature approuvée</li>
                     <li>En cas d'approbation, vous recevrez le lien vers le groupe WhatsApp officiel</li>
                 </ul>
+                <p style="margin-top: 20px;">
+                    Pour rester informé(e) et suivre les annonces officielles, nous vous invitons à rejoindre notre canal WhatsApp dédié au Think Tank.
+                </p>
             </div>
+
+            @include('emails.partials.whatsapp-channel', ['channelLink' => $channelLink])
         </div>
         
         <div class="footer">
@@ -167,7 +163,7 @@
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
                 <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:contact@maroc-social-2030.ma">Nous contacter</a>
+                <a href="mailto:author@ms2030.org">Nous contacter</a>
             </p>
         </div>
     </div>

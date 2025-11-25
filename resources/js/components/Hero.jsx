@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { useForm } from '@inertiajs/react';
 
@@ -12,6 +12,44 @@ export default function Hero() {
     });
     const [submitted, setSubmitted] = useState(false);
 
+    const handleModalChange = (isOpen) => {
+        setShowEventModal(isOpen);
+        if (!isOpen) {
+            setSubmitted(false);
+        }
+    };
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        const syncWithHash = () => {
+            setShowEventModal(window.location.hash === '#register');
+        };
+
+        syncWithHash();
+        window.addEventListener('hashchange', syncWithHash);
+
+        return () => window.removeEventListener('hashchange', syncWithHash);
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        const baseUrl = `${window.location.pathname}${window.location.search}`;
+
+        if (showEventModal) {
+            if (window.location.hash !== '#register') {
+                window.history.replaceState(null, '', `${baseUrl}#register`);
+            }
+        } else if (window.location.hash === '#register') {
+            window.history.replaceState(null, '', baseUrl);
+        }
+    }, [showEventModal]);
+
     const handleEventRegistration = (e) => {
         e.preventDefault();
         post('/event-participants', {
@@ -19,8 +57,7 @@ export default function Hero() {
                 setSubmitted(true);
                 reset();
                 setTimeout(() => {
-                    setShowEventModal(false);
-                    setSubmitted(false);
+                    handleModalChange(false);
                 }, 3000);
             },
             onError: (errors) => {
@@ -99,7 +136,7 @@ export default function Hero() {
                                     Auteure, experte en entrepreneuriat social international, maman, étudiante en psychologie et en innovation sociale
                                 </div>
                                 <button
-                                    onClick={() => setShowEventModal(true)}
+                                    onClick={() => handleModalChange(true)}
                                     className="mt-6 px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
                                     style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                                 >
@@ -112,7 +149,7 @@ export default function Hero() {
             </div>
 
             {/* Event Registration Modal */}
-            <Dialog open={showEventModal} onOpenChange={setShowEventModal}>
+            <Dialog open={showEventModal} onOpenChange={handleModalChange}>
                 <DialogContent className="max-w-md bg-white">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold" style={{ color: 'var(--royal-green)' }}>
@@ -191,7 +228,7 @@ export default function Hero() {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setShowEventModal(false)}
+                                    onClick={() => handleModalChange(false)}
                                     className="px-6 py-3 rounded-lg font-semibold border-2 transition-all"
                                     style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
                                 >

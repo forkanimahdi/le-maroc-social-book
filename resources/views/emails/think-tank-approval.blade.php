@@ -137,6 +137,7 @@
                     'pacte' => 'Pacte National, Territoires et Engagement Citoyen',
                 ];
                 $groupName = $groupLabels[$signup->group] ?? ucfirst($signup->group);
+                $channelLink = config('app.whatsapp_channel');
             @endphp
             <div class="content">
                 <p>Votre engagement et votre expertise sont précieux pour notre mission commune de transformation sociale au Maroc.</p>
@@ -169,7 +170,12 @@
                     <li>Participez activement aux discussions et travaux du groupe</li>
                     <li>Restez à l'écoute des annonces et mises à jour</li>
                 </ul>
+                <p style="margin-top: 20px;">
+                    Pour suivre les communications publiques du Think Tank, rejoignez également notre canal WhatsApp officiel.
+                </p>
             </div>
+
+            @include('emails.partials.whatsapp-channel', ['channelLink' => $channelLink])
         </div>
         
         <div class="footer">
@@ -178,7 +184,7 @@
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
                 <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:contact@maroc-social-2030.ma">Nous contacter</a>
+                <a href="mailto:author@ms2030.org">Nous contacter</a>
             </p>
         </div>
     </div>

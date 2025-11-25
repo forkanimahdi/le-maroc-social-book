@@ -3,7 +3,7 @@ import Tabs from './ui/Tabs.jsx';
 import QuoteModal from './ui/QuoteModal.jsx';
 import PolicyModal from './ui/PolicyModal.jsx';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 
 export default function Book() {
     const [open, setOpen] = useState(false);
@@ -17,6 +17,8 @@ export default function Book() {
         acceptTerms: false,
     });
     const [sent, setSent] = useState(false);
+    const { links = {} } = usePage().props;
+    const businessWhatsapp = links.businessWhatsapp || 'https://wa.me/212600000000';
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -109,7 +111,7 @@ export default function Book() {
                             
                             {/* CTA Button */}
                             <button 
-                                onClick={() => window.open('#', '_blank')}
+                                onClick={() => window.open(businessWhatsapp, '_blank')}
                                 className="w-full py-4 px-6 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 group/btn "
                                 style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                             >
@@ -281,7 +283,7 @@ export default function Book() {
                                 />
                             </div>
 
-                            <div>
+                            <div className='hidden'> 
                                 <label className="block text-sm font-semibold  mb-2 sm:mb-3 uppercase tracking-wide">Version du livre</label>
                                 <select 
                                     value={data.version} 

@@ -147,6 +147,8 @@
             <div style="text-align: center; margin: 30px 0;">
                 <a href="#" class="cta-button">Découvrir le livre complet</a>
             </div>
+
+            @include('emails.partials.whatsapp-channel')
             
             <div class="signature">
                 <p><strong>Oumaima Mhijir</strong></p>

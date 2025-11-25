@@ -80,6 +80,9 @@ export default function Author({ content = null }) {
                                     <div className="pt-6">
                                         <blockquote className="text-xl italic text-gold border-l-4 border-gold pl-6">
                                             "{authorContent.bio_quote}"
+                                        <p className="text-sm text-gold">
+                                           Oumaima Mhijir
+                                        </p>
                                         </blockquote>
                                     </div>
                                 </div>
@@ -87,7 +90,7 @@ export default function Author({ content = null }) {
                             {/* Portfolio Button */}
                             <div className="mt-8 pt-8 border-t border-gold/30">
                                 <a 
-                                    href="/assets/portfolio.pdf" 
+                                    href="/assets/Portfolio%20Oumaima%20MHIJIR.pdf" 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-lg"
@@ -161,7 +164,7 @@ export default function Author({ content = null }) {
                                         
                                     </a>
                                     <a 
-                                        href="mailto:contact@maroc-social-2030.ma" 
+                                        href="mailto:author@ms2030.org" 
                                         className="flex flex-col items-center justify-center  rounded-xl hover:scale-105 transition-all duration-300  hover:shadow-lg"
                                         
                                     >

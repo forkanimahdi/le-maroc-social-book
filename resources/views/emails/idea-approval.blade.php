@@ -142,6 +142,8 @@
                     <li>Continuez à partager vos réflexions et idées pour le Maroc de demain</li>
                 </ul>
             </div>
+
+            @include('emails.partials.whatsapp-channel')
         </div>
         
         <div class="footer">
@@ -150,7 +152,7 @@
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
                 <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:contact@maroc-social-2030.ma">Nous contacter</a>
+                <a href="mailto:author@ms2030.org">Nous contacter</a>
             </p>
         </div>
     </div>

@@ -123,4 +123,13 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Project Links
+    |--------------------------------------------------------------------------
+    */
+
+    'whatsapp_channel' => env('WHATSAPP_CHANNEL', 'https://whatsapp.com/channel/0029VbBiZRoBqbr6YF6zgE3i'),
+    'business_whatsapp' => env('BUSINESS_WHATSAPP', 'https://wa.me/212600000000'),
+
 ];

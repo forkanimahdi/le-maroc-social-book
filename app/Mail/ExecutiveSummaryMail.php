@@ -61,10 +61,7 @@ class ExecutiveSummaryMail extends Mailable
      */
     public function attachments(): array
     {
-        // TODO: Replace with actual PDF path based on version
-        $pdfPath = $this->version === 'arabe' 
-            ? public_path('assets/resume-arabe.pdf') 
-            : public_path('assets/resume-francais.pdf');
+        $pdfPath = public_path('assets/Executive Summary.pdf');
         
         // If PDF doesn't exist, create a placeholder or handle gracefully
         if (!file_exists($pdfPath)) {

@@ -28,7 +28,7 @@ export default function PolicyModal({ open, onClose }) {
                     <div>
                         <h4 className="font-semibold text-royal-green mb-2">Contact</h4>
                         <p className="leading-relaxed text-sm">
-                            Pour toute question : contact@maroc-social-2030.ma
+                            Pour toute question : author@ms2030.org
                         </p>
                     </div>
 
