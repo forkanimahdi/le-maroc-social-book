@@ -24,7 +24,7 @@ export default function AuthSplitLayout({ children, title, description }: PropsW
                 <div
                     className="w-full h-full bg-black p0"
                     style={{
-                        backgroundImage: `linear-gradient(90deg, color-mix(in oklab, var(--royal-red) 65%, transparent), color-mix(in oklab, var(--gold) 25%, transparent)), url(/assets/hero.jpg)`,
+                        backgroundImage: `linear-gradient(90deg, color-mix(in oklab, var(--royal-red) 65%, transparent), color-mix(in oklab, var(--gold) 25%, transparent)), url(/assets/hero.png)`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}

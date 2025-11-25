@@ -72,13 +72,13 @@ export default function Author({ content = null }) {
                         {/* Single Biography Section */}
                         <div className="bg-white/10 backdrop-blur-sm p-10 rounded-lg border border-gold/30">
                             <h3 className="text-3xl font-bold text-gold mb-8">Biographie</h3>
-                                <div className="space-y-6 text-white leading-relaxed text-lg">
-                                    <p>
+                                <div className="space-y-6 text-white leading-relaxed text-lg ">
+                                    <p className='text-justify text-justify-inter-word  text-justify-inter-word hyphens-auto'>
                                         {authorContent.bio_content.split('\n\n')[0]}
                                     </p>
                               
                                     <div className="pt-6">
-                                        <blockquote className="text-xl italic text-gold border-l-4 border-gold pl-6">
+                                        <blockquote className="text-xl italic text-gold border-l-4 border-gold pl-6 text-justify text-justify-inter-word hyphens-auto">
                                             "{authorContent.bio_quote}"
                                         <p className="text-sm text-gold">
                                            Oumaima Mhijir
