@@ -1,11 +1,11 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, usePage, router, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle, XCircle, Clock, Search, Filter, Users } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Search, Filter, Users, Trash2 } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 const breadcrumbs = [
@@ -17,6 +17,7 @@ export default function AdminEventParticipants() {
     const { participants, stats } = usePage().props;
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const { delete: destroyParticipant, processing: deleting } = useForm({});
 
     // Frontend-only filtering
     const filteredParticipants = useMemo(() => {
@@ -93,6 +94,20 @@ export default function AdminEventParticipants() {
                 }
             });
         }
+    };
+
+    const handleDelete = (id) => {
+        if (!confirm('Supprimer définitivement ce participant ?')) {
+            return;
+        }
+
+        destroyParticipant(`/admin/event-participants/${id}`, {
+            preserveScroll: true,
+            onError: (errors) => {
+                console.error('Error deleting participant:', errors);
+                alert('Erreur lors de la suppression du participant.');
+            }
+        });
     };
 
     const formatDate = (dateString) => {
@@ -238,7 +253,7 @@ export default function AdminEventParticipants() {
                                                         {formatDate(participant.created_at)}
                                                     </td>
                                                     <td className="p-3">
-                                                        <div className="flex items-center gap-2">
+                                                        <div className="flex items-center gap-2 flex-wrap">
                                                             {participant.status === 'pending' && (
                                                                 <>
                                                                     <Button
@@ -269,6 +284,16 @@ export default function AdminEventParticipants() {
                                                                     Rejeté le {formatDate(participant.rejected_at)}
                                                                 </span>
                                                             )}
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                disabled={deleting}
+                                                                onClick={() => handleDelete(participant.id)}
+                                                                style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                                            >
+                                                                <Trash2 className="w-4 h-4 mr-1" />
+                                                                Supprimer
+                                                            </Button>
                                                         </div>
                                                     </td>
                                                 </tr>

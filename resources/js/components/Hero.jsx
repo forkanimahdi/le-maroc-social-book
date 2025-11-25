@@ -137,10 +137,10 @@ export default function Hero() {
                                 </div>
                                 <button
                                     onClick={() => handleModalChange(true)}
-                                    className="mt-6 px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
+                                    className="mt-6 px-6 capitalize py-3 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
                                     style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                                 >
-                                    Événement de lancement
+                                    évènement de lancement
                                 </button>
                             </div>
                         </div>

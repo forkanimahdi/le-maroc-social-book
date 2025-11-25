@@ -27,6 +27,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/ideas', [DashboardController::class, 'ideas'])->name('admin.ideas');
     Route::post('/admin/ideas/{idea}/approve', [IdeaController::class, 'moderate'])->name('admin.ideas.approve');
     Route::post('/admin/ideas/{idea}/reject', [IdeaController::class, 'reject'])->name('admin.ideas.reject');
+    Route::delete('/admin/ideas/{idea}', [IdeaController::class, 'destroy'])->name('admin.ideas.destroy');
     
     // Newsletter management
     Route::get('/admin/newsletter', [NewsletterController::class, 'index'])->name('admin.newsletter');
@@ -54,11 +55,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/think-tank', [\App\Http\Controllers\Admin\ThinkTankController::class, 'index'])->name('admin.think-tank');
     Route::post('/admin/think-tank/{id}/approve', [\App\Http\Controllers\Admin\ThinkTankController::class, 'approve'])->name('admin.think-tank.approve');
     Route::post('/admin/think-tank/{id}/reject', [\App\Http\Controllers\Admin\ThinkTankController::class, 'reject'])->name('admin.think-tank.reject');
+    Route::delete('/admin/think-tank/{id}', [\App\Http\Controllers\Admin\ThinkTankController::class, 'destroy'])->name('admin.think-tank.destroy');
     
     // Event Participants management
     Route::get('/admin/event-participants', [\App\Http\Controllers\Admin\EventParticipantController::class, 'index'])->name('admin.event-participants');
     Route::post('/admin/event-participants/{id}/approve', [\App\Http\Controllers\Admin\EventParticipantController::class, 'approve'])->name('admin.event-participants.approve');
     Route::post('/admin/event-participants/{id}/reject', [\App\Http\Controllers\Admin\EventParticipantController::class, 'reject'])->name('admin.event-participants.reject');
+    Route::delete('/admin/event-participants/{id}', [\App\Http\Controllers\Admin\EventParticipantController::class, 'destroy'])->name('admin.event-participants.destroy');
 });
 
 // Form posts

@@ -75,6 +75,14 @@ class ThinkTankController extends Controller
         return back()->with('success', 'Inscription rejetée.');
     }
 
+    public function destroy($id)
+    {
+        $signup = GroupSignup::findOrFail($id);
+        $signup->delete();
+
+        return back()->with('success', 'Inscription supprimée.');
+    }
+
 
     private function getWhatsAppLinks($group)
     {

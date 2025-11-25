@@ -76,5 +76,13 @@ class EventParticipantController extends Controller
 
         return back()->with('success', 'Participant rejeté.');
     }
+
+    public function destroy($id)
+    {
+        $participant = EventParticipant::findOrFail($id);
+        $participant->delete();
+
+        return back()->with('success', 'Participant supprimé.');
+    }
 }
 

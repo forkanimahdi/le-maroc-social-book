@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle, XCircle, Clock, Eye, Edit2, Save, X } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Eye, Edit2, Save, X, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs = [
@@ -16,12 +16,13 @@ const breadcrumbs = [
 export default function AdminIdeas() {
     const { ideas } = usePage().props;
     const [editingId, setEditingId] = useState(null);
-    const { data: editData, setData: setEditData, put, processing: updating } = useForm({
+    const { data: editData, setData: setEditData, put, processing: updating, reset: resetEdit } = useForm({
         full_name: '',
         role: '',
         email: '',
         text: '',
     });
+    const { delete: destroyIdea, processing: deleting } = useForm({});
 
     const getStatusBadge = (status) => {
         const statusConfig = {
@@ -91,10 +92,7 @@ export default function AdminIdeas() {
         put(`/ideas/${ideaId}`, {
             onSuccess: () => {
                 setEditingId(null);
-                setEditData('full_name', '');
-                setEditData('role', '');
-                setEditData('email', '');
-                setEditData('text', '');
+                resetEdit();
             },
             onError: (errors) => {
                 console.error('Error updating idea:', errors);
@@ -104,10 +102,26 @@ export default function AdminIdeas() {
 
     const handleCancel = () => {
         setEditingId(null);
-        setEditData('full_name', '');
-        setEditData('role', '');
-        setEditData('email', '');
-        setEditData('text', '');
+        resetEdit();
+    };
+
+    const handleDelete = (ideaId) => {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer définitivement cette idée ?')) {
+            return;
+        }
+
+        destroyIdea(`/admin/ideas/${ideaId}`, {
+            preserveScroll: true,
+            onError: (errors) => {
+                console.error('Error deleting idea:', errors);
+                alert('Erreur lors de la suppression de l\'idée.');
+            },
+            onSuccess: () => {
+                if (editingId === ideaId) {
+                    handleCancel();
+                }
+            }
+        });
     };
 
     const formatDate = (dateString) => {
@@ -212,7 +226,7 @@ export default function AdminIdeas() {
                                                     </CardTitle>
                                                 )}
                                             </div>
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-2 flex-wrap justify-end">
                                                 {editingId === idea.id ? (
                                                     <>
                                                         <Button
@@ -265,6 +279,16 @@ export default function AdminIdeas() {
                                                         )}
                                                     </>
                                                 )}
+                                                <Button
+                                                    onClick={() => handleDelete(idea.id)}
+                                                    size="sm"
+                                                    variant="outline"
+                                                    disabled={deleting}
+                                                    style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                                >
+                                                    <Trash2 className="w-4 h-4 mr-1" />
+                                                    Supprimer
+                                                </Button>
                                             </div>
                                         </div>
                                     </CardHeader>

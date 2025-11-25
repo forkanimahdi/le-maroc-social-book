@@ -60,6 +60,12 @@ class IdeaController extends Controller
         $idea->update(['status' => 'rejected']);
         return back()->with('success', 'Idée rejetée.');
     }
+
+    public function destroy(Idea $idea)
+    {
+        $idea->delete();
+        return back()->with('success', 'Idée supprimée.');
+    }
 }
 
 

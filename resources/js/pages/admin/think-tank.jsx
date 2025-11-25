@@ -1,11 +1,11 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, usePage, router, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle, XCircle, Clock, Search, Filter, Users } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Search, Filter, Users, Trash2 } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 const breadcrumbs = [
@@ -25,6 +25,7 @@ export default function AdminThinkTank() {
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [groupFilter, setGroupFilter] = useState('');
+    const { delete: destroySignup, processing: deleting } = useForm({});
 
     // Frontend-only filtering
     const filteredSignups = useMemo(() => {
@@ -106,6 +107,20 @@ export default function AdminThinkTank() {
                 }
             });
         }
+    };
+
+    const handleDelete = (id) => {
+        if (!confirm('Supprimer définitivement cette inscription ?')) {
+            return;
+        }
+
+        destroySignup(`/admin/think-tank/${id}`, {
+            preserveScroll: true,
+            onError: (errors) => {
+                console.error('Error deleting signup:', errors);
+                alert('Erreur lors de la suppression de l\'inscription.');
+            }
+        });
     };
 
     const formatDate = (dateString) => {
@@ -263,7 +278,7 @@ export default function AdminThinkTank() {
                                                         {formatDate(signup.created_at)}
                                                     </td>
                                                     <td className="p-3">
-                                                        <div className="flex items-center gap-2">
+                                                        <div className="flex items-center gap-2 flex-wrap">
                                                             {signup.status === 'pending' && (
                                                                 <>
                                                                     <Button
@@ -294,6 +309,16 @@ export default function AdminThinkTank() {
                                                                     Rejeté le {formatDate(signup.rejected_at)}
                                                                 </span>
                                                             )}
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                disabled={deleting}
+                                                                onClick={() => handleDelete(signup.id)}
+                                                                style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                                            >
+                                                                <Trash2 className="w-4 h-4 mr-1" />
+                                                                Supprimer
+                                                            </Button>
                                                         </div>
                                                     </td>
                                                 </tr>
