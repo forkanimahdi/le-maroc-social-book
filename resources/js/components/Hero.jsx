@@ -34,7 +34,7 @@ export default function Hero() {
             <div
                 className="relative min-h-screen"
                 style={{
-                    backgroundImage: `linear-gradient(90deg, color-mix(in oklab, var(--royal-red) 65%, transparent), color-mix(in oklab, var(--gold) 25%, transparent)), url(/assets/hero.jpg)`,
+                    backgroundImage: `linear-gradient(90deg, color-mix(in oklab, var(--royal-red) 35%, transparent), color-mix(in oklab, var(--gold) 25%, transparent)), url(/assets/hero.png)`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
