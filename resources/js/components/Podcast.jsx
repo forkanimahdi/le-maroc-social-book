@@ -8,7 +8,7 @@ export default function Podcast({ episodes = [] }) {
     const audioRef = useRef(null);
 
     // YouTube channel URL and video ID (preview)
-    const youtubeChannelUrl = 'https://www.youtube.com/@maroc-social-2030';
+    const youtubeChannelUrl = 'https://youtube.com/@oumaimamhijir5672?si=NiYXapOWzkAhgjWL';
     const youtubeVideoId = 'CwIIrNz0O4s'; // Replace with actual preview video ID
 
     // Spotify podcast URL

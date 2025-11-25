@@ -253,24 +253,28 @@ export default function AdminEventParticipants() {
                                                         {formatDate(participant.created_at)}
                                                     </td>
                                                     <td className="p-3">
-                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                        <div className="flex items-center gap-2">
                                                             {participant.status === 'pending' && (
                                                                 <>
                                                                     <Button
-                                                                        size="sm"
+                                                                        size="icon"
+                                                                        className="text-white"
                                                                         onClick={() => handleApprove(participant.id)}
-                                                                        style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                                                        style={{ backgroundColor: 'var(--royal-green)' }}
+                                                                        title="Approuver"
+                                                                        aria-label="Approuver"
                                                                     >
-                                                                        <CheckCircle className="w-4 h-4 mr-1" />
-                                                                        Approuver
+                                                                        <CheckCircle className="w-4 h-4" />
                                                                     </Button>
                                                                     <Button
-                                                                        size="sm"
+                                                                        size="icon"
+                                                                        className="text-white"
                                                                         onClick={() => handleReject(participant.id)}
-                                                                        style={{ backgroundColor: 'var(--royal-red)', color: 'white' }}
+                                                                        style={{ backgroundColor: 'var(--royal-red)' }}
+                                                                        title="Rejeter"
+                                                                        aria-label="Rejeter"
                                                                     >
-                                                                        <XCircle className="w-4 h-4 mr-1" />
-                                                                        Rejeter
+                                                                        <XCircle className="w-4 h-4" />
                                                                     </Button>
                                                                 </>
                                                             )}
@@ -285,14 +289,15 @@ export default function AdminEventParticipants() {
                                                                 </span>
                                                             )}
                                                             <Button
-                                                                size="sm"
+                                                                size="icon"
                                                                 variant="outline"
                                                                 disabled={deleting}
                                                                 onClick={() => handleDelete(participant.id)}
                                                                 style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                                                title="Supprimer"
+                                                                aria-label="Supprimer"
                                                             >
-                                                                <Trash2 className="w-4 h-4 mr-1" />
-                                                                Supprimer
+                                                                <Trash2 className="w-4 h-4" />
                                                             </Button>
                                                         </div>
                                                     </td>

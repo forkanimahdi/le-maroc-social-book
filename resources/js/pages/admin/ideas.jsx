@@ -226,7 +226,7 @@ export default function AdminIdeas() {
                                                     </CardTitle>
                                                 )}
                                             </div>
-                                            <div className="flex gap-2 flex-wrap justify-end">
+                                            <div className="flex gap-2  justify-end">
                                                 {editingId === idea.id ? (
                                                     <>
                                                         <Button
@@ -261,19 +261,23 @@ export default function AdminIdeas() {
                                                             <>
                                                                 <Button
                                                                     onClick={() => handleApprove(idea.id)}
-                                                                    size="sm"
-                                                                    style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                                                    size="icon"
+                                                                    className="text-white"
+                                                                    style={{ backgroundColor: 'var(--royal-green)' }}
+                                                                    title="Approuver"
+                                                                    aria-label="Approuver"
                                                                 >
-                                                                    <CheckCircle className="w-4 h-4 mr-1" />
-                                                                    Approuver
+                                                                    <CheckCircle className="w-4 h-4" />
                                                                 </Button>
                                                                 <Button
                                                                     onClick={() => handleReject(idea.id)}
-                                                                    size="sm"
-                                                                    style={{ backgroundColor: 'var(--royal-red)', color: 'white' }}
+                                                                    size="icon"
+                                                                    className="text-white"
+                                                                    style={{ backgroundColor: 'var(--royal-red)' }}
+                                                                    title="Rejeter"
+                                                                    aria-label="Rejeter"
                                                                 >
-                                                                    <XCircle className="w-4 h-4 mr-1" />
-                                                                    Rejeter
+                                                                    <XCircle className="w-4 h-4" />
                                                                 </Button>
                                                             </>
                                                         )}
@@ -281,13 +285,14 @@ export default function AdminIdeas() {
                                                 )}
                                                 <Button
                                                     onClick={() => handleDelete(idea.id)}
-                                                    size="sm"
+                                                    size="icon"
                                                     variant="outline"
                                                     disabled={deleting}
                                                     style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                                    title="Supprimer"
+                                                    aria-label="Supprimer"
                                                 >
-                                                    <Trash2 className="w-4 h-4 mr-1" />
-                                                    Supprimer
+                                                    <Trash2 className="w-4 h-4" />
                                                 </Button>
                                             </div>
                                         </div>
