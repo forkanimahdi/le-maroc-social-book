@@ -133,7 +133,7 @@ export default function ContactSection() {
                             {[
                                 {
                                     title: 'Email direct',
-                                    detail: 'mhijiroum@gmail.com'
+                                    detail: 'author@ms2030.org'
                                 },
                                 {
                                     title: 'Site officiel',
