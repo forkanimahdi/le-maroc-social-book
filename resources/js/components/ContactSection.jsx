@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function ContactSection() {
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -10,6 +10,13 @@ export default function ContactSection() {
         message: '',
     });
     const [sent, setSent] = useState(false);
+
+    const thinkTankUrl = useMemo(() => {
+        if (typeof window !== 'undefined') {
+            return `${window.location.origin}/#groupes`;
+        }
+        return 'https://ms2030.org/#groupes';
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,24 +31,26 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contact" className="bg-white/80 py-20">
+        <section id="contact" className="bg-gradient-to-br from-[#5a0204] via-[#7c0205] to-[#1b4e0b] py-20 text-white">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <span className="text-sm font-medium text-royal-red-soft tracking-widest uppercase">Contact</span>
-                    <h2 className="text-4xl sm:text-5xl font-bold text-royal-red mt-4">
+                    <span className="text-sm font-semibold tracking-[0.3em] uppercase text-gold">Contact</span>
+                    <h2 className="text-4xl sm:text-5xl font-bold mt-4" style={{ color: 'var(--gold)' }}>
                         Écrivez-moi directement
                     </h2>
-                    <p className="mt-4 text-lg text-zinc-600 max-w-3xl mx-auto">
-                        Partagez vos idées, collaborations ou questions. Je lis chaque message et je réponds depuis mon espace administrateur pour rester au plus près de votre démarche.
+                    <p className="mt-4 text-lg text-white/80 max-w-3xl mx-auto">
+                        Vos messages nourrissent mon travail quotidien. Partagez vos idées, vos collaborations ou vos questions et je vous répondrai depuis mon espace administrateur.
                     </p>
                 </div>
 
                 <div className="grid lg:grid-cols-2 gap-10">
-                    <div className="bg-cream/70 border border-royal-red-soft rounded-3xl p-10 shadow-lg">
-                        <h3 className="text-2xl font-semibold text-royal-red mb-6">Entrons en conversation</h3>
+                    <div className="bg-white text-[#4a0506] rounded-3xl p-10 shadow-2xl border border-royal-red-soft">
+                        <h3 className="text-2xl font-semibold mb-6" style={{ color: 'var(--royal-red)' }}>
+                            Entrons en conversation
+                        </h3>
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <div>
-                                <label className="block text-sm font-semibold text-zinc-700 mb-1">Nom complet</label>
+                                <label className="block text-sm font-semibold mb-1" style={{ color: 'var(--royal-red)' }}>Nom complet</label>
                                 <input
                                     type="text"
                                     value={data.full_name}
@@ -54,7 +63,7 @@ export default function ContactSection() {
                             </div>
                             <div className="grid sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-zinc-700 mb-1">Email</label>
+                                    <label className="block text-sm font-semibold mb-1" style={{ color: 'var(--royal-red)' }}>Email</label>
                                     <input
                                         type="email"
                                         value={data.email}
@@ -66,7 +75,7 @@ export default function ContactSection() {
                                     {errors.email && <p className="text-sm text-royal-red mt-1">{errors.email}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-zinc-700 mb-1">Rôle / Organisation</label>
+                                    <label className="block text-sm font-semibold mb-1" style={{ color: 'var(--royal-red)' }}>Rôle / Organisation</label>
                                     <input
                                         type="text"
                                         value={data.role}
@@ -77,7 +86,7 @@ export default function ContactSection() {
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-zinc-700 mb-1">Sujet</label>
+                                <label className="block text-sm font-semibold mb-1" style={{ color: 'var(--royal-red)' }}>Sujet</label>
                                 <input
                                     type="text"
                                     value={data.subject}
@@ -87,7 +96,7 @@ export default function ContactSection() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-zinc-700 mb-1">Message</label>
+                                <label className="block text-sm font-semibold mb-1" style={{ color: 'var(--royal-red)' }}>Message</label>
                                 <textarea
                                     value={data.message}
                                     onChange={(e) => setData('message', e.target.value)}
@@ -101,25 +110,26 @@ export default function ContactSection() {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full py-3 rounded-xl font-semibold bg-royal-red text-white hover:bg-royal-red/90 transition disabled:opacity-60"
+                                className="w-full py-3 rounded-xl font-semibold text-white transition disabled:opacity-60"
+                                style={{ backgroundColor: 'var(--royal-red)' }}
                             >
                                 {processing ? 'Envoi en cours...' : 'Envoyer le message'}
                             </button>
 
                             {sent && (
-                                <div className="mt-3 text-sm font-semibold text-royal-green text-center">
+                                <div className="mt-3 text-sm font-semibold text-center" style={{ color: 'var(--royal-green)' }}>
                                     Merci pour votre message. Je vous réponds personnellement dès que possible.
                                 </div>
                             )}
                         </form>
                     </div>
 
-                    <div className="bg-white border border-gold/40 rounded-3xl p-10 shadow-lg space-y-6">
-                        <h3 className="text-2xl font-semibold text-royal-green">Mes engagements</h3>
-                        <p className="text-zinc-600 leading-relaxed">
-                            Chaque échange nourrit mon travail d’autrice et de militante pour un Maroc social. Vos messages sont lus avec attention et restent confidentiels.
+                    <div className="rounded-3xl p-10 shadow-2xl border border-gold/40" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                        <h3 className="text-2xl font-semibold mb-6" style={{ color: 'var(--gold)' }}>Mes engagements</h3>
+                        <p className="text-white/80 leading-relaxed">
+                            Chaque échange nourrit mon travail d’autrice et de militante pour un Maroc social. Vos messages restent confidentiels et reçoivent une réponse personnalisée.
                         </p>
-                        <div className="space-y-4">
+                        <div className="space-y-4 mt-8">
                             {[
                                 {
                                     title: 'Email direct',
@@ -131,17 +141,32 @@ export default function ContactSection() {
                                 },
                                 {
                                     title: 'Canal WhatsApp',
-                                    detail: 'Recevez les annonces en rejoignant le canal mentionné dans les emails.'
+                                    detail: 'Recevez les annonces officielles en rejoignant le canal partagé dans mes emails.'
                                 },
                             ].map((item, index) => (
-                                <div key={index} className="p-4 rounded-2xl bg-cream/60 border border-gold/40">
-                                    <p className="text-sm uppercase tracking-wide text-royal-red font-semibold">{item.title}</p>
-                                    <p className="text-lg font-medium text-zinc-800">{item.detail}</p>
+                                <div key={index} className="p-4 rounded-2xl border border-gold/40 bg-white/10 backdrop-blur">
+                                    <p className="text-sm uppercase tracking-wide font-semibold" style={{ color: 'var(--gold)' }}>{item.title}</p>
+                                    <p className="text-lg font-medium">{item.detail}</p>
                                 </div>
                             ))}
                         </div>
-                        <p className="text-sm text-zinc-500">
-                            En écrivant via ce formulaire, vous acceptez que je vous réponde par email pour approfondir nos échanges.
+
+                        <div className="mt-8 p-5 rounded-2xl border border-white/20 bg-white/10">
+                            <p className="text-sm uppercase tracking-wide font-semibold text-white/70 mb-2">Think Tank</p>
+                            <p className="text-white/90 mb-4">
+                                Vous souhaitez contribuer aux chantiers de transformation ? Rejoignez directement l’espace Think Tank du site.
+                            </p>
+                            <a
+                                href={thinkTankUrl}
+                                className="inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold transition hover:scale-105"
+                                style={{ backgroundColor: 'var(--gold)', color: '#1b1b1b' }}
+                            >
+                                Rejoindre le Think Tank
+                            </a>
+                        </div>
+
+                        <p className="text-sm text-white/70 mt-6">
+                            En écrivant via ce formulaire, vous acceptez que je vous contacte par email pour approfondir nos échanges.
                         </p>
                     </div>
                 </div>
@@ -149,5 +174,3 @@ export default function ContactSection() {
         </section>
     );
 }
-
-

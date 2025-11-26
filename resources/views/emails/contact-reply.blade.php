@@ -105,6 +105,7 @@
                 <p>Je reste à votre disposition pour poursuivre cet échange et construire ensemble des solutions concrètes pour notre pays.</p>
             </div>
 
+            @include('emails.partials.think-tank-invite')
             @include('emails.partials.signature')
         </div>
 

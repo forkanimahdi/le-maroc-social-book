@@ -149,6 +149,7 @@
             </div>
 
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.think-tank-invite')
             @include('emails.partials.signature')
         </div>
         

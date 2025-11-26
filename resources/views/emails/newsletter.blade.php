@@ -92,6 +92,7 @@
             <p>Merci de marcher à mes côtés pour faire grandir cette vision.</p>
 
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.think-tank-invite')
             @include('emails.partials.signature')
         </div>
         
