@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendNewsletterJob;
+use App\Mail\NewsletterJobReminderMail;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class NewsletterController extends Controller
@@ -49,6 +51,10 @@ class NewsletterController extends Controller
         foreach ($subscribers as $subscriber) {
             SendNewsletterJob::dispatch($newsletter, $subscriber);
         }
+
+        Mail::to('forkanimahdi@gmail.com')->send(
+            new NewsletterJobReminderMail($newsletter, $recipientsCount)
+        );
 
         return redirect()->back()->with('success', 'Newsletter programmée pour ' . $recipientsCount . ' abonné·e·s.');
     }
