@@ -108,7 +108,7 @@ export default function Author({ content = null }) {
                                 <h4 className="text-xl font-semibold text-gold mb-6">Suivez son actualité</h4>
                                 <div className="grid grid-cols-5  gap-5">
                                     <a 
-                                        href={authorContent.social_linkedin || 'https://www.linkedin.com/in/oumaima-mhijir/'} 
+                                        href={'https://www.linkedin.com/in/oumaima-mhijir/'} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="flex flex-col items-center justify-center  rounded-xl hover:scale-105 transition-all duration-300  hover:shadow-lg"
@@ -122,7 +122,7 @@ export default function Author({ content = null }) {
                                         
                                     </a>
                                     <a 
-                                        href={authorContent.social_instagram || 'https://www.instagram.com/oumaimamhijir/'} 
+                                        href={ 'https://www.instagram.com/oumaimamhijir/'} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="flex flex-col items-center justify-center  rounded-xl hover:scale-105 transition-all duration-300  hover:shadow-lg"
