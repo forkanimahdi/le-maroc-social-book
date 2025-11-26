@@ -111,7 +111,7 @@ export default function Book() {
                             
                             {/* CTA Button */}
                             <button 
-                                onClick={() => window.open(businessWhatsapp, '_blank')}
+                                onClick={() => window.open("https://wa.me/212724732762", '_blank')}
                                 className="w-full py-4 px-6 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 group/btn "
                                 style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                             >
