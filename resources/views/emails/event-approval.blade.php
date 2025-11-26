@@ -113,15 +113,13 @@
 
             <div class="success-box">
                 <h3>🎉 Excellente nouvelle !</h3>
-                <p>Nous sommes ravis de vous informer que votre inscription à l'<strong>événement de lancement</strong>
-                    du livre "Le Maroc Social 2030" a été <strong>confirmée</strong>.</p>
+                <p>Je suis heureuse de vous confirmer votre participation à l'<strong>événement de lancement</strong> du livre « Le Maroc Social 2030 ».</p>
             </div>
 
             <div class="content">
-                <p>Votre participation à cet événement important est précieuse pour nous. Nous avons hâte de vous
-                    accueillir et de partager avec vous cette étape importante de notre projet.</p>
+                <p>Votre présence compte beaucoup pour moi : elle incarne l'engagement collectif que je souhaite insuffler à travers ce projet.</p>
 
-                <p><strong>Détails de votre inscription :</strong></p>
+                <p><strong>Vos informations :</strong></p>
                 <ul style="color: #555; line-height: 2;">
                     <li><strong>Nom :</strong> {{ $participant->full_name }}</li>
                     <li><strong>Rôle :</strong> {{ $participant->role }}</li>
@@ -143,6 +141,7 @@
             </div>
 
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.signature')
         </div>
 
         <div class="footer">
@@ -150,8 +149,8 @@
             <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
-                <a href="{{ config('app.url') }}">Visiter le site web</a> |
-                <a href="mailto:author@ms2030.org">Nous contacter</a>
+                <a href="{{ config('app.url', 'https://ms2030.org') }}">Visiter ms2030.org</a> |
+                <a href="mailto:mhijiroum@gmail.com">Me contacter</a>
             </p>
         </div>
     </div>

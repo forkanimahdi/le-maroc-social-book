@@ -8,6 +8,7 @@ import Groups from '../components/Groups.jsx';
 import Podcast from '../components/Podcast.jsx';
 import IdeasBox from '../components/IdeasBox.jsx';
 import Newsletter from '../components/Newsletter.jsx';
+import ContactSection from '../components/ContactSection.jsx';
 import FlashMessage from '../components/ui/FlashMessage.jsx';
 
 export default function Home({ ideas = [], episodes = [], content = null }) {
@@ -28,6 +29,7 @@ export default function Home({ ideas = [], episodes = [], content = null }) {
                 <section id="groupes" className="scroll-mt-24"><Groups /></section>
                 <section id="podcast" className="scroll-mt-24"><Podcast episodes={episodes} /></section>
                 <section id="boite-idees" className="scroll-mt-24"><IdeasBox ideas={ideas} /></section>
+                <ContactSection />
                 <section id="newsletter" className="scroll-mt-24"><Newsletter /></section>
             </main>
 

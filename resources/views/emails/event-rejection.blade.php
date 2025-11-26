@@ -97,27 +97,26 @@
             </div>
             
             <div class="content">
-                <p>Nous vous remercions de votre intérêt pour participer à l'événement de lancement du livre "Le Maroc Social 2030".</p>
+                <p>Merci d’avoir souhaité partager ce moment clé autour de « Le Maroc Social 2030 ».</p>
                 
                 <div class="info-box">
-                    <h3>Malheureusement, les places sont complètes</h3>
-                    <p>Après examen de votre demande, nous sommes au regret de vous informer que nous ne pouvons pas confirmer votre inscription à cet événement, car <strong>toutes les places disponibles ont été attribuées</strong>.</p>
+                    <h3>Places complètes</h3>
+                    <p>Après examen attentif des candidatures, je dois malheureusement vous informer que toutes les places ont déjà été confirmées. Je sais que cette réponse peut être décevante et je vous remercie pour votre compréhension.</p>
                 </div>
                 
-                <p>Nous comprenons votre déception et nous vous remercions sincèrement de votre intérêt pour notre projet.</p>
-                
-                <p><strong>Nous vous invitons à :</strong></p>
+                <p><strong>Continuons le lien :</strong></p>
                 <ul style="color: #555; line-height: 2;">
-                    <li>Découvrir le livre "Le Maroc Social 2030" sur notre site web</li>
-                    <li>Rejoindre notre communauté et nos groupes de travail</li>
-                    <li>Suivre nos actualités via notre newsletter</li>
-                    <li>Participer à nos prochains événements</li>
+                    <li>Découvrez le livre « Le Maroc Social 2030 » sur le site officiel.</li>
+                    <li>Rejoignez les groupes de travail pour participer aux réflexions.</li>
+                    <li>Suivez la newsletter pour être informé·e des prochains rendez-vous.</li>
+                    <li>Gardez un œil sur nos réseaux pour les futures rencontres.</li>
                 </ul>
                 
-                <p>Nous espérons avoir l'occasion de vous accueillir lors d'un prochain événement.</p>
+                <p>J’espère pouvoir vous accueillir lors d’un prochain événement.</p>
             </div>
 
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.signature')
         </div>
         
         <div class="footer">
@@ -125,8 +124,8 @@
             <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
-                <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:author@ms2030.org">Nous contacter</a>
+                <a href="{{ config('app.url', 'https://ms2030.org') }}">Visiter ms2030.org</a> | 
+                <a href="mailto:mhijiroum@gmail.com">Me contacter</a>
             </p>
         </div>
     </div>

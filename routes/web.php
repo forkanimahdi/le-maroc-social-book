@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\IdeaController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\PodcastController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ContactMessageController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -33,6 +35,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/newsletter', [NewsletterController::class, 'index'])->name('admin.newsletter');
     Route::post('/admin/newsletter/send', [NewsletterController::class, 'send'])->name('admin.newsletter.send');
     Route::get('/admin/newsletter/export', [NewsletterController::class, 'exportSubscribers'])->name('admin.newsletter.export');
+    Route::post('/admin/newsletter/subscribers/{subscriber}/toggle', [NewsletterController::class, 'toggleSubscriberStatus'])->name('admin.newsletter.subscribers.toggle');
     
     // Content management
     Route::get('/admin/content', [ContentController::class, 'index'])->name('admin.content');
@@ -62,6 +65,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/event-participants/{id}/approve', [\App\Http\Controllers\Admin\EventParticipantController::class, 'approve'])->name('admin.event-participants.approve');
     Route::post('/admin/event-participants/{id}/reject', [\App\Http\Controllers\Admin\EventParticipantController::class, 'reject'])->name('admin.event-participants.reject');
     Route::delete('/admin/event-participants/{id}', [\App\Http\Controllers\Admin\EventParticipantController::class, 'destroy'])->name('admin.event-participants.destroy');
+
+    // Contact messages
+    Route::get('/admin/messages', [AdminContactMessageController::class, 'index'])->name('admin.messages');
+    Route::post('/admin/messages/{message}/reply', [AdminContactMessageController::class, 'reply'])->name('admin.messages.reply');
 });
 
 // Form posts
@@ -71,6 +78,8 @@ Route::post('/groups', [GroupSignupController::class, 'store'])->name('groups.st
 Route::post('/subscribers', [SubscriberController::class, 'store'])->name('subscribers.store');
 Route::post('/book/executive-summary', [\App\Http\Controllers\BookController::class, 'sendExecutiveSummary'])->name('book.executive-summary');
 Route::post('/event-participants', [\App\Http\Controllers\EventParticipantController::class, 'store'])->name('event-participants.store');
+Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
+Route::get('/newsletter/unsubscribe/{token}', [SubscriberController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

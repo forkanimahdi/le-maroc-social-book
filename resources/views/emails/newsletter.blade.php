@@ -83,19 +83,23 @@
         
         <div class="email-content">
             <h2>{{ $newsletter->subject }}</h2>
+            <p>Je suis heureuse de vous partager ces actualités qui nourrissent l'élan collectif autour de « Le Maroc Social 2030 ».</p>
             
             <div>
                 {!! $newsletter->content !!}
             </div>
 
+            <p>Merci de marcher à mes côtés pour faire grandir cette vision.</p>
+
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.signature')
         </div>
         
         <div class="email-footer">
-            <p><strong>Le Maroc Social 2030</strong></p>
-            <p>Une initiative citoyenne pour construire ensemble un Maroc plus inclusif, solidaire et tourné vers l'avenir.</p>
+            <p><strong>Oumaima Mhijir</strong></p>
+            <p><a href="{{ config('app.url', 'https://ms2030.org') }}" style="color: var(--royal-green); text-decoration:none;">Visiter ms2030.org</a></p>
             <p style="margin-top: 20px;">
-                <a href="#" class="unsubscribe-link">Se désabonner</a>
+                <a href="{{ route('newsletter.unsubscribe', $subscriber->unsubscribe_token) }}" class="unsubscribe-link">Se désabonner</a>
             </p>
         </div>
     </div>

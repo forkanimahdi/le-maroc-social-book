@@ -126,7 +126,7 @@
             
             <div class="success-box">
                 <h3>🎉 Excellente nouvelle !</h3>
-                <p>Nous sommes ravis de vous informer que votre candidature pour rejoindre le <strong>Think Tank Le Maroc Social 2030</strong> a été <strong>approuvée</strong>.</p>
+                <p>Je suis ravie de vous confirmer votre intégration au <strong>Think Tank Le Maroc Social 2030</strong>.</p>
             </div>
             
             @php
@@ -140,19 +140,19 @@
                 $channelLink = config('app.whatsapp_channel');
             @endphp
             <div class="content">
-                <p>Votre engagement et votre expertise sont précieux pour notre mission commune de transformation sociale au Maroc.</p>
+                <p>Votre engagement et votre expertise sont précieux pour porter cette ambition collective.</p>
                 
-                <p><strong>Vous êtes maintenant membre officiel du groupe :</strong> {{ $groupName }}</p>
+                <p><strong>Vous êtes désormais membre du groupe :</strong> {{ $groupName }}</p>
             </div>
             
             <div class="whatsapp-box">
                 <h3>📱 Rejoignez le groupe WhatsApp officiel</h3>
-                <p>En tant que membre approuvé, vous avez accès au groupe WhatsApp officiel du Think Tank. Ce groupe privé vous permettra de :</p>
+                <p>En tant que membre approuvé, vous accédez au groupe WhatsApp officiel du Think Tank. Ce cercle privé vous permettra de :</p>
                 <ul style="color: #666; line-height: 2; margin: 10px 0;">
                     <li>Échanger directement avec les autres membres</li>
-                    <li>Participer aux discussions et travaux du groupe</li>
-                    <li>Recevoir les mises à jour et annonces importantes</li>
-                    <li>Collaborer sur les projets et initiatives</li>
+                    <li>Participer aux travaux du groupe</li>
+                    <li>Recevoir les mises à jour importantes</li>
+                    <li>Co-créer les projets et initiatives</li>
                 </ul>
                 <div style="text-align: center; margin: 20px 0;">
                     <a href="{{ $whatsappGroupLink }}" class="cta-button" target="_blank">Rejoindre le groupe WhatsApp officiel</a>
@@ -165,17 +165,18 @@
             <div class="content">
                 <p><strong>Prochaines étapes :</strong></p>
                 <ul style="color: #555; line-height: 2;">
-                    <li>Rejoignez le groupe WhatsApp officiel via le lien ci-dessus</li>
-                    <li>Présentez-vous aux autres membres</li>
-                    <li>Participez activement aux discussions et travaux du groupe</li>
-                    <li>Restez à l'écoute des annonces et mises à jour</li>
+                    <li>Rejoignez immédiatement le groupe WhatsApp via le lien ci-dessus.</li>
+                    <li>Présentez-vous aux membres pour lancer les échanges.</li>
+                    <li>Participez activement aux discussions thématiques.</li>
+                    <li>Restez attentif·ve aux annonces partagées sur le canal.</li>
                 </ul>
                 <p style="margin-top: 20px;">
-                    Pour suivre les communications publiques du Think Tank, rejoignez également notre canal WhatsApp officiel.
+                    Pour suivre les communications publiques du Think Tank, rejoignez également mon canal WhatsApp officiel.
                 </p>
             </div>
 
             @include('emails.partials.whatsapp-channel', ['channelLink' => $channelLink])
+            @include('emails.partials.signature')
         </div>
         
         <div class="footer">
@@ -183,8 +184,8 @@
             <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
-                <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:author@ms2030.org">Nous contacter</a>
+                <a href="{{ config('app.url', 'https://ms2030.org') }}">Visiter ms2030.org</a> | 
+                <a href="mailto:mhijiroum@gmail.com">Me contacter</a>
             </p>
         </div>
     </div>

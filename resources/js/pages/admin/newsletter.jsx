@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,7 +66,7 @@ function NewsletterPreview({ newsletter }) {
     );
 }
 
-export default function Newsletter({ subscribers = [], newsletters = [] }) {
+export default function Newsletter({ subscribers = [], newsletters = [], subscriberStats = { active: 0, inactive: 0, total: 0 } }) {
     const [activeTab, setActiveTab] = useState('subscribers');
     
     const { data: newsletterData, setData: setNewsletterData, post: sendNewsletter, processing } = useForm({
@@ -77,6 +77,12 @@ export default function Newsletter({ subscribers = [], newsletters = [] }) {
     const handleSendNewsletter = (e) => {
         e.preventDefault();
         sendNewsletter('/admin/newsletter/send');
+    };
+
+    const handleToggleSubscriber = (subscriber) => {
+        router.post(`/admin/newsletter/subscribers/${subscriber.id}/toggle`, {}, {
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -95,7 +101,7 @@ export default function Newsletter({ subscribers = [], newsletters = [] }) {
                             <div className="flex items-center gap-4">
                                 <div className="text-right">
                                     <p className="text-sm text-zinc-600">Abonnés actifs</p>
-                                    <p className="text-2xl font-bold text-royal-red-soft">{subscribers.length}</p>
+                                    <p className="text-2xl font-bold text-royal-red-soft">{subscriberStats.active}</p>
                                 </div>
                             </div>
                         </div>
@@ -150,29 +156,32 @@ export default function Newsletter({ subscribers = [], newsletters = [] }) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {subscribers.map(subscriber => (
+                                        {subscribers.map(subscriber => {
+                                            const isActive = !subscriber.unsubscribed_at;
+                                            return (
                                             <tr key={subscriber.id} className="border-b border-zinc-100 hover:bg-zinc-50">
-                                                <td className="py-3 px-4 text-zinc-800">{subscriber.nom}</td>
+                                                <td className="py-3 px-4 text-zinc-800">{subscriber.nom || '—'}</td>
                                                 <td className="py-3 px-4 text-zinc-600">{subscriber.email}</td>
                                                 <td className="py-3 px-4 text-zinc-600">
                                                     {new Date(subscriber.created_at).toLocaleDateString('fr-FR')}
                                                 </td>
                                                 <td className="py-3 px-4">
-                                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        Actif
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-800' : 'bg-zinc-200 text-zinc-700'}`}>
+                                                        {isActive ? 'Actif' : 'Désinscrit'}
                                                     </span>
                                                 </td>
                                                 <td className="py-3 px-4">
                                                     <Button 
                                                         size="sm" 
                                                         variant="outline"
-                                                        className="text-red-600 border-red-200 hover:bg-red-50"
+                                                        onClick={() => handleToggleSubscriber(subscriber)}
+                                                        className={`${isActive ? 'text-red-600 border-red-200 hover:bg-red-50' : 'text-green-700 border-green-200 hover:bg-green-50'}`}
                                                     >
-                                                        Désabonner
+                                                        {isActive ? 'Désabonner' : 'Réactiver'}
                                                     </Button>
                                                 </td>
                                             </tr>
-                                        ))}
+                                        )})}
                                     </tbody>
                                 </table>
                             </div>
@@ -212,10 +221,10 @@ export default function Newsletter({ subscribers = [], newsletters = [] }) {
 
                                 <div className="bg-zinc-50 p-4 rounded-lg">
                                     <p className="text-sm text-zinc-600 mb-2">
-                                        <strong>Destinataires:</strong> {subscribers.length} abonnés
+                                        <strong>Destinataires:</strong> {subscriberStats.active} abonnés actifs
                                     </p>
                                     <p className="text-xs text-zinc-500">
-                                        La newsletter sera envoyée à tous les abonnés
+                                        La newsletter sera envoyée aux abonnés actifs uniquement.
                                     </p>
                                 </div>
 

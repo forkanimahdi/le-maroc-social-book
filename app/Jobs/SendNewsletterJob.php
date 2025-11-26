@@ -27,6 +27,10 @@ class SendNewsletterJob implements ShouldQueue
 
     public function handle(): void
     {
+        if ($this->subscriber->unsubscribed_at) {
+            return;
+        }
+
         try {
             // Send newsletter email using Mailable
             Mail::to($this->subscriber->email)->send(

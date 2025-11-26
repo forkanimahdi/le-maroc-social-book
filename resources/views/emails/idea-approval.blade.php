@@ -121,11 +121,11 @@
             
             <div class="success-box">
                 <h3>🎉 Excellente nouvelle !</h3>
-                <p>Nous sommes ravis de vous informer que votre idée a été <strong>approuvée</strong> et est maintenant publiée sur notre site web.</p>
+                <p>Je suis heureuse de vous informer que votre idée a été <strong>approuvée</strong> et publiée sur le site.</p>
             </div>
             
             <div class="content">
-                <p>Merci de votre contribution au projet <strong>Le Maroc Social 2030</strong>. Votre vision et vos idées sont précieuses pour construire ensemble un Maroc plus solidaire et inclusif.</p>
+                <p>Merci d'avoir pris le temps de contribuer à <strong>Le Maroc Social 2030</strong>. Votre regard nourrit la réflexion collective et donne de la force à ce projet citoyen.</p>
             </div>
             
             <div class="idea-box">
@@ -137,23 +137,19 @@
             <div class="content">
                 <p><strong>Prochaines étapes :</strong></p>
                 <ul style="color: #555; line-height: 2;">
-                    <li>Votre idée est maintenant visible dans l'espace public du site</li>
-                    <li>D'autres membres de la communauté peuvent la consulter et s'en inspirer</li>
-                    <li>Continuez à partager vos réflexions et idées pour le Maroc de demain</li>
+                    <li>Votre idée est désormais visible dans l'espace public du site.</li>
+                    <li>La communauté peut la consulter et s'en inspirer.</li>
+                    <li>Continuez à partager vos réflexions afin de bâtir un Maroc social et digne.</li>
                 </ul>
             </div>
 
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.signature')
         </div>
         
         <div class="footer">
-            <p><strong>Le Maroc Social 2030</strong></p>
-            <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
-            <p>et transformer le Maroc social de demain.</p>
-            <p style="margin-top: 20px;">
-                <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:author@ms2030.org">Nous contacter</a>
-            </p>
+            <p><strong>Oumaima Mhijir</strong></p>
+            <p><a href="{{ config('app.url', 'https://ms2030.org') }}" style="color: var(--royal-red); text-decoration:none;">Visiter le site</a></p>
         </div>
     </div>
 </body>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactMessage;
 use App\Models\EventParticipant;
 use App\Models\GroupSignup;
 use App\Models\Idea;
@@ -24,7 +25,9 @@ class DashboardController extends Controller
                 'event_participants_pending' => EventParticipant::where('status', 'pending')->count(),
                 'event_participants_approved' => EventParticipant::where('status', 'approved')->count(),
                 'subscribers' => Subscriber::count(),
-                'subscribers_active' => Subscriber::where('status', 'active')->count(),
+                'subscribers_active' => Subscriber::whereNull('unsubscribed_at')->count(),
+                'messages_total' => ContactMessage::count(),
+                'messages_pending' => ContactMessage::where('status', 'pending')->count(),
             ],
         ]);
     }

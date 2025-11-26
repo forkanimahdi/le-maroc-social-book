@@ -122,9 +122,9 @@
             <div class="content">
                 <p>Merci de votre intérêt pour <strong>Le Maroc Social 2030</strong>.</p>
                 
-                <p>Nous sommes ravis de vous envoyer le résumé exécutif de cet ouvrage d'anticipation sociale et de mobilisation nationale qui propose une vision partagée pour reconstruire la cohésion, renforcer l'équité et garantir la dignité de chaque citoyen à l'horizon du Momentum de 2030.</p>
+                <p>Je suis heureuse de vous partager le résumé exécutif de cet ouvrage d'anticipation sociale qui porte une vision concrète pour retisser la cohésion et garantir la dignité de chaque citoyen d'ici 2030.</p>
                 
-                <p>Le document PDF est joint à cet e-mail. Il contient les points clés, les recommandations principales et les axes de réflexion développés dans l'ouvrage complet.</p>
+                <p>Le document PDF est joint à cet e-mail. Il rassemble les idées-forces, les recommandations et les axes d'action que je défends sur le terrain.</p>
             </div>
             
             <div class="attachment-info">
@@ -149,12 +149,7 @@
             </div>
 
             @include('emails.partials.whatsapp-channel')
-            
-            <div class="signature">
-                <p><strong>Oumaima Mhijir</strong></p>
-                <p>Autrice, experte en entrepreneuriat social international</p>
-                <p>Le Maroc Social 2030</p>
-            </div>
+            @include('emails.partials.signature')
         </div>
         
         <div class="footer">
@@ -162,8 +157,8 @@
             <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
-                <a href="#">Visiter le site web</a> | 
-                <a href="#">Nous contacter</a>
+                <a href="{{ config('app.url', 'https://ms2030.org') }}">Visiter ms2030.org</a> | 
+                <a href="mailto:mhijiroum@gmail.com">Me contacter</a>
             </p>
             <p style="margin-top: 20px; font-size: 12px; color: #999;">
                 Vous recevez cet e-mail car vous avez demandé le résumé exécutif du livre "Le Maroc Social 2030".<br>

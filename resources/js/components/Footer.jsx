@@ -36,7 +36,8 @@ export default function Footer() {
                             <li><a href="#groupes" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#groupes'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Le Think Tank</a></li>
                             <li><a href="#podcast" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#podcast'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Le Podcast</a></li>
                             <li><a href="#boite-idees" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#boite-idees'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Vos Recommandations</a></li>
-                            <li><a href="#newsletter" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#newsletter'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">La Newsletter</a></li>
+                            <li><a href="#newsletter" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#newsletter'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors colors cursor-pointer">Contact</a></li>                            <li><a href="#contact" onClick={(e) => { e.preventDefault(); const el = document.querySelector('#contact'); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }} className="text-white/90 hover:text-gold transition-colors cursor-pointer">Contact</a></li>
+
                         </ul>
                     </div>
 

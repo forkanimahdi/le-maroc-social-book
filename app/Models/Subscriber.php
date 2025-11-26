@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Subscriber extends Model
 {
@@ -12,11 +13,20 @@ class Subscriber extends Model
     protected $fillable = [
         'nom',
         'email',
-        'status',
-        'subscribed_at',
+        'unsubscribe_token',
+        'unsubscribed_at',
     ];
 
     protected $casts = [
-        'subscribed_at' => 'datetime',
+        'unsubscribed_at' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Subscriber $subscriber) {
+            if (empty($subscriber->unsubscribe_token)) {
+                $subscriber->unsubscribe_token = Str::random(40);
+            }
+        });
+    }
 }

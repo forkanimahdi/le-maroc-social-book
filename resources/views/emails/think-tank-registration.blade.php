@@ -119,7 +119,7 @@
             </div>
             
             <div class="content">
-                <p>Merci de votre intérêt pour rejoindre le <strong>Think Tank Le Maroc Social 2030</strong>.</p>
+                <p>Merci pour votre envie de rejoindre le <strong>Think Tank Le Maroc Social 2030</strong>.</p>
                 
                 @php
                     $groupLabels = [
@@ -131,7 +131,7 @@
                     $groupName = $groupLabels[$signup->group] ?? ucfirst($signup->group);
                     $channelLink = $whatsappChannelLink ?? config('app.whatsapp_channel');
                 @endphp
-                <p>Nous avons bien reçu votre inscription au <strong>{{ $groupName }}</strong>. Votre candidature est en cours d'examen par notre équipe.</p>
+                <p>Je confirme que j'ai bien reçu votre inscription pour le groupe <strong>{{ $groupName }}</strong>. Je prends le temps d'étudier chaque candidature afin de préserver la qualité des échanges.</p>
                 
                 <div class="info-box">
                     <p><strong>Détails de votre inscription :</strong></p>
@@ -145,26 +145,22 @@
             <div class="content">
                 <p><strong>Prochaines étapes :</strong></p>
                 <ul style="color: #555; line-height: 2;">
-                    <li>Notre équipe examinera votre candidature</li>
-                    <li>Vous recevrez un e-mail de confirmation une fois votre candidature approuvée</li>
-                    <li>En cas d'approbation, vous recevrez le lien vers le groupe WhatsApp officiel</li>
+                    <li>J'examine personnellement votre candidature.</li>
+                    <li>Vous recevrez un e-mail dès que je pourrai confirmer votre intégration.</li>
+                    <li>En cas d'approbation, je vous transmettrai le lien du groupe WhatsApp officiel.</li>
                 </ul>
                 <p style="margin-top: 20px;">
-                    Pour rester informé(e) et suivre les annonces officielles, nous vous invitons à rejoindre notre canal WhatsApp dédié au Think Tank.
+                    Pour rester informé·e des annonces clés, je vous invite à rejoindre le canal WhatsApp du Think Tank.
                 </p>
             </div>
 
             @include('emails.partials.whatsapp-channel', ['channelLink' => $channelLink])
+            @include('emails.partials.signature')
         </div>
         
         <div class="footer">
-            <p><strong>Le Maroc Social 2030</strong></p>
-            <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
-            <p>et transformer le Maroc social de demain.</p>
-            <p style="margin-top: 20px;">
-                <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:author@ms2030.org">Nous contacter</a>
-            </p>
+            <p><strong>Oumaima Mhijir</strong></p>
+            <p><a href="{{ config('app.url', 'https://ms2030.org') }}" style="color:#1b4e0b; text-decoration:none;">Visiter le site</a></p>
         </div>
     </div>
 </body>

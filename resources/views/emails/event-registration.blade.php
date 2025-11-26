@@ -112,12 +112,12 @@
             </div>
             
             <div class="content">
-                <p>Merci de votre intérêt pour participer à l'<strong>événement de lancement</strong> du livre "Le Maroc Social 2030".</p>
+                <p>Merci pour votre intérêt pour l'<strong>événement de lancement</strong> de « Le Maroc Social 2030 ».</p>
                 
-                <p>Nous avons bien reçu votre demande d'inscription et nous vous en remercions chaleureusement.</p>
+                <p>Je confirme que j'ai bien reçu votre demande d'inscription. Je prends le temps d'étudier chaque candidature avec attention pour garantir une expérience fidèle à l'esprit de l'ouvrage.</p>
                 
                 <div class="info-box">
-                    <h3>📋 Détails de votre inscription</h3>
+                    <h3>📋 Vos informations</h3>
                     <p><strong>Nom :</strong> {{ $participant->full_name }}</p>
                     <p><strong>Rôle :</strong> {{ $participant->role }}</p>
                     <p><strong>Email :</strong> {{ $participant->email }}</p>
@@ -127,12 +127,11 @@
             
             <div class="content">
                 <p><strong>Prochaines étapes :</strong></p>
-                <p>Votre demande est actuellement en cours d'examen. Nous examinons chaque demande avec attention et nous vous recontacterons <span class="highlight">dès que possible</span> pour vous confirmer votre participation.</p>
-                
-                <p>En attendant, nous vous invitons à découvrir le livre et à rejoindre notre communauté pour rester informé de toutes nos actualités.</p>
+                <p>Je reviendrai vers vous dans les meilleurs délais pour vous confirmer votre participation. En attendant, vous pouvez explorer l'univers du livre et suivre les actualités du projet via nos canaux officiels.</p>
             </div>
 
             @include('emails.partials.whatsapp-channel')
+            @include('emails.partials.signature')
         </div>
         
         <div class="footer">
@@ -140,8 +139,8 @@
             <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
             <p>et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
-                <a href="{{ config('app.url') }}">Visiter le site web</a> | 
-                <a href="mailto:author@ms2030.org">Nous contacter</a>
+                <a href="{{ config('app.url', 'https://ms2030.org') }}">Visiter ms2030.org</a> | 
+                <a href="mailto:mhijiroum@gmail.com">Me contacter</a>
             </p>
         </div>
     </div>
