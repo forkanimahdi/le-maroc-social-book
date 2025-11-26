@@ -18,7 +18,7 @@ export default function Book() {
     });
     const [sent, setSent] = useState(false);
     const { links = {} } = usePage().props;
-    const businessWhatsapp = links.businessWhatsapp || 'https://wa.me/212600000000';
+    const businessWhatsapp = links.businessWhatsapp || 'https://wa.me/212724732762';
 
     const onSubmit = async (e) => {
         e.preventDefault();

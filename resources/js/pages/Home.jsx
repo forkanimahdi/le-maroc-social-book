@@ -14,7 +14,31 @@ import FlashMessage from '../components/ui/FlashMessage.jsx';
 export default function Home({ ideas = [], episodes = [], content = null }) {
     // Ajoute un léger fondu à l'arrivée de la page
     useEffect(() => {
-        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+        if (typeof window === 'undefined') return;
+        if (!window.location.hash) {
+            document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const scrollToHash = () => {
+            const hash = window.location.hash?.replace('#', '');
+            if (!hash) return;
+
+            const target = document.getElementById(hash);
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 64,
+                    behavior: 'smooth',
+                });
+            }
+        };
+
+        scrollToHash();
+        window.addEventListener('hashchange', scrollToHash);
+        return () => window.removeEventListener('hashchange', scrollToHash);
     }, []);
 
     return (
