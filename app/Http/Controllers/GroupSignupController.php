@@ -7,6 +7,7 @@ use App\Mail\ThinkTankRegistrationMail;
 use App\Models\GroupSignup;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class GroupSignupController extends Controller
 {
@@ -17,11 +18,20 @@ class GroupSignupController extends Controller
         // Get WhatsApp channel + group links
         $whatsappLinks = $this->getWhatsAppLinks($validated['group']);
         
+        // Handle CV upload if provided
+        $cvPath = null;
+        if ($request->hasFile('cv')) {
+            $cvPath = $request->file('cv')->store('cvs', 'public');
+        }
+        
         // Create signup
         $signup = GroupSignup::create([
             'group' => $validated['group'],
             'nom' => $validated['nom'],
             'email' => $validated['email'],
+            'linkedin_url' => $validated['linkedin_url'] ?? null,
+            'cv_path' => $cvPath,
+            'presentation' => $validated['presentation'],
             'domaine' => $validated['domaine'] ?? null,
             'domain_expertise' => $validated['domain_expertise'] ?? null,
             'motivation' => $validated['motivation'] ?? null,

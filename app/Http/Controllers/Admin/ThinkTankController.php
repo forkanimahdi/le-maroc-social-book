@@ -15,7 +15,13 @@ class ThinkTankController extends Controller
     public function index(Request $request)
     {
         // Get all signups - filtering will be done on frontend
-        $signups = GroupSignup::orderBy('created_at', 'desc')->get();
+        $signups = GroupSignup::orderBy('created_at', 'desc')->get()->map(function ($signup) {
+            // Add CV URL if exists
+            if ($signup->cv_path) {
+                $signup->cv_url = asset('storage/' . $signup->cv_path);
+            }
+            return $signup;
+        });
 
         return Inertia::render('admin/think-tank', [
             'signups' => $signups,

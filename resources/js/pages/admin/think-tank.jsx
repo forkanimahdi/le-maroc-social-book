@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle, XCircle, Clock, Search, Filter, Users, Trash2 } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Search, Filter, Users, Trash2, Eye, ExternalLink, FileText } from 'lucide-react';
 import { useState, useMemo } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/admin' },
@@ -25,6 +26,8 @@ export default function AdminThinkTank() {
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [groupFilter, setGroupFilter] = useState('');
+    const [selectedSignup, setSelectedSignup] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { delete: destroySignup, processing: deleting } = useForm({});
 
     // Frontend-only filtering
@@ -38,7 +41,8 @@ export default function AdminThinkTank() {
                 signup.nom?.toLowerCase().includes(searchLower) ||
                 signup.email?.toLowerCase().includes(searchLower) ||
                 signup.group?.toLowerCase().includes(searchLower) ||
-                signup.domain_expertise?.toLowerCase().includes(searchLower)
+                signup.domain_expertise?.toLowerCase().includes(searchLower) ||
+                signup.presentation?.toLowerCase().includes(searchLower)
             );
         }
 
@@ -85,9 +89,13 @@ export default function AdminThinkTank() {
         );
     };
 
-    const handleApprove = (id) => {
+    const handleApprove = (id, closeAfter = false) => {
         router.post(`/admin/think-tank/${id}/approve`, {}, {
             onSuccess: () => {
+                if (closeAfter) {
+                    setIsModalOpen(false);
+                    setSelectedSignup(null);
+                }
                 // Page will refresh automatically
             },
             onError: (errors) => {
@@ -96,10 +104,14 @@ export default function AdminThinkTank() {
         });
     };
 
-    const handleReject = (id) => {
+    const handleReject = (id, closeAfter = false) => {
         if (confirm('Êtes-vous sûr de vouloir rejeter cette inscription ?')) {
             router.post(`/admin/think-tank/${id}/reject`, {}, {
                 onSuccess: () => {
+                    if (closeAfter) {
+                        setIsModalOpen(false);
+                        setSelectedSignup(null);
+                    }
                     // Page will refresh automatically
                 },
                 onError: (errors) => {
@@ -116,11 +128,25 @@ export default function AdminThinkTank() {
 
         destroySignup(`/admin/think-tank/${id}`, {
             preserveScroll: true,
+            onSuccess: () => {
+                setIsModalOpen(false);
+                setSelectedSignup(null);
+            },
             onError: (errors) => {
                 console.error('Error deleting signup:', errors);
                 alert('Erreur lors de la suppression de l\'inscription.');
             }
         });
+    };
+
+    const openModal = (signup) => {
+        setSelectedSignup(signup);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedSignup(null);
     };
 
     const formatDate = (dateString) => {
@@ -258,9 +284,11 @@ export default function AdminThinkTank() {
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Nom</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Email</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Groupe</th>
-                                                <th className="text-left p-3 text-sm font-semibold text-zinc-700">Domaine d'expertise</th>
+                                                <th className="text-left p-3 text-sm font-semibold text-zinc-700">LinkedIn</th>
+                                                {/* <th className="text-left p-3 text-sm font-semibold text-zinc-700">CV</th> */}
+                                                {/* <th className="text-left p-3 text-sm font-semibold text-zinc-700">Présentation</th> */}
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Statut</th>
-                                                <th className="text-left p-3 text-sm font-semibold text-zinc-700">Date</th>
+                                                {/* <th className="text-left p-3 text-sm font-semibold text-zinc-700">Date</th> */}
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Actions</th>
                                             </tr>
                                         </thead>
@@ -270,59 +298,58 @@ export default function AdminThinkTank() {
                                                     <td className="p-3 text-sm">{signup.nom}</td>
                                                     <td className="p-3 text-sm">{signup.email}</td>
                                                     <td className="p-3 text-sm">{GROUP_LABELS[signup.group] || signup.group}</td>
-                                                    <td className="p-3 text-sm">{signup.domain_expertise || '-'}</td>
+                                                    <td className="p-3 text-sm">
+                                                        {signup.linkedin_url ? (
+                                                            <a 
+                                                                href={signup.linkedin_url} 
+                                                                target="_blank" 
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-600 hover:underline flex items-center gap-1"
+                                                            >
+                                                                <ExternalLink className="w-3 h-3" />
+                                                                LinkedIn
+                                                            </a>
+                                                        ) : (
+                                                            <span className="text-zinc-400">-</span>
+                                                        )}
+                                                    </td>
+                                                    {/* <td className="p-3 text-sm">
+                                                        {signup.cv_url ? (
+                                                            <a 
+                                                                href={signup.cv_url} 
+                                                                target="_blank" 
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-600 hover:underline flex items-center gap-1"
+                                                            >
+                                                                <FileText className="w-3 h-3" />
+                                                                Voir CV
+                                                            </a>
+                                                        ) : (
+                                                            <span className="text-zinc-400">-</span>
+                                                        )}
+                                                    </td> */}
+                                                    {/* <td className="p-3 text-sm max-w-xs">
+                                                        <div className="truncate" title={signup.presentation || '-'}>
+                                                            {signup.presentation || '-'}
+                                                        </div>
+                                                    </td> */}
                                                     <td className="p-3">
                                                         {getStatusBadge(signup.status)}
                                                     </td>
-                                                    <td className="p-3 text-sm text-zinc-600">
+                                                    {/* <td className="p-3 text-sm text-zinc-600">
                                                         {formatDate(signup.created_at)}
-                                                    </td>
+                                                    </td> */}
                                                     <td className="p-3">
-                                                        <div className="flex items-center gap-2 ">
-                                                            {signup.status === 'pending' && (
-                                                                <>
-                                                                    <Button
-                                                                        size="icon"
-                                                                        className="text-white"
-                                                                        onClick={() => handleApprove(signup.id)}
-                                                                        style={{ backgroundColor: 'var(--royal-green)' }}
-                                                                        title="Approuver"
-                                                                        aria-label="Approuver"
-                                                                    >
-                                                                        <CheckCircle className="w-4 h-4" />
-                                                                    </Button>
-                                                                    <Button
-                                                                        size="icon"
-                                                                        className="text-white"
-                                                                        onClick={() => handleReject(signup.id)}
-                                                                        style={{ backgroundColor: 'var(--royal-red)' }}
-                                                                        title="Rejeter"
-                                                                        aria-label="Rejeter"
-                                                                    >
-                                                                        <XCircle className="w-4 h-4" />
-                                                                    </Button>
-                                                                </>
-                                                            )}
-                                                            {signup.status === 'approved' && (
-                                                                <span className="text-xs" style={{ color: 'var(--royal-green)' }}>
-                                                                    Approuvé le {formatDate(signup.approved_at)}
-                                                                </span>
-                                                            )}
-                                                            {signup.status === 'rejected' && (
-                                                                <span className="text-xs" style={{ color: 'var(--royal-red)' }}>
-                                                                    Rejeté le {formatDate(signup.rejected_at)}
-                                                                </span>
-                                                            )}
+                                                        <div className="flex items-center gap-2">
                                                             <Button
                                                                 size="icon"
                                                                 variant="outline"
-                                                                disabled={deleting}
-                                                                onClick={() => handleDelete(signup.id)}
-                                                                style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
-                                                                title="Supprimer"
-                                                                aria-label="Supprimer"
+                                                                onClick={() => openModal(signup)}
+                                                                style={{ borderColor: 'var(--royal-green)', color: 'var(--royal-green)' }}
+                                                                title="Voir les détails"
+                                                                aria-label="Voir les détails"
                                                             >
-                                                                <Trash2 className="w-4 h-4" />
+                                                                <Eye className="w-4 h-4" />
                                                             </Button>
                                                         </div>
                                                     </td>
@@ -336,6 +363,183 @@ export default function AdminThinkTank() {
                     </Card>
                 </div>
             </div>
+
+            {/* Preview Modal */}
+            <Dialog open={isModalOpen} onOpenChange={closeModal}>
+                <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white">
+                    <DialogHeader className="pb-4 border-b">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <DialogTitle className="text-xl font-bold" style={{ color: 'var(--royal-red)' }}>
+                                    Détails de l'inscription
+                                </DialogTitle>
+                                <DialogDescription>
+                                    Informations complètes de la candidature
+                                </DialogDescription>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                {selectedSignup && getStatusBadge(selectedSignup.status)}
+                                <span className="text-xs text-zinc-600">
+                                    {selectedSignup && formatDate(selectedSignup.created_at)}
+                                </span>
+                            </div>
+                        </div>
+                    </DialogHeader>
+
+                    {selectedSignup && (
+                        <div className="space-y-4 py-4">
+                            {/* Contact & Links Section */}
+                            <div className="bg-zinc-50 rounded-lg p-4 space-y-3">
+                                <h3 className="text-sm font-semibold text-zinc-700 uppercase tracking-wide mb-3">Contact & Liens</h3>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-xs text-zinc-600">Email</span>
+                                        <a href={`mailto:${selectedSignup.email}`} className="text-sm text-blue-600 hover:underline">
+                                            {selectedSignup.email}
+                                        </a>
+                                    </div>
+                                    {selectedSignup.linkedin_url && (
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs text-zinc-600">LinkedIn</span>
+                                            <a 
+                                                href={selectedSignup.linkedin_url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                                            >
+                                                <ExternalLink className="w-3 h-3" />
+                                                Voir le profil
+                                            </a>
+                                        </div>
+                                    )}
+                                    {selectedSignup.cv_url && (
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs text-zinc-600">CV</span>
+                                            <a 
+                                                href={selectedSignup.cv_url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                                            >
+                                                <FileText className="w-3 h-3" />
+                                                Télécharger
+                                            </a>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Presentation Section */}
+                            {selectedSignup.presentation && (
+                                <div className="bg-zinc-50 rounded-lg p-4">
+                                    <h3 className="text-sm font-semibold text-zinc-700 uppercase tracking-wide mb-2">Présentation</h3>
+                                    <p className="text-sm text-zinc-900 leading-relaxed">{selectedSignup.presentation}</p>
+                                </div>
+                            )}
+
+                            {/* Expertise Section */}
+                            {(selectedSignup.domain_expertise || selectedSignup.domaine) && (
+                                <div className="bg-zinc-50 rounded-lg p-4 space-y-2">
+                                    <h3 className="text-sm font-semibold text-zinc-700 uppercase tracking-wide mb-2">Expertise</h3>
+                                    {selectedSignup.domain_expertise && (
+                                        <div>
+                                            <span className="text-xs text-zinc-600">Domaine d'expertise</span>
+                                            <p className="text-sm text-zinc-900 mt-1">{selectedSignup.domain_expertise}</p>
+                                        </div>
+                                    )}
+                                    {selectedSignup.domaine && (
+                                        <div>
+                                            <span className="text-xs text-zinc-600">Domaine</span>
+                                            <p className="text-sm text-zinc-900 mt-1">{selectedSignup.domaine}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Motivation Section */}
+                            {selectedSignup.motivation && (
+                                <div className="bg-zinc-50 rounded-lg p-4">
+                                    <h3 className="text-sm font-semibold text-zinc-700 uppercase tracking-wide mb-2">Motivation</h3>
+                                    <p className="text-sm text-zinc-900 leading-relaxed whitespace-pre-wrap">{selectedSignup.motivation}</p>
+                                </div>
+                            )}
+
+                            {/* Status Info */}
+                            {(selectedSignup.status === 'approved' && selectedSignup.approved_at) || 
+                             (selectedSignup.status === 'rejected' && selectedSignup.rejected_at) ? (
+                                <div className="bg-zinc-50 rounded-lg p-4">
+                                    <h3 className="text-sm font-semibold text-zinc-700 uppercase tracking-wide mb-2">Historique</h3>
+                                    {selectedSignup.status === 'approved' && selectedSignup.approved_at && (
+                                        <div className="flex items-center gap-2">
+                                            <CheckCircle className="w-4 h-4" style={{ color: 'var(--royal-green)' }} />
+                                            <span className="text-sm text-zinc-900">
+                                                Approuvé le {formatDate(selectedSignup.approved_at)}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {selectedSignup.status === 'rejected' && selectedSignup.rejected_at && (
+                                        <div className="flex items-center gap-2">
+                                            <XCircle className="w-4 h-4" style={{ color: 'var(--royal-red)' }} />
+                                            <span className="text-sm text-zinc-900">
+                                                Rejeté le {formatDate(selectedSignup.rejected_at)}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : null}
+                        </div>
+                    )}
+
+                    <DialogFooter className="flex flex-row gap-2 justify-between pt-4 border-t">
+                        <div className="flex gap-2">
+                            {selectedSignup && selectedSignup.status === 'pending' && (
+                                <>
+                                    <Button
+                                        onClick={() => handleApprove(selectedSignup.id, true)}
+                                        className="text-sm px-4 py-2"
+                                        style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
+                                    >
+                                        <CheckCircle className="w-4 h-4 mr-2" />
+                                        Approuver
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleReject(selectedSignup.id, true)}
+                                        variant="outline"
+                                        className="text-sm px-4 py-2 bg-royal-red text-white"
+                                        // style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                                    >
+                                        <XCircle className="w-4 h-4 mr-2" />
+                                        Rejeter
+                                    </Button>
+                                </>
+                            )}
+                        </div>
+                        <div className="flex gap-2">
+                            <Button
+                                variant="outline"
+                                className="text-sm px-4 py-2"
+                                onClick={() => {
+                                    if (confirm('Supprimer définitivement cette inscription ?')) {
+                                        handleDelete(selectedSignup?.id);
+                                    }
+                                }}
+                                disabled={deleting}
+                                style={{ borderColor: 'var(--royal-red)', color: 'var(--royal-red)' }}
+                            >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Supprimer
+                            </Button>
+                            <Button
+                                variant="outline"
+                                className="text-sm px-4 py-2"
+                                onClick={closeModal}
+                            >
+                                Fermer
+                            </Button>
+                        </div>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     );
 }

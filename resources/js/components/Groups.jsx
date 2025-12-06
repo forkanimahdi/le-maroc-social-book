@@ -56,6 +56,9 @@ export default function Groups() {
         group: 'jeunesse',
         nom: '',
         email: '',
+        linkedin_url: '',
+        cv: null,
+        presentation: '',
         domaine: '',
         domain_expertise: '',
         motivation: '',
@@ -164,6 +167,44 @@ export default function Groups() {
                                             placeholder="nom@exemple.com"
                                         />
                                     </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Lien LinkedIn <span className="text-xs font-normal normal-case">(optionnel)</span></label>
+                                    <input
+                                        type="url"
+                                        value={data.linkedin_url}
+                                        onChange={(e) => setData('linkedin_url', e.target.value)}
+                                        className="w-full p-4 rounded-lg border border-royal-green-soft bg-white text-zinc-800 focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300"
+                                        placeholder="https://www.linkedin.com/in/votre-profil"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">CV <span className="text-xs font-normal normal-case">(optionnel)</span></label>
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.doc,.docx"
+                                        onChange={(e) => setData('cv', e.target.files[0])}
+                                        className="w-full p-4 rounded-lg border border-royal-green-soft bg-white text-zinc-800 focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-royal-green-soft file:text-royal-green-soft hover:file:bg-royal-green-soft/80"
+                                    />
+                                    <p className="text-xs text-zinc-600 mt-2">Formats acceptés : PDF, DOC, DOCX (max 10 Mo)</p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Présentez-vous <span className="text-red-500">*</span></label>
+                                    <textarea
+                                        required
+                                        rows={4}
+                                        maxLength={250}
+                                        value={data.presentation}
+                                        onChange={(e) => setData('presentation', e.target.value)}
+                                        className="w-full p-4 rounded-lg border border-royal-green-soft bg-white text-zinc-800 focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300 resize-none"
+                                        placeholder="Présentez-vous en quelques mots (250 caractères maximum)"
+                                    />
+                                    <p className="text-xs text-zinc-600 mt-2 text-right">
+                                        {data.presentation.length}/250 caractères
+                                    </p>
                                 </div>
 
                                 <div>
