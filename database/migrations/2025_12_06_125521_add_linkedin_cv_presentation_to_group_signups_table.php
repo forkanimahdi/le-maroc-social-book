@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('group_signups', function (Blueprint $table) {
-            $table->string('linkedin_url')->nullable()->after('email');
-            $table->string('cv_path')->nullable()->after('linkedin_url');
-            $table->string('presentation', 250)->after('cv_path');
+            // $table->string('linkedin_url')->nullable()->after('email');
+            // $table->string('cv_path')->nullable()->after('linkedin_url');
+            $table->string('presentation', 250)->nullable()->after('email');
         });
     }
 

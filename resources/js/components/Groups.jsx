@@ -208,7 +208,7 @@ export default function Groups() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Domain expertise</label>
+                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Domaine d'expertise </label>
                                     <input
                                         required
                                         value={data.domain_expertise}
