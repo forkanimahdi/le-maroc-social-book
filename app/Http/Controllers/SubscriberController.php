@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewsletterWelcomeMail;
 use App\Models\Subscriber;
 use App\Rules\ValidEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class SubscriberController extends Controller
@@ -26,7 +29,15 @@ class SubscriberController extends Controller
                     'unsubscribe_token' => Str::random(40),
                 ]);
 
-                return back()->with('success', 'Votre abonnement a été réactivé. Merci de continuer l’aventure avec moi.');
+                // Send welcome email for reactivated subscription
+                try {
+                    Mail::to($existing->email)->send(new NewsletterWelcomeMail($existing));
+                    Log::info('Welcome email sent to reactivated subscriber: ' . $existing->email);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send welcome email to ' . $existing->email . ': ' . $e->getMessage());
+                }
+
+                return back()->with('success', 'Votre abonnement a été réactivé. Merci de continuer l'aventure avec moi.');
             }
 
             return back()->withErrors([
@@ -34,10 +45,20 @@ class SubscriberController extends Controller
             ]);
         }
 
-        Subscriber::create([
+        $subscriber = Subscriber::create([
             'nom' => $validated['nom'],
             'email' => $validated['email'],
         ]);
+
+        // Send welcome email
+        try {
+            Mail::to($subscriber->email)->send(new NewsletterWelcomeMail($subscriber));
+            Log::info('Welcome email sent to new subscriber: ' . $subscriber->email);
+        } catch (\Exception $e) {
+            // Log error but don't fail the request
+            Log::error('Failed to send welcome email to ' . $subscriber->email . ': ' . $e->getMessage());
+            Log::error('Exception trace: ' . $e->getTraceAsString());
+        }
 
         return back()->with('success', 'Merci pour votre inscription à ma newsletter.');
     }
