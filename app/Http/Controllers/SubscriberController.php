@@ -37,7 +37,7 @@ class SubscriberController extends Controller
                     Log::error('Failed to send welcome email to ' . $existing->email . ': ' . $e->getMessage());
                 }
 
-                return back()->with('success', 'Votre abonnement a été réactivé. Merci de continuer l'aventure avec moi.');
+                return back()->with('success', "Votre abonnement a été réactivé. Merci de continuer l'aventure avec moi.");
             }
 
             return back()->withErrors([
