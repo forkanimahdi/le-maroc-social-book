@@ -152,7 +152,7 @@
                             Galerie d'Art "La Tour Anis", Les Tours Végétales, Casablanca Finance City
                         </a>
                     </li>
-                    <li><strong>Date :</strong> 20 Janvier 2026 </li>
+                    <li><strong>Date :</strong> 28 Janvier 2026 </li>
                     <li><strong>Heure :</strong> 17h30 – 19h30</li>
                 </ul>
 
