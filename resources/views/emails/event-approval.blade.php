@@ -96,6 +96,23 @@
             color: #1b4e0b;
             text-decoration: none;
         }
+
+        .calendar-button {
+            display: inline-block;
+            background-color: #1b4e0b;
+            color: #ffffff;
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .calendar-button:hover {
+            background-color: #2d7a1a;
+        }
     </style>
 </head>
 
@@ -138,6 +155,15 @@
                     <li><strong>Date :</strong> 20 Janvier 2026 </li>
                     <li><strong>Heure :</strong> 17h30 – 19h30</li>
                 </ul>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{{ route('event-participants.calendar', $participant->id) }}" class="calendar-button">
+                        📅 Ajouter au calendrier
+                    </a>
+                </div>
+                <p style="text-align: center; color: #666; font-size: 14px; margin-top: 10px;">
+                    Cliquez sur le bouton ci-dessus pour ajouter cet événement à votre calendrier (Google Calendar, Outlook, Apple Calendar, etc.)
+                </p>
             </div>
 
             @include('emails.partials.whatsapp-channel')
