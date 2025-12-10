@@ -14,7 +14,7 @@ class EventParticipantController extends Controller
     public function store(EventParticipantRequest $request)
     {
         $validated = $request->validated();
-        
+
         // Create participant
         $participant = EventParticipant::create([
             'full_name' => $validated['full_name'],
@@ -39,15 +39,18 @@ class EventParticipantController extends Controller
         $participant = EventParticipant::findOrFail($id);
 
         // Event details
-        $eventTitle = "Événement de lancement - Le Maroc Social 2030";
-        $eventDescription = "Lancement du livre « Le Maroc Social 2030 » par Oumaima Mhijir.\n\nVotre présence compte beaucoup pour incarner l'engagement collectif que nous souhaitons insuffler à travers ce projet.";
+        $eventTitle = "Lancement du livre “Le Maroc Social 2030” by Oumaima MHIJIR";
+        $eventDescription = "Cérémonie de lancement du Livre “Le Maroc Social 2030” de l’entrepreneure sociale Oumaima MHIJIR et préfacé par le citoyen engagé, cofondateur de Tariq Ibnou Ziyad Initiative (TIZI) et du Moroccan Leadership Institute (MLI) Mohamed Alami BERRADA.
+        \n\n
+        Votre présence compte beaucoup pour incarner l’engagement collectif que nous souhaitons insuffler à travers ce mouvement!
+        ";
         $eventLocation = "Galerie d'Art \"La Tour Anis\", Les Tours Végétales, Casablanca Finance City";
         $eventStartDateTime = "20260128T173000";
         $eventEndDateTime = "20260128T193000";
-        
+
         // Generate unique ID for the event
         $uid = md5($participant->email . $eventStartDateTime) . '@ms2030.org';
-        
+
         // Create .ics content
         $icsContent = "BEGIN:VCALENDAR\r\n";
         $icsContent .= "VERSION:2.0\r\n";
@@ -89,4 +92,3 @@ class EventParticipantController extends Controller
         return $text;
     }
 }
-
