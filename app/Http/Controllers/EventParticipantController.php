@@ -42,8 +42,8 @@ class EventParticipantController extends Controller
         $eventTitle = "Événement de lancement - Le Maroc Social 2030";
         $eventDescription = "Lancement du livre « Le Maroc Social 2030 » par Oumaima Mhijir.\n\nVotre présence compte beaucoup pour incarner l'engagement collectif que nous souhaitons insuffler à travers ce projet.";
         $eventLocation = "Galerie d'Art \"La Tour Anis\", Les Tours Végétales, Casablanca Finance City";
-        $eventStartDateTime = "20260120T173000";
-        $eventEndDateTime = "20260120T193000";
+        $eventStartDateTime = "20260128T173000";
+        $eventEndDateTime = "20260128T193000";
         
         // Generate unique ID for the event
         $uid = md5($participant->email . $eventStartDateTime) . '@ms2030.org';
