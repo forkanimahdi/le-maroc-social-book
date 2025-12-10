@@ -40,8 +40,7 @@ class EventParticipantController extends Controller
 
         // Event details
         $eventTitle = "Lancement du livre “Le Maroc Social 2030” by Oumaima MHIJIR";
-        $eventDescription = "Cérémonie de lancement du Livre “Le Maroc Social 2030” de l’entrepreneure sociale Oumaima MHIJIR et préfacé par le citoyen engagé, cofondateur de Tariq Ibnou Ziyad Initiative (TIZI) et du Moroccan Leadership Institute (MLI) Mohamed Alami BERRADA.
-        \n
+        $eventDescription = "Cérémonie de lancement du Livre “Le Maroc Social 2030” de l’entrepreneure sociale Oumaima MHIJIR et préfacé par le citoyen engagé, cofondateur de Tariq Ibnou Ziyad Initiative (TIZI) et du Moroccan Leadership Institute (MLI) Mohamed Alami BERRADA.\n
 Votre présence compte beaucoup pour incarner l’engagement collectif que nous souhaitons insuffler à travers ce mouvement!
         ";
         $eventLocation = "Galerie d'Art \"La Tour Anis\", Les Tours Végétales, Casablanca Finance City";
