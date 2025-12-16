@@ -100,7 +100,7 @@ export default function Hero() {
                                     }}
                                     className="bg-royal-red px-2 py-3 rounded-lg hover:opacity-95 text-center text-white font-semibold"
                                 >
-                                    Découvrir le livre
+                                    Découvrir le livre 
                                 </a>
                                 <a 
                                     href="#livre" 
@@ -111,7 +111,7 @@ export default function Hero() {
                                     }}
                                     className="bg-royal-red px-2 py-3 rounded-lg hover:opacity-95 text-center text-white font-semibold"
                                 >
-                                    Télécharger le résumé
+                                    Télécharger le résumé <br /> <i className='text-sm font-light'>à partir du 28.01.2026</i>
                                 </a>
                                 <a 
                                     href="#groupes" 

@@ -100,7 +100,7 @@ export default function Book() {
                                     </svg>
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--royal-green)' }}>Acheter le livre</h3>
+                                    <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--royal-green)' }}>Acheter le livre <i className='text-sm'>à partir du 28.01.2026</i></h3>
                                     <p className="text-sm text-zinc-600">Édition complète</p>
                                 </div>
                             </div>
