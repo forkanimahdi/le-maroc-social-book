@@ -127,7 +127,7 @@
             <div class="content">
                 <p>En ce début d’année marqué par un élan collectif et une énergie nationale que nous ressentons tous, nous avons le plaisir de vous confirmer votre inscription à la cérémonie officielle de lancement et de signature de l’ouvrage <strong>Le Maroc Social 2030</strong>.</p>
                 
-                <p>Cet événement marquera le lancement public du livre Le Maroc Social 2030, écrit par <strong>Oumaima Mhijir</strong>, Entrepreneure Sociale, citoyenne engagée, et préfacé par <strong>Si Mohamed Alami Berrada</strong>, cofondateur de l’initiative Tariq Ibnou Ziyad et du Moroccan Leadership Institute.</p>
+                <p>Lors de cet événement de lancement public, l'autrice et entrepreneure sociale <strong>Oumaima MHIJIR</strong>, accompagnée <strong>Si Mohamed Alami BERRADA</strong>, cofondateur de l'initiative Tariq Ibnou Ziyad et du Moroccan Leadership Institute, ayant préfacé l'ouvrage, ainsi que toute la communauté qui croit en cette vision, seront ravis de vous accueillir.</p>
                 
                 <p>La cérémonie se veut un temps de réflexion et de projection collective autour des grands enjeux sociaux, humains et territoriaux du Maroc à l’horizon 2030, quatre chantiers de dignité pour insuffler un Maroc Social en 2030.</p>
             </div>
@@ -166,8 +166,7 @@
         </div>
         <div class="footer">
             <p><strong>Le Maroc Social 2030</strong></p>
-            <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes</p>
-            <p>et transformer le Maroc social de demain.</p>
+            <p>Un projet de réflexion et de plaidoyer pour concevoir des actions concrètes et transformer le Maroc social de demain.</p>
             <p style="margin-top: 20px;">
                 <a href="{{ config('app.url', 'https://ms2030.org') }}">Visiter ms2030.org</a> |
                 <a href="mailto:mhijiroum@gmail.com">Me contacter</a>
