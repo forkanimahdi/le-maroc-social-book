@@ -22,7 +22,7 @@ class EventApprovalMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Félicitations ! Votre inscription à l\'événement de lancement a été confirmée',
+            subject: 'Votre inscription à la cérémonie de signature et de lancement de l\'ouvrage Le Maroc Social 2030 est confirmée!',
         );
     }
 

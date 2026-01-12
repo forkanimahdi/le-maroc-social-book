@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Félicitations - Votre inscription est confirmée</title>
+    <title>Votre inscription à la cérémonie de signature et de lancement de l'ouvrage Le Maroc Social 2030 est confirmée!</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -115,7 +115,7 @@
     <div class="email-container">
         <div class="email-header">
             <h1>FÉLICITATIONS !</h1>
-            <p> Votre inscription à la cérémonie de signature et de lancement de l'ouvrage Le Maroc Social 2030 est confirmée!</p>
+            <p>Votre inscription à la cérémonie de signature et de lancement de l'ouvrage Le Maroc Social 2030 est confirmée!</p>
         </div>
 
   
