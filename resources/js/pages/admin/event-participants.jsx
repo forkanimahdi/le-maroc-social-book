@@ -28,6 +28,7 @@ export default function AdminEventParticipants() {
             const searchLower = search.toLowerCase();
             filtered = filtered.filter(participant => 
                 participant.full_name?.toLowerCase().includes(searchLower) ||
+                participant.organization?.toLowerCase().includes(searchLower) ||
                 participant.email?.toLowerCase().includes(searchLower) ||
                 participant.role?.toLowerCase().includes(searchLower) ||
                 participant.phone?.toLowerCase().includes(searchLower)
@@ -192,7 +193,7 @@ export default function AdminEventParticipants() {
                                     <div className="relative">
                                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                                         <Input
-                                            placeholder="Rechercher par nom, email, rôle..."
+                                            placeholder="Rechercher par nom, organisation, email, rôle..."
                                             value={search}
                                             onChange={(e) => setSearch(e.target.value)}
                                             className="pl-10"
@@ -231,6 +232,7 @@ export default function AdminEventParticipants() {
                                         <thead>
                                             <tr className="border-b">
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Nom</th>
+                                                <th className="text-left p-3 text-sm font-semibold text-zinc-700">Organisation</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Rôle</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Email</th>
                                                 <th className="text-left p-3 text-sm font-semibold text-zinc-700">Téléphone</th>
@@ -243,6 +245,7 @@ export default function AdminEventParticipants() {
                                             {filteredParticipants.map((participant) => (
                                                 <tr key={participant.id} className="border-b hover:bg-zinc-50">
                                                     <td className="p-3 text-sm">{participant.full_name}</td>
+                                                    <td className="p-3 text-sm text-zinc-600">{participant.organization || '-'}</td>
                                                     <td className="p-3 text-sm">{participant.role}</td>
                                                     <td className="p-3 text-sm">{participant.email}</td>
                                                     <td className="p-3 text-sm">{participant.phone}</td>
