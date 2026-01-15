@@ -22,7 +22,7 @@ class EventRegistrationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirmation d\'inscription - Lancement du livre "Le Maroc Social 2030"',
+            subject: 'Votre inscription est bien reçue. Nous vous reviendrons !',
         );
     }
 
