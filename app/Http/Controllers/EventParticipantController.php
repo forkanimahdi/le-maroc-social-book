@@ -18,6 +18,7 @@ class EventParticipantController extends Controller
         // Create participant
         $participant = EventParticipant::create([
             'full_name' => $validated['full_name'],
+            'organization' => $validated['organization'] ?? null,
             'role' => $validated['role'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],

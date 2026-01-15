@@ -6,6 +6,7 @@ export default function Hero() {
     const [showEventModal, setShowEventModal] = useState(false);
     const { data, setData, post, processing, reset } = useForm({
         full_name: '',
+        organization: '',
         role: '',
         email: '',
         phone: '',
@@ -153,7 +154,7 @@ export default function Hero() {
                 <DialogContent className="max-w-md bg-white">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold" style={{ color: 'var(--royal-green)' }}>
-                            Réserver une place
+                            Réserver votre place
                         </DialogTitle>
                         <DialogDescription className="text-zinc-600">
                             Inscrivez-vous pour participer à l'événement de lancement du livre
@@ -182,6 +183,16 @@ export default function Hero() {
                                     required
                                     className="w-full p-3 rounded-lg border border-zinc-300 focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all"
                                     placeholder="Votre nom complet"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 mb-2">Organisation</label>
+                                <input
+                                    type="text"
+                                    value={data.organization}
+                                    onChange={(e) => setData('organization', e.target.value)}
+                                    className="w-full p-3 rounded-lg border border-zinc-300 focus:border-royal-red focus:ring-2 focus:ring-royal-red/20 transition-all"
+                                    placeholder="Votre organisation"
                                 />
                             </div>
                             <div>

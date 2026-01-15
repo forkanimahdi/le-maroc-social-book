@@ -15,6 +15,7 @@ class EventParticipantRequest extends FormRequest
     {
         return [
             'full_name' => ['required', 'string', 'max:255'],
+            'organization' => ['nullable', 'string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
