@@ -191,7 +191,7 @@ export default function Author({ content = null }) {
                             >
                                 {images.map((image, index) => (
                                     <div key={image.id} className="w-full flex-shrink-0">
-                                        <div className="aspect-[4/5] bg-white/10 backdrop-blur-sm rounded-lg border border-gold/30 flex items-center justify-center relative overflow-hidden">
+                                        <div className="aspect-[3/5] bg-white/10 backdrop-blur-sm rounded-lg border border-gold/30 flex items-center justify-center relative overflow-hidden">
                                                <img 
                                                    src={image.src.includes("/storage/storage/") ? image.src.slice(8) : image.src} 
                                                    alt={image.title} 
