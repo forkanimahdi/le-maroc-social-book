@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 
@@ -9,10 +9,10 @@ const GROUPS_CONFIG = {
         shortTitle: 'Jeunesse, Éducation et Emploi',
         description: 'Redonner à la jeunesse marocaine les moyens d\'apprendre, de s\'orienter, de travailler et d\'exister pleinement dans un pays qui reconnaît ses capacités et ses aspirations.',
         objectives: [
-            'Lutte contre le décrochage scolaire et rehaussement des apprentissages',
-            'Orientation, formation professionnelle et métiers du futur',
-            'Égalité territoriale des opportunités éducatives et professionnelles',
-            'Insertion, mobilité sociale et autonomisation des jeunes'
+            'Lutte contre le décrochage scolaire, innovation éducative et orientation',
+            'Génération des néo-NEETs et évolution des Ecoles de la 2ème Chance',
+            'Apprentissage, insertion économique et Validation des Acquis d\'Expérience',
+            'Entrepreneuriat de nécessité, entrepreneuriat social et création de valeur dans l\'ESS'
         ]
     },
     femmes: {
@@ -20,10 +20,10 @@ const GROUPS_CONFIG = {
         shortTitle: 'Femmes, Travail Invisible et Sécurité Sociale',
         description: 'Reconnaître, protéger et valoriser la contribution des femmes à l\'économie et à la cohésion sociale, tout en combattant les violences et les discriminations qui limitent leur pouvoir d\'agir.',
         objectives: [
-            'Reconnaissance du travail non rémunéré (care, tâches domestiques, assistance maternelle)',
-            'Création et professionnalisation des métiers de l\'assistante maternelle à domicile',
-            'Lutte contre les violences basées sur le genre',
-            'Égalité économique, droits sociaux et participation des femmes à la vie publique'
+            'Reconnaissance et valorisation du travail de soin non rémunéré',
+            'Création du statut et formalisation du métier d\'Assistante Maternelle à Domicile - AMD',
+            'Lutte contre toutes les formes de violence basée sur le genre - VBG',
+            'Egalité, droit sociaux et participation effective des femmes dans les sphères politiques et économiques'
         ]
     },
     vieillissement: {
@@ -31,10 +31,12 @@ const GROUPS_CONFIG = {
         shortTitle: 'Vieillissement, Santé et Transitions Démographiques',
         description: 'Préparer le Maroc au choc démographique en construisant une société intergénérationnelle qui protège les aînés, accompagne les familles et développe les métiers du care de demain.',
         objectives: [
-            'Adaptation du système social au vieillissement rapide de la population',
-            'Développement des services d\'aide à domicile, d\'accompagnement et d\'assistance',
+            'Vieillissement de la population, infertilité des jeunes, santé et transitions démographiques',
+            'Se préparer aux mutations sociétales et accompagner les nouvelles formes de solidarité intergénérationnelle',
+            'Adaptation du système de protection sociale au vieillissement, anticipation de l\'impact économique sur le modèle de retraite',
+            'Développement des services d\'aide à la personne, création et professionnalisation du statut "Proche Aidant"',
             'Santé reproductive, fertilité et nouveaux enjeux familiaux',
-            'Dignité, autonomie et inclusion des personnes âgées'
+            'Dignité, autonomie et inclusion des séniors et personnes âgées'
         ]
     },
     pacte: {
@@ -52,8 +54,20 @@ const GROUPS_CONFIG = {
 
 
 export default function Groups() {
+    // Get group from URL parameter on initial load
+    const getGroupFromURL = () => {
+        if (typeof window === 'undefined') return '';
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupParam = urlParams.get('group');
+        // Validate that the group exists in our config
+        if (groupParam && GROUPS_CONFIG[groupParam]) {
+            return groupParam;
+        }
+        return '';
+    };
+
     const { data, setData, post, processing, reset } = useForm({
-        group: 'jeunesse',
+        group: getGroupFromURL() || '',
         nom: '',
         email: '',
         linkedin_url: '',
@@ -69,6 +83,27 @@ export default function Groups() {
 
     const [showWhatsAppDialog, setShowWhatsAppDialog] = useState(false);
     const [whatsappChannelLink, setWhatsappChannelLink] = useState(channelFallback);
+
+    // Update URL when group changes
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
+        const baseUrl = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (data.group) {
+            urlParams.set('group', data.group);
+        } else {
+            urlParams.delete('group');
+        }
+        
+        const newUrl = urlParams.toString() 
+            ? `${baseUrl}?${urlParams.toString()}`
+            : baseUrl;
+        
+        // Update URL without page reload
+        window.history.replaceState({}, '', newUrl);
+    }, [data.group]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -88,7 +123,7 @@ export default function Groups() {
         });
     };
 
-    const selectedGroup = GROUPS_CONFIG[data.group];
+    const selectedGroup = data.group ? GROUPS_CONFIG[data.group] : null;
 
     return (
         <div className="bg-white">
@@ -132,12 +167,14 @@ export default function Groups() {
 
                             <form onSubmit={submit} className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Choix du groupe</label>
+                                    <label className="block text-sm font-semibold text-royal-green-soft mb-3 uppercase tracking-wide">Choix du groupe <span className="text-red-500">*</span></label>
                                     <select
+                                        required
                                         value={data.group}
                                         onChange={(e) => setData('group', e.target.value)}
                                         className="w-full p-4 rounded-lg border border-royal-green-soft bg-white text-zinc-800 focus:border-royal-green focus:ring-2 focus:ring-royal-green/20 transition-all duration-300"
                                     >
+                                        <option value="">Sélectionnez un groupe</option>
                                         <option value="jeunesse">Groupe de Travail 1 — Jeunesse, Éducation et Emploi</option>
                                         <option value="femmes">Groupe de Travail 2 — Femmes, Travail Invisible et Sécurité Sociale</option>
                                         <option value="vieillissement">Groupe de Travail 3 — Vieillissement, Santé de la Population et Transitions Démographiques</option>
@@ -248,27 +285,32 @@ export default function Groups() {
                         <div className="bg-royal-green-soft p-8 rounded-lg border border-royal-green-soft">
                             <h3 className="text-2xl font-semibold text-royal-green-soft mb-6">Groupe Sélectionné</h3>
 
-                            <div className="space-y-6">
-                                <div>
-                                    <h4 className="text-xl font-semibold text-royal-green-soft mb-3">{selectedGroup.title}</h4>
-                                    <p className="text-zinc-700 leading-relaxed">{selectedGroup.description}</p>
-                                </div>
+                            {selectedGroup ? (
+                                <div className="space-y-6">
+                                    <div>
+                                        <h4 className="text-xl font-semibold text-royal-green-soft mb-3">{selectedGroup.title}</h4>
+                                        <p className="text-zinc-700 leading-relaxed">{selectedGroup.description}</p>
+                                    </div>
 
-                                <div>
-                                    <h5 className="text-lg font-semibold text-royal-green-soft mb-4">Objectifs du groupe</h5>
-                                    <div className="space-y-3">
-                                        {selectedGroup.objectives.map((objective, index) => (
-                                            <div key={index} className="flex items-center gap-3">
-                                                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--royal-green)' }}>
-                                                    <span className="text-white text-xs font-bold">{index + 1}</span>
+                                    <div>
+                                        <h5 className="text-lg font-semibold text-royal-green-soft mb-4">Objectifs du groupe</h5>
+                                        <div className="space-y-3">
+                                            {selectedGroup.objectives.map((objective, index) => (
+                                                <div key={index} className="flex items-center gap-3">
+                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--royal-green)' }}>
+                                                        <span className="text-white text-xs font-bold">{index + 1}</span>
+                                                    </div>
+                                                    <span className="text-zinc-700">{objective}</span>
                                                 </div>
-                                                <span className="text-zinc-700">{objective}</span>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-
-                            </div>
+                            ) : (
+                                <div className="text-center py-8">
+                                    <p className="text-zinc-600">Veuillez sélectionner un groupe pour voir ses détails</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
