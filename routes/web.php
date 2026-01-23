@@ -73,6 +73,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Contact messages
     Route::get('/admin/messages', [AdminContactMessageController::class, 'index'])->name('admin.messages');
     Route::post('/admin/messages/{message}/reply', [AdminContactMessageController::class, 'reply'])->name('admin.messages.reply');
+
+    // Communication
+    Route::get('/admin/communication', [\App\Http\Controllers\Admin\CommunicationController::class, 'index'])->name('admin.communication');
+    Route::post('/admin/communication/send', [\App\Http\Controllers\Admin\CommunicationController::class, 'send'])->name('admin.communication.send');
 });
 
 // Form posts

@@ -134,7 +134,7 @@ export default function Groups() {
                         <span className="text-sm font-medium text-royal-green-soft tracking-wider uppercase">GROUPES DE TRAVAIL</span>
                     </div>
                     <h2 className="text-5xl sm:text-6xl font-bold tracking-tight text-royal-green-soft mb-8">
-                        REJOIGNEZ LE THINK TANK
+                        THINK-&-DO-TANK
                     </h2>
                     <p className="text-xl leading-relaxed text-zinc-600 max-w-4xl mx-auto">
                         Quatre groupes de travail réunissant citoyens, experts, représentants du secteur public et privé, sociologues, jeunes, société civile, décideurs et diplomates.
