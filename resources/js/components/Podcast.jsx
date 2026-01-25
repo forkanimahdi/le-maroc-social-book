@@ -13,7 +13,7 @@ export default function Podcast({ episodes = [] }) {
 
     // Spotify podcast URL
     const spotifyPodcastUrl = 'https://open.spotify.com/show/maroc-social-2030'; // Replace with actual Spotify URL
-    const audioUrl = '/assets/test.ogg';
+    const audioUrl = '/assets/ms2030.mp3';
 
     useEffect(() => {
         const audio = audioRef.current;

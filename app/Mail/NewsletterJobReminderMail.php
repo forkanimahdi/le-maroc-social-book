@@ -46,3 +46,5 @@ class NewsletterJobReminderMail extends Mailable
 
 
 
+
+
