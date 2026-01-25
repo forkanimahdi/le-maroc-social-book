@@ -211,7 +211,7 @@ export default function Podcast({ episodes = [] }) {
                                                 <iframe
                                                     ref={el => iframeRefs.current[index] = el}
                                                     className="w-full h-full"
-                                                    src={`https://www.youtube.com/embed/${videoId}?controls=1&modestbranding=1&rel=0&autoplay=${index === currentShortIndex ? 1 : 0}&loop=0&enablejsapi=1${typeof window !== 'undefined' ? `&origin=${window.location.origin}` : ''}`}
+                                                    src={`https://www.youtube.com/embed/${videoId}?controls=1&modestbranding=1&rel=0&autoplay=${index === currentShortIndex ? 0 : 0}&loop=0&enablejsapi=1${typeof window !== 'undefined' ? `&origin=${window.location.origin}` : ''}`}
                                                     title={`YouTube Short ${index + 1}`}
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                                     allowFullScreen
