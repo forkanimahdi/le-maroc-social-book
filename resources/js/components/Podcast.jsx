@@ -7,13 +7,75 @@ export default function Podcast({ episodes = [] }) {
     const [duration, setDuration] = useState(0);
     const audioRef = useRef(null);
 
-    // YouTube channel URL and video ID (preview)
+    // YouTube channel URL and Shorts URLs
     const youtubeChannelUrl = 'https://youtube.com/@oumaimamhijir5672?si=NiYXapOWzkAhgjWL';
-    const youtubeVideoId = 'CwIIrNz0O4s'; // Replace with actual preview video ID
+    
+    // YouTube Shorts URLs - extract video IDs
+    const shortsUrls = [
+        'https://www.youtube.com/shorts/vPzzM-U-jf8',
+        'https://www.youtube.com/shorts/-IkxOaEpLLM',
+        'https://www.youtube.com/shorts/3ZtcelDdit0',
+        'https://www.youtube.com/shorts/XKDpnyk1GAU',
+        'https://www.youtube.com/shorts/r8scDEUdoUk',
+        'https://www.youtube.com/shorts/H5UETyM1zpA',
+        'https://www.youtube.com/shorts/-IkxOaEpLLM',
+    ];
+
+    // Extract video IDs from URLs
+    const getVideoId = (url) => {
+        const match = url.match(/\/shorts\/([^/?]+)/);
+        return match ? match[1] : null;
+    };
+
+    const shortsVideoIds = shortsUrls.map(url => getVideoId(url)).filter(Boolean);
+    
+    const [currentShortIndex, setCurrentShortIndex] = useState(0);
+    const iframeRefs = useRef([]);
 
     // Spotify podcast URL
     const spotifyPodcastUrl = 'https://open.spotify.com/show/maroc-social-2030'; // Replace with actual Spotify URL
     const audioUrl = '/assets/ms2030.mp3';
+
+    // Navigation functions
+    const goToNextShort = () => {
+        setCurrentShortIndex((prev) => (prev + 1) % shortsVideoIds.length);
+    };
+
+    const goToPreviousShort = () => {
+        setCurrentShortIndex((prev) => (prev - 1 + shortsVideoIds.length) % shortsVideoIds.length);
+    };
+
+    const goToShort = (index) => {
+        setCurrentShortIndex(index);
+    };
+
+    // Handle YouTube Shorts navigation and auto-advance
+    useEffect(() => {
+        // Listen for YouTube iframe messages to detect when video ends
+        const handleMessage = (event) => {
+            if (event.origin !== 'https://www.youtube.com') return;
+            
+            try {
+                const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+                
+                // YouTube iframe API events
+                if (data.event === 'onStateChange') {
+                    // 0 = ended, 1 = playing, 2 = paused
+                    if (data.info === 0) {
+                        // Video ended, go to next after a short delay
+                        setTimeout(() => {
+                            goToNextShort();
+                        }, 500);
+                    }
+                }
+            } catch (e) {
+                // Ignore parsing errors
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, [shortsVideoIds.length]);
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -101,32 +163,95 @@ export default function Podcast({ episodes = [] }) {
 
                 {/* Split Layout: YouTube and Spotify */}
                 <div className="grid lg:grid-cols-2 gap-8">
-                    {/* YouTube Section */}
+                    {/* YouTube Shorts Carousel Section */}
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-gold/30 overflow-hidden">
                         <div className="p-6">
                             <div className="flex items-center gap-3 mb-4">
                                 <svg className="w-8 h-8" style={{ color: 'var(--royal-red)' }} fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                 </svg>
-                                <h3 className="text-2xl font-bold text-gold">YouTube</h3>
+                                <h3 className="text-2xl font-bold text-gold">YouTube Shorts</h3>
                             </div>
                             
-                            {/* YouTube Video Preview */}
-                            <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-4">
-                                <iframe
-                                    className="w-full h-full"
-                                    src={`https://www.youtube.com/embed/${youtubeVideoId}?controls=1&modestbranding=1&rel=0`}
-                                    title="YouTube video preview"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
+                            {/* Carousel Container */}
+                            <div className="relative mb-6">
+                                {/* Video Carousel */}
+                                <div className="relative w-full lg:aspect-[16/9] aspect-[9/16] bg-black rounded-lg overflow-hidden mb-4">
+                                    {/* Navigation Arrows */}
+                                    {shortsVideoIds.length > 1 && (
+                                        <>
+                                            <button
+                                                onClick={goToPreviousShort}
+                                                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-all hover:scale-110"
+                                                aria-label="Vidéo précédente"
+                                            >
+                                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                onClick={goToNextShort}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-all hover:scale-110"
+                                                aria-label="Vidéo suivante"
+                                            >
+                                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
+                                        </>
+                                    )}
+
+                                    {/* Video Slides */}
+                                    <div 
+                                        className="flex transition-transform duration-500 ease-in-out h-full"
+                                        style={{ transform: `translateX(-${currentShortIndex * 100}%)` }}
+                                    >
+                                        {shortsVideoIds.map((videoId, index) => (
+                                            <div key={videoId} className="w-full h-full flex-shrink-0">
+                                                <iframe
+                                                    ref={el => iframeRefs.current[index] = el}
+                                                    className="w-full h-full"
+                                                    src={`https://www.youtube.com/embed/${videoId}?controls=1&modestbranding=1&rel=0&autoplay=${index === currentShortIndex ? 1 : 0}&loop=0&enablejsapi=1${typeof window !== 'undefined' ? `&origin=${window.location.origin}` : ''}`}
+                                                    title={`YouTube Short ${index + 1}`}
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    allowFullScreen
+                                                ></iframe>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Carousel Indicators */}
+                                {shortsVideoIds.length > 1 && (
+                                    <div className="flex items-center justify-center gap-2 mb-4">
+                                        {shortsVideoIds.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => goToShort(index)}
+                                                className={`transition-all duration-300 rounded-full ${
+                                                    index === currentShortIndex
+                                                        ? 'w-8 h-2 bg-gold'
+                                                        : 'w-2 h-2 bg-gold/40 hover:bg-gold/60'
+                                                }`}
+                                                aria-label={`Aller à la vidéo ${index + 1}`}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Video Counter */}
+                                {shortsVideoIds.length > 1 && (
+                                    <div className="text-center text-white/80 text-sm mb-4">
+                                        Vidéo {currentShortIndex + 1} sur {shortsVideoIds.length}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Subscribe Invitation */}
                             <div className="bg-white/10 rounded-lg p-6 border border-gold/30">
                                 <h4 className="text-lg font-semibold text-gold mb-2">Abonnez-vous à notre chaîne</h4>
                                 <p className="text-white/90 text-sm mb-4">
-                                    Rejoignez notre communauté YouTube pour accéder à tous les épisodes complets et ne manquer aucune discussion.
+                                    Rejoignez notre communauté YouTube pour accéder à tous les shorts et ne manquer aucune discussion.
                                 </p>
                                 <a
                                     href={youtubeChannelUrl}
