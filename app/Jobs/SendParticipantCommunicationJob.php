@@ -18,15 +18,17 @@ class SendParticipantCommunicationJob implements ShouldQueue
     public $participant;
     public $subject;
     public $content;
+    public $attachmentPaths;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(EventParticipant $participant, string $subject, string $content)
+    public function __construct(EventParticipant $participant, string $subject, string $content, array $attachmentPaths = [])
     {
         $this->participant = $participant;
         $this->subject = $subject;
         $this->content = $content;
+        $this->attachmentPaths = $attachmentPaths;
     }
 
     /**
@@ -36,7 +38,7 @@ class SendParticipantCommunicationJob implements ShouldQueue
     {
         try {
             Mail::to($this->participant->email)->send(
-                new ParticipantCommunicationMail($this->participant, $this->subject, $this->content)
+                new ParticipantCommunicationMail($this->participant, $this->subject, $this->content, $this->attachmentPaths)
             );
         } catch (\Exception $e) {
             Log::error('Failed to send communication email to ' . $this->participant->email . ': ' . $e->getMessage());

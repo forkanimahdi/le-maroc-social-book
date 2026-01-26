@@ -27,11 +27,24 @@ class CommunicationController extends Controller
             'subject' => 'required|string|max:255',
             'content' => 'required|string',
             'participant_ids' => 'required|array|min:1',
+            'attachments' => 'nullable|array',
+            'attachments.*' => 'file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png',
         ]);
 
-        $participantIds = $request->participant_ids;
+        $participantIds = is_string($request->participant_ids) 
+            ? json_decode($request->participant_ids, true) 
+            : $request->participant_ids;
         $subject = $request->subject;
         $content = $request->content;
+
+        // Handle file uploads
+        $attachmentPaths = [];
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $path = $file->store('communication-attachments', 'public');
+                $attachmentPaths[] = $path;
+            }
+        }
 
         // If "all" is selected, get all approved participants
         if (in_array('all', $participantIds)) {
@@ -49,7 +62,7 @@ class CommunicationController extends Controller
 
         // Dispatch job for each participant
         foreach ($participants as $participant) {
-            SendParticipantCommunicationJob::dispatch($participant, $subject, $content);
+            SendParticipantCommunicationJob::dispatch($participant, $subject, $content, $attachmentPaths);
         }
 
         return back()->with('success', count($participants) . ' email(s) ont été mis en file d\'attente pour envoi.');

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Mail, Users, Send } from 'lucide-react';
+import { Mail, Users, Send, X, Paperclip } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 const breadcrumbs = [
@@ -20,10 +20,13 @@ export default function Communication() {
     const [selectAll, setSelectAll] = useState(false);
     const [search, setSearch] = useState('');
 
+    const [attachments, setAttachments] = useState([]);
+    
     const { data, setData, post, processing, errors } = useForm({
         subject: '',
         content: '',
         participant_ids: [],
+        attachments: [],
     });
 
     // Filter participants by search
@@ -78,6 +81,32 @@ export default function Communication() {
         }
     };
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        const newAttachments = files.map(file => ({
+            file: file,
+            name: file.name,
+            size: file.size,
+            id: Math.random().toString(36).substring(7),
+        }));
+        setAttachments([...attachments, ...newAttachments]);
+        setData('attachments', [...attachments, ...newAttachments].map(a => a.file));
+    };
+
+    const removeAttachment = (id) => {
+        const newAttachments = attachments.filter(a => a.id !== id);
+        setAttachments(newAttachments);
+        setData('attachments', newAttachments.map(a => a.file));
+    };
+
+    const formatFileSize = (bytes) => {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         
@@ -96,17 +125,29 @@ export default function Communication() {
         const allParticipantsSelected = selectedParticipants.length === participants.length && participants.length > 0;
         const participantIds = allParticipantsSelected ? ['all'] : selectedParticipants;
 
+        // Update form data with participant IDs
+        const formData = {
+            subject: data.subject,
+            content: data.content,
+            participant_ids: participantIds,
+            attachments: attachments.map(a => a.file),
+        };
+        
         setData('participant_ids', participantIds);
+        setData('attachments', attachments.map(a => a.file));
         
         post('/admin/communication/send', {
+            forceFormData: true,
             onSuccess: () => {
                 setData({
                     subject: '',
                     content: '',
                     participant_ids: [],
+                    attachments: [],
                 });
                 setSelectedParticipants([]);
                 setSelectAll(false);
+                setAttachments([]);
             },
         });
     };
@@ -177,6 +218,62 @@ export default function Communication() {
                                         />
                                         {errors.content && (
                                             <p className="text-sm text-red-600 mt-1">{errors.content}</p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <Label htmlFor="attachments">Pièces jointes (optionnel)</Label>
+                                        <div className="mt-1">
+                                            <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-zinc-300 rounded-lg cursor-pointer hover:border-royal-green transition-colors">
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <Paperclip className="w-8 h-8 text-zinc-400 mb-2" />
+                                                    <p className="text-sm text-zinc-600">
+                                                        <span className="font-semibold">Cliquez pour ajouter</span> ou glissez-déposez
+                                                    </p>
+                                                    <p className="text-xs text-zinc-500 mt-1">PDF, DOC, DOCX, JPG, PNG (max 10 Mo par fichier)</p>
+                                                </div>
+                                                <input
+                                                    id="attachments"
+                                                    type="file"
+                                                    multiple
+                                                    className="hidden"
+                                                    onChange={handleFileChange}
+                                                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                                />
+                                            </label>
+                                        </div>
+                                        
+                                        {attachments.length > 0 && (
+                                            <div className="mt-3 space-y-2">
+                                                {attachments.map((attachment) => (
+                                                    <div
+                                                        key={attachment.id}
+                                                        className="flex items-center justify-between p-2 bg-zinc-50 rounded-lg border border-zinc-200"
+                                                    >
+                                                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                                                            <Paperclip className="w-4 h-4 text-zinc-500 flex-shrink-0" />
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="text-sm font-medium text-zinc-900 truncate">
+                                                                    {attachment.name}
+                                                                </p>
+                                                                <p className="text-xs text-zinc-500">
+                                                                    {formatFileSize(attachment.size)}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeAttachment(attachment.id)}
+                                                            className="ml-2 p-1 text-zinc-500 hover:text-red-600 transition-colors"
+                                                        >
+                                                            <X className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {errors.attachments && (
+                                            <p className="text-sm text-red-600 mt-1">{errors.attachments}</p>
                                         )}
                                     </div>
 

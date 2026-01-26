@@ -5,9 +5,11 @@ namespace App\Mail;
 use App\Models\EventParticipant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ParticipantCommunicationMail extends Mailable
 {
@@ -16,15 +18,17 @@ class ParticipantCommunicationMail extends Mailable
     public $participant;
     public $subject;
     public $content;
+    public $attachmentPaths;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(EventParticipant $participant, string $subject, string $content)
+    public function __construct(EventParticipant $participant, string $subject, string $content, array $attachmentPaths = [])
     {
         $this->participant = $participant;
         $this->subject = $subject;
         $this->content = $content;
+        $this->attachmentPaths = $attachmentPaths;
     }
 
     /**
@@ -58,6 +62,17 @@ class ParticipantCommunicationMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $attachments = [];
+        
+        foreach ($this->attachmentPaths as $path) {
+            $fullPath = Storage::disk('public')->path($path);
+            
+            if (file_exists($fullPath)) {
+                $attachments[] = Attachment::fromStorageDisk('public', $path)
+                    ->as(basename($path));
+            }
+        }
+        
+        return $attachments;
     }
 }
