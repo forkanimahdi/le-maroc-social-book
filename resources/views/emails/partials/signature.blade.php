@@ -4,7 +4,7 @@
 @endphp
 
 <div style="margin-top: 30px; text-align: center;">
-    <img src="{{ $logoUrl }}" alt="Oumaima Mhijir" style="width: 140px; height: auto; display: inline-block; margin-bottom: 15px;" />
+    <img src="https://ms2030.org/build/assets/logo-3Bb8ptI4.png" alt="Oumaima Mhijir" style="width: 140px; height: auto; display: inline-block; margin-bottom: 15px;" />
     <div style="margin-top: 15px;">
         <a href="https://www.linkedin.com/company/le-maroc-social/" target="_blank" rel="noopener noreferrer" style="color: #0077b5; text-decoration: none; margin: 0 10px; font-weight: 500;">LinkedIn</a>
         <span style="color: #999;">|</span>
