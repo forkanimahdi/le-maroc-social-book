@@ -101,7 +101,7 @@ export default function Hero() {
                                     }}
                                     className="bg-royal-red px-2 py-3 rounded-lg hover:opacity-95 text-center text-white font-semibold"
                                 >
-                                    Découvrir le livre <br /> <i className='text-sm font-light'>à partir du 28.01.2026</i>
+                                    Découvrir le livre <br /> 
                                 </a>
                                 <a 
                                     href="#livre" 
@@ -136,13 +136,13 @@ export default function Hero() {
                                 <div className="mt-4 text-white/80 text-base max-w-xs ml-auto">
                                     Auteure, experte en entrepreneuriat social international, maman, étudiante en psychologie et en innovation sociale
                                 </div>
-                                <button
+                                {/* <button
                                     onClick={() => handleModalChange(true)}
                                     className="mt-6 px-6 capitalize py-3 rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
                                     style={{ backgroundColor: 'var(--royal-green)', color: 'white' }}
                                 >
                                     évènement de lancement
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </div>
