@@ -136,7 +136,7 @@ export default function Hero() {
                                 <div className="text-sm font-medium text-gold tracking-wider uppercase mb-2">AUTHOR</div>
                                 <div className="text-2xl font-semibold text-cream">OUMAIMA MHIJIR</div>
                                 <div className="mt-4 text-white/80 text-base max-w-xs ml-auto">
-                                    Auteure, experte en entrepreneuriat social international, maman, étudiante en psychologie et en innovation sociale
+                                Entrepreneure sociale, auteure, directrice générale d’une fondation reconnue d’utilité publique, citoyenne marocaine engagée
                                 </div>
                                 {/* <button
                                     onClick={() => handleModalChange(true)}
